@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MMAS — Public Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#1B86C4;--brand-2:#2A9BD8;--brand-deep:#0C5C8C;--brand-soft:#E9F5FC;--brand-bd:#B7DEF2;--ring:#8CC6E8;
+  --navy:#0E2A3E;--page:#F4F8FB;--card-border:#e6edf2;--line:#eef3f7;
+  --value:#12212e;--muted:#7d8b98;--muted2:#a7b3bd;--icon:#93a2ae;
+  --green:#0BA65C;--green-soft:#E4F7EE;--amber:#E6A52B;--amber-soft:#FCF3E1;
+  --red:#E5484D;--red-soft:#FDEAEA;--blue:#2563eb;--blue-soft:#EAF1FE;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;-webkit-font-smoothing:antialiased;color:var(--value);background:var(--page)}
+svg{display:block}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
+.hidden{display:none!important}
+img.logo{object-fit:cover;border-radius:50%}
+
+/* ============ buttons ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:11px;padding:12px 18px;font-size:14px;font-weight:700;transition:transform .12s,box-shadow .12s,background .12s}
+.btn svg{width:17px;height:17px}
+.btn.pri{background:linear-gradient(135deg,var(--brand),var(--brand-deep));color:#fff;box-shadow:0 8px 18px rgba(27,134,196,.26)}
+.btn.pri:hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(27,134,196,.32)}
+.btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--brand-bd)}
+.btn.ghost:hover{background:var(--brand-soft)}
+.btn.soft{background:var(--brand-soft);color:var(--brand)}
+.btn.soft:hover{background:#daedf9}
+.btn.green{background:linear-gradient(135deg,#14b56a,#0BA65C);color:#fff;box-shadow:0 8px 18px rgba(11,166,92,.26)}
+.btn.danger{background:#fff;color:var(--red);border:1.5px solid #f4c4c4}
+.btn.danger:hover{background:var(--red-soft)}
+.btn.sm{padding:8px 13px;font-size:12.5px;border-radius:9px}
+.btn.block{width:100%}
+.btn.lg{padding:14px 22px;font-size:15px}
+
+/* ============ badges ============ */
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:20px}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%}
+.badge.sub{background:var(--blue-soft);color:#1d4ed8}.badge.sub::before{background:#2563eb}
+.badge.rev{background:var(--amber-soft);color:#b45309}.badge.rev::before{background:var(--amber)}
+.badge.app{background:var(--green-soft);color:#15803d}.badge.app::before{background:var(--green)}
+.badge.rej{background:var(--red-soft);color:#b91c1c}.badge.rej::before{background:var(--red)}
+.badge.act{background:var(--green-soft);color:#15803d}.badge.act::before{background:var(--green)}
+.badge.exp{background:#eef1f4;color:#5b6773}.badge.exp::before{background:#9aa4af}
+.badge.susp{background:var(--red-soft);color:#b91c1c}.badge.susp::before{background:var(--red)}
+
+/* ============ cards ============ */
+.tile{background:#fff;border:1px solid var(--card-border);border-radius:16px;padding:20px}
+.sec-h{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted2);margin-bottom:12px}
+
+/* ============ PRE-AUTH TOP BAR ============ */
+.appbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:14px 26px;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.appbar .brand{display:flex;align-items:center;gap:11px}
+.appbar .brand img{width:40px;height:40px;border:2px solid var(--ring)}
+.appbar .brand .bt{font-size:16px;font-weight:800}
+.appbar .brand .bs{font-size:10.5px;color:var(--muted)}
+.appbar .abnav{margin-left:auto;display:flex;align-items:center;gap:8px}
+.appbar .abnav .lnk{font-size:13.5px;font-weight:600;color:#43525e;padding:9px 13px;border-radius:9px}
+.appbar .abnav .lnk:hover{background:var(--brand-soft);color:var(--brand)}
+@media(max-width:640px){.appbar .brand .bs{display:none}.appbar{padding:12px 16px}.appbar .abnav .lnk.hideM{display:none}}
+
+/* ============ LANDING ============ */
+.wrap{max-width:1080px;margin:0 auto;padding:0 26px}
+.hero{text-align:center;padding:64px 20px 40px}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--brand-soft);color:var(--brand-deep);font-size:12.5px;font-weight:700;padding:7px 15px;border-radius:20px;margin-bottom:22px}
+.hero h1{font-size:44px;font-weight:800;line-height:1.1;letter-spacing:-.02em;max-width:760px;margin:0 auto}
+.hero p{font-size:16px;color:var(--muted);margin:20px auto 30px;max-width:600px;line-height:1.6}
+.hero .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@media(max-width:640px){.hero h1{font-size:32px}.hero{padding:40px 10px 26px}}
+.services{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:20px 0 10px}
+@media(max-width:900px){.services{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.services{grid-template-columns:1fr}}
+.svc{background:#fff;border:1px solid var(--card-border);border-radius:16px;padding:22px;cursor:pointer;transition:transform .14s,box-shadow .14s,border-color .14s}
+.svc:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(14,42,62,.10);border-color:var(--brand-bd)}
+.svc .ic{width:48px;height:48px;border-radius:13px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;margin-bottom:14px}
+.svc .ic svg{width:24px;height:24px}
+.svc h3{font-size:15.5px;font-weight:700}
+.svc p{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.5}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:10px 0}
+@media(max-width:760px){.steps{grid-template-columns:1fr}}
+.step{text-align:center;padding:20px}
+.step .n{width:44px;height:44px;border-radius:50%;background:var(--brand);color:#fff;font-weight:800;font-size:18px;display:grid;place-items:center;margin:0 auto 14px}
+.step h4{font-size:15px;font-weight:700}.step p{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5}
+.block-h{text-align:center;margin:40px 0 8px}
+.block-h .k{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--brand)}
+.block-h h2{font-size:28px;font-weight:800;margin-top:8px}
+.foot{margin-top:50px;border-top:1px solid var(--line);padding:26px;text-align:center;color:var(--muted);font-size:12.5px}
+.foot .lang{display:inline-flex;gap:6px;margin-top:12px}
+.foot .lang span{padding:5px 12px;border-radius:8px;font-weight:600;cursor:pointer}
+.foot .lang span.on{background:var(--brand-soft);color:var(--brand)}
+.fees{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:20px 0 10px}@media(max-width:760px){.fees{grid-template-columns:1fr}}.feecard{background:#fff;border:1px solid var(--card-border);border-radius:16px;padding:22px;text-align:left}.feecard .ft{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px}.feecard .ft h3{font-size:15px;font-weight:700}.feecard .amt{font-size:20px;font-weight:800;color:var(--brand-deep);white-space:nowrap}.feecard ul{list-style:none;margin:0;padding:0}.feecard li{font-size:12.5px;color:var(--muted);padding:8px 0 8px 20px;position:relative;line-height:1.4;border-top:1px solid var(--line)}.feecard li:first-child{border-top:none}.feecard li::before{content:"";position:absolute;left:2px;top:13px;width:7px;height:7px;border-radius:50%;background:var(--brand)}.faq{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:20px 0 10px}@media(max-width:760px){.faq{grid-template-columns:1fr}}.faqi{background:#fff;border:1px solid var(--card-border);border-radius:14px;padding:18px 20px;text-align:left}.faqi h4{font-size:14px;font-weight:700;margin-bottom:6px}.faqi p{font-size:12.5px;color:var(--muted);line-height:1.55}.contact{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;padding:16px 0 0}.contact a,.contact .ci{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--value);font-weight:600;text-decoration:none;background:var(--brand-soft);padding:11px 16px;border-radius:12px}.contact svg{width:16px;height:16px;color:var(--brand)}
+
+/* ============ AUTH CARD ============ */
+.authpage{min-height:calc(100vh - 70px);display:flex;align-items:center;justify-content:center;padding:30px 18px}
+.authcard{width:100%;max-width:460px;background:#fff;border:1px solid var(--card-border);border-radius:20px;box-shadow:0 20px 50px rgba(14,42,62,.10);padding:30px 30px 24px}
+.authcard .ah{text-align:center;margin-bottom:20px}
+.authcard .ah img{width:52px;height:52px;border:3px solid var(--ring);margin:0 auto 10px}
+.authcard .ah h2{font-size:20px;font-weight:800}
+.authcard .ah p{font-size:13px;color:var(--muted);margin-top:5px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12.5px;font-weight:600;color:#40505c;margin-bottom:7px}
+.inp{display:flex;align-items:center;gap:10px;border:1.5px solid var(--card-border);border-radius:11px;padding:0 13px;background:#fff;transition:border-color .15s,box-shadow .15s}
+.inp:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px rgba(27,134,196,.12)}
+.inp svg{width:17px;height:17px;color:var(--icon);flex-shrink:0}
+.inp input,.inp select{flex:1;border:none;outline:none;font-family:inherit;font-size:14px;color:var(--value);padding:12px 0;background:transparent}
+.inp.bad{border-color:var(--red);background:#fef6f6}
+.err-msg{font-size:11.5px;color:var(--red);margin-top:5px;font-weight:600;display:none}
+.field.showerr .err-msg{display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.grid2{grid-template-columns:1fr}}
+.radios{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.radio{display:flex;align-items:center;gap:11px;border:1.5px solid var(--card-border);border-radius:11px;padding:11px 13px;cursor:pointer}
+.radio.sel{border-color:var(--brand);background:var(--brand-soft)}
+.radio .rd{width:18px;height:18px;border-radius:50%;border:2px solid var(--card-border);flex-shrink:0;position:relative}
+.radio.sel .rd{border-color:var(--brand)}
+.radio.sel .rd::after{content:"";position:absolute;inset:3.5px;border-radius:50%;background:var(--brand)}
+.radio .rt{font-size:13.5px;font-weight:600}
+.linkrow{text-align:center;font-size:13px;color:var(--muted);margin-top:16px}
+.linkrow a{color:var(--brand);font-weight:700}
+.frow{display:flex;align-items:center;justify-content:space-between;margin:2px 0 16px}
+.frow .rem{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#40505c;cursor:pointer}
+.frow .rem .box{width:16px;height:16px;border:1.6px solid var(--card-border);border-radius:5px}
+.frow .rem .box.on{background:var(--brand);border-color:var(--brand)}
+.frow a{font-size:12.5px;color:var(--brand);font-weight:700}
+
+/* ============ APP SHELL ============ */
+#app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+.sidebar{background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;padding:18px 14px;position:sticky;top:0;height:100vh}
+.sidebar .sb-brand{display:flex;align-items:center;gap:11px;padding:4px 8px 16px;margin-bottom:8px;border-bottom:1px solid var(--line)}
+.sidebar .sb-brand img{width:38px;height:38px;border:2px solid var(--ring)}
+.sidebar .sb-brand .bt{font-size:15px;font-weight:800}
+.sidebar .sb-brand .bs{font-size:10px;color:var(--muted)}
+.sidebar nav{display:flex;flex-direction:column;gap:3px;flex:1}
+.sidebar nav a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:11px;color:#54636f;font-size:13.5px;font-weight:600;position:relative}
+.sidebar nav a svg{width:19px;height:19px;color:var(--icon);flex-shrink:0}
+.sidebar nav a:hover{background:var(--page);color:var(--value)}
+.sidebar nav a.on{background:var(--brand);color:#fff;box-shadow:0 6px 14px rgba(27,134,196,.26)}
+.sidebar nav a.on svg{color:#fff}
+.sidebar nav a .nbdot{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;border-radius:20px;padding:1px 7px}
+.sidebar .sb-foot a{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:11px;color:#54636f;font-size:13.5px;font-weight:600}
+.sidebar .sb-foot a:hover{background:var(--red-soft);color:var(--red)}
+.sidebar .sb-foot a svg{width:19px;height:19px}
+
+.mainarea{min-width:0;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;gap:12px;padding:14px 26px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:15}
+.topbar .mburg{display:none;width:38px;height:38px;border:1px solid var(--card-border);border-radius:10px;background:#fff;place-items:center;color:var(--value)}
+.topbar .mburg svg{width:20px;height:20px}
+.topbar .pt{font-size:18px;font-weight:800}
+.topbar .pt span{display:block;font-size:11.5px;font-weight:500;color:var(--muted)}
+.topbar .tr{margin-left:auto;display:flex;align-items:center;gap:10px}
+.bell{width:40px;height:40px;border:1px solid var(--card-border);border-radius:50%;display:grid;place-items:center;color:var(--icon);background:#fff;position:relative}
+.bell:hover{background:var(--brand-soft);color:var(--brand)}
+.bell svg{width:18px;height:18px}
+.bell .nd{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--red);border:1.5px solid #fff}
+.ubox{display:flex;align-items:center;gap:9px;border:1px solid var(--card-border);border-radius:999px;padding:5px 12px 5px 5px;background:#fff}
+.ubox .uav{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--brand-2),var(--brand-deep));color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700}
+.ubox .un{font-size:12.5px;font-weight:700}.ubox .ur{font-size:10.5px;color:var(--muted)}
+@media(max-width:640px){.ubox .um{display:none}}
+.content{flex:1;padding:24px 26px 90px}
+.content-narrow{max-width:920px;margin:0 auto}
+
+/* notif dropdown */
+.notifdrop{position:absolute;top:56px;right:26px;width:340px;background:#fff;border:1px solid var(--card-border);border-radius:16px;box-shadow:0 20px 50px rgba(14,42,62,.16);z-index:30;overflow:hidden}
+.notifdrop .nh{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+.notifdrop .nh b{font-size:14px}
+.notifdrop .nh a{font-size:12px;color:var(--brand);font-weight:700;cursor:pointer}
+.notifdrop .ni{display:flex;gap:11px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.notifdrop .ni:last-child{border-bottom:none}
+.notifdrop .ni .nic{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;flex-shrink:0}
+.notifdrop .ni .nic svg{width:16px;height:16px}
+.notifdrop .ni .ntt{font-size:12.5px;font-weight:600}
+.notifdrop .ni .nsub{font-size:11.5px;color:var(--muted);margin-top:2px}
+.notifdrop .ni .ntm{font-size:10.5px;color:var(--muted2);margin-top:3px}
+
+/* bottom nav (mobile) */
+.botnav{display:none}
+/* scrim is a fixed overlay in ALL sizes so it never becomes a grid child of #app */
+.scrim{position:fixed;inset:0;background:rgba(14,42,62,.45);z-index:55;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.on{opacity:1;pointer-events:auto}
+@media(max-width:860px){
+  #app{grid-template-columns:1fr}
+  .sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;z-index:60;transform:translateX(-100%);transition:transform .25s}
+  .sidebar.open{transform:translateX(0)}
+  .topbar .mburg{display:grid}
+  .scrim{position:fixed;inset:0;background:rgba(14,42,62,.4);z-index:55;opacity:0;pointer-events:none;transition:opacity .2s}
+  .scrim.on{opacity:1;pointer-events:auto}
+  .botnav{display:flex;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);z-index:40;padding:6px 4px 8px}
+  .botnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;color:var(--muted);font-size:10.5px;font-weight:600}
+  .botnav a svg{width:22px;height:22px}
+  .botnav a.on{color:var(--brand)}
+  .notifdrop{right:12px;left:12px;width:auto}
+}
+
+/* dashboard */
+.welcome{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.welcome h1{font-size:24px;font-weight:800}
+.welcome p{font-size:13.5px;color:var(--muted);margin-top:4px}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:22px}
+@media(max-width:760px){.stats3{grid-template-columns:1fr}}
+.stat{background:#fff;border:1px solid var(--card-border);border-radius:16px;padding:18px 20px;cursor:pointer;transition:transform .14s,box-shadow .14s;display:flex;align-items:center;gap:15px}
+.stat:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(14,42,62,.10)}
+.stat .si{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;flex-shrink:0}
+.stat .si svg{width:24px;height:24px}
+.stat .sv{font-size:28px;font-weight:800;line-height:1}
+.stat .sl{font-size:12.5px;color:var(--muted);margin-top:5px;font-weight:600}
+.qa-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:22px}
+@media(max-width:760px){.qa-grid{grid-template-columns:repeat(2,1fr)}}
+.qa{background:#fff;border:1px solid var(--card-border);border-radius:14px;padding:16px;cursor:pointer;transition:transform .14s,box-shadow .14s,border-color .14s;text-align:left}
+.qa:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(14,42,62,.08);border-color:var(--brand-bd)}
+.qa .qi{width:40px;height:40px;border-radius:11px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;margin-bottom:12px}
+.qa .qi svg{width:20px;height:20px}
+.qa .qt{font-size:13.5px;font-weight:700}
+.qa .qs{font-size:11.5px;color:var(--muted);margin-top:3px}
+
+/* table */
+.panel{background:#fff;border:1px solid var(--card-border);border-radius:16px;overflow:hidden}
+.panel .ph{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.panel .ph h3{font-size:15px;font-weight:800}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th{text-align:left;font-size:11.5px;font-weight:700;color:var(--muted);padding:12px 16px;border-bottom:1px solid var(--line);white-space:nowrap;text-transform:uppercase;letter-spacing:.03em}
+td{font-size:13px;padding:14px 16px;border-bottom:1px solid var(--line);color:#3b424d;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--page)}
+.tid{font-weight:700;color:var(--value)}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.filters .fsel{display:flex;align-items:center;gap:8px;border:1px solid var(--card-border);border-radius:10px;padding:8px 12px;background:#fff;font-size:13px}
+.filters .fsel select{border:none;outline:none;font-family:inherit;font-size:13px;font-weight:600;background:transparent;color:var(--value)}
+.empty{text-align:center;padding:50px 20px}
+.empty .ei{width:64px;height:64px;border-radius:18px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;margin:0 auto 16px}
+.empty .ei svg{width:32px;height:32px}
+.empty h3{font-size:17px;font-weight:800}.empty p{font-size:13.5px;color:var(--muted);margin:8px 0 18px}
+
+/* wizard */
+.stepper{display:flex;align-items:center;gap:0;margin-bottom:26px}
+.stepper .st{display:flex;align-items:center;gap:10px;flex:1}
+.stepper .st .sn{width:34px;height:34px;border-radius:50%;background:#fff;border:2px solid var(--card-border);color:var(--muted);font-weight:800;font-size:14px;display:grid;place-items:center;flex-shrink:0}
+.stepper .st.on .sn{background:var(--brand);border-color:var(--brand);color:#fff}
+.stepper .st.done .sn{background:var(--green);border-color:var(--green);color:#fff}
+.stepper .st .sl{font-size:12.5px;font-weight:700;color:var(--muted)}
+.stepper .st.on .sl,.stepper .st.done .sl{color:var(--value)}
+.stepper .bar{height:2px;background:var(--card-border);flex:1;margin:0 6px}
+.stepper .bar.fill{background:var(--green)}
+@media(max-width:600px){.stepper .st .sl{display:none}}
+.wiznav{display:flex;justify-content:space-between;gap:10px;margin-top:24px}
+.upload{border:1.5px dashed var(--brand-bd);border-radius:13px;padding:18px;text-align:center;background:var(--brand-soft);cursor:pointer;transition:background .14s}
+.upload:hover{background:#daedf9}
+.upload.upreq{border-color:var(--red);background:#fef6f6}
+.upreq-msg{font-size:11.5px;color:var(--red);font-weight:600;margin-top:5px;display:none}
+.upload .ui{width:40px;height:40px;border-radius:11px;background:#fff;color:var(--brand);display:grid;place-items:center;margin:0 auto 10px}
+.upload .ui svg{width:20px;height:20px}
+.upload .ut{font-size:13px;font-weight:700}.upload .us{font-size:11.5px;color:var(--muted);margin-top:3px}
+.upfile{display:flex;align-items:center;gap:11px;border:1px solid var(--card-border);border-radius:12px;padding:11px 13px;margin-top:8px}
+.upfile .uth{width:38px;height:38px;border-radius:9px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;flex-shrink:0}
+.upfile .uth svg{width:18px;height:18px}
+.upfile .ufn{font-size:12.5px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.upfile .ufs{font-size:11px;color:var(--muted)}
+.upfile .ux{width:26px;height:26px;border-radius:8px;background:var(--red-soft);color:var(--red);display:grid;place-items:center;cursor:pointer;flex-shrink:0}
+.upfile .ux svg{width:14px;height:14px}
+.progress{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:8px}
+.progress span{display:block;height:100%;background:var(--brand);width:0;transition:width .2s}
+.dynrow{display:grid;gap:8px;margin-bottom:8px}
+.dynrow.eq{grid-template-columns:1fr 120px 40px}
+.dynrow.tm{grid-template-columns:1fr 1fr 1fr 40px}
+@media(max-width:640px){.dynrow.eq,.dynrow.tm{grid-template-columns:1fr}}
+.rmrow{width:100%;height:44px;border-radius:10px;background:var(--red-soft);color:var(--red);border:none;display:grid;place-items:center}
+.rmrow svg{width:16px;height:16px}
+
+/* wallet cards */
+.wallet{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+@media(max-width:720px){.wallet{grid-template-columns:1fr}}
+.idcard{border-radius:18px;padding:20px;color:#fff;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--brand-deep),var(--brand) 70%,var(--brand-2));box-shadow:0 14px 30px rgba(12,92,140,.28);cursor:pointer}
+.idcard.expcard{background:linear-gradient(135deg,#5b6773,#8794a1)}
+.idcard .icr{position:absolute;width:180px;height:180px;border-radius:50%;border:1px solid rgba(255,255,255,.14);right:-70px;top:-70px}
+.idcard .ictop{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;margin-bottom:22px}
+.idcard .ictop .ictype{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;opacity:.9}
+.idcard .icbadge{font-size:10.5px;font-weight:800;background:rgba(255,255,255,.22);padding:3px 10px;border-radius:20px}
+.idcard .icname{font-size:19px;font-weight:800;position:relative;z-index:1}
+.idcard .icout{font-size:12.5px;opacity:.85;position:relative;z-index:1;margin-top:2px}
+.idcard .icbot{display:flex;align-items:flex-end;justify-content:space-between;margin-top:20px;position:relative;z-index:1}
+.idcard .icid{font-size:12.5px;font-family:monospace;letter-spacing:.5px;opacity:.9}
+.idcard .icexp{font-size:11px;opacity:.8}.idcard .icexp b{display:block;font-size:13px;opacity:1}
+.wcard-actions{display:flex;gap:8px;margin-top:12px}
+
+/* big card detail */
+.bigcard{max-width:420px;margin:0 auto}
+.bigcard .idcard{padding:26px}
+.qrbox{background:#fff;border:1px solid var(--card-border);border-radius:16px;padding:22px;text-align:center;margin-top:18px}
+.qrbox svg{margin:0 auto}
+.detrow{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.detrow:last-child{border-bottom:none}
+.detrow .dl{color:var(--muted);font-weight:600}.detrow .dv{font-weight:700}
+
+/* timeline */
+.timeline{position:relative;padding-left:8px}
+.tlitem{display:flex;gap:14px;padding-bottom:22px;position:relative}
+.tlitem:last-child{padding-bottom:0}
+.tlitem .tld{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;z-index:1}
+.tlitem .tld svg{width:15px;height:15px}
+.tlitem::before{content:"";position:absolute;left:14px;top:30px;bottom:-4px;width:2px;background:var(--line)}
+.tlitem:last-child::before{display:none}
+.tlitem.ok .tld{background:var(--green);color:#fff}
+.tlitem.cur .tld{background:var(--brand);color:#fff}
+.tlitem.wait .tld{background:#fff;border:2px solid var(--card-border);color:var(--muted2)}
+.tlitem .tlt{font-size:14px;font-weight:700}
+.tlitem .tls{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* events */
+.evgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:900px){.evgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.evgrid{grid-template-columns:1fr}}
+.evcard{background:#fff;border:1px solid var(--card-border);border-radius:16px;overflow:hidden}
+.evcard .evimg{height:120px;display:grid;place-items:center;color:#fff}
+.evcard .evimg svg{width:44px;height:44px;opacity:.9}
+.evcard .evb{padding:16px}
+.evcard h3{font-size:15px;font-weight:800}
+.evmeta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-top:8px}
+.evmeta svg{width:14px;height:14px}
+
+/* pass ticket */
+.ticket{max-width:400px;margin:0 auto;background:#fff;border:1px solid var(--card-border);border-radius:18px;overflow:hidden}
+.ticket .tkt-top{background:linear-gradient(135deg,var(--brand-deep),var(--brand));color:#fff;padding:22px}
+.ticket .tkt-top h3{font-size:18px;font-weight:800}
+.ticket .tkt-body{padding:22px;text-align:center}
+.ticket .perf{border-top:2px dashed var(--card-border);position:relative}
+
+/* notifications page */
+.notif-day{font-size:12px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:.05em;margin:18px 0 10px}
+.notif-item{display:flex;gap:13px;background:#fff;border:1px solid var(--card-border);border-radius:13px;padding:14px 16px;margin-bottom:9px;align-items:flex-start}
+.notif-item.unread{border-left:3px solid var(--brand)}
+.notif-item .nc{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;flex-shrink:0}
+.notif-item .nc svg{width:18px;height:18px}
+.notif-item .nt{font-size:13.5px;font-weight:700}
+.notif-item .ns{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+.notif-item .ntm{font-size:11px;color:var(--muted2);margin-top:5px}
+.notif-item .ndel{margin-left:auto;color:var(--muted2);cursor:pointer;opacity:0;transition:opacity .15s}
+.notif-item:hover .ndel{opacity:1}
+.notif-item .ndel svg{width:16px;height:16px}
+
+/* tabs */
+.tabs{display:flex;gap:4px;background:#eef3f7;border-radius:12px;padding:4px;margin-bottom:20px;max-width:420px}
+.tabs button{flex:1;border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:var(--muted);padding:9px;border-radius:9px}
+.tabs button.on{background:#fff;color:var(--value);box-shadow:0 1px 3px rgba(14,42,62,.1)}
+
+/* MODALS */
+.overlay{position:fixed;inset:0;background:rgba(14,42,62,.45);backdrop-filter:blur(2px);z-index:80;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .18s}
+.overlay.on{opacity:1;pointer-events:auto}
+.modal{width:100%;max-width:440px;background:#fff;border-radius:20px;box-shadow:0 30px 70px rgba(14,42,62,.3);padding:26px;transform:translateY(10px);transition:transform .18s}
+.overlay.on .modal{transform:translateY(0)}
+.modal .mh{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.modal .mh h3{font-size:18px;font-weight:800}
+.modal .mx{width:30px;height:30px;border-radius:9px;background:var(--page);display:grid;place-items:center;color:var(--muted);border:none}
+.modal .mx svg{width:16px;height:16px}
+.modal p.msub{font-size:13.5px;color:var(--muted);line-height:1.55;margin-bottom:18px}
+.modal .micon{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;margin:0 auto 14px}
+.modal .micon svg{width:28px;height:28px}
+.otpboxes{display:flex;gap:8px;justify-content:center;margin:16px 0}
+.otpboxes input{width:44px;height:52px;text-align:center;font-size:20px;font-weight:800;border:1.5px solid var(--card-border);border-radius:11px;outline:none}
+.otpboxes input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(27,134,196,.12)}
+.resend{text-align:center;font-size:12.5px;color:var(--muted);margin-bottom:16px}
+.resend b{color:var(--brand)}
+.cropper{background:var(--navy);border-radius:14px;height:200px;display:grid;place-items:center;margin-bottom:16px;position:relative;overflow:hidden}
+.cropper .cc{width:130px;height:130px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 999px rgba(14,42,62,.55);display:grid;place-items:center;color:rgba(255,255,255,.6)}
+.cropper .cc svg{width:40px;height:40px}
+.modal-actions{display:flex;gap:10px}
+.summary{background:var(--page);border-radius:13px;padding:16px;margin-bottom:18px}
+.summary .sr{display:flex;justify-content:space-between;font-size:13.5px;padding:5px 0}
+.summary .sr.tot{border-top:1px dashed var(--card-border);margin-top:6px;padding-top:10px;font-weight:800;font-size:15px}
+.paymethod{display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
+
+/* toast */
+#toasts{position:fixed;top:18px;right:18px;z-index:100;display:flex;flex-direction:column;gap:10px}
+.toast{display:flex;align-items:center;gap:11px;border:1px solid transparent;border-radius:12px;padding:12px 14px;min-width:300px;max-width:460px;box-shadow:0 8px 26px rgba(14,42,62,.12);transform:translateX(120%);opacity:0;transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .3s;background:#E4F7EE;border-color:#BFEAD5}
+.toast.show{transform:translateX(0);opacity:1}
+.toast.info{background:#EAF2FE;border-color:#C6D9F6}
+.toast.warn{background:#FBF3DD;border-color:#F1DFA6}
+.toast.err{background:#FCECEC;border-color:#F6CDCE}
+.toast .ti{flex-shrink:0;display:grid;place-items:center;color:#0BA65C}
+.toast.info .ti{color:#2f6bd8}
+.toast.warn .ti{color:#D69B1F}
+.toast.err .ti{color:#E0484D}
+.toast .ti svg{width:19px;height:19px}
+.toast .tc{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 7px}
+.toast .tt{font-size:13.5px;font-weight:700;color:#0d6b45}
+.toast.info .tt{color:#1c3d78}
+.toast.warn .tt{color:#7d5608}
+.toast.err .tt{color:#9e2b2f}
+.toast .tsub{font-size:13px;color:var(--muted);font-weight:500}
+.toast .tact{font-size:13px;font-weight:700;text-decoration:underline;cursor:pointer;white-space:nowrap;color:#0d6b45}
+.toast.info .tact{color:#1c3d78}.toast.warn .tact{color:#7d5608}.toast.err .tact{color:#9e2b2f}
+.toast .tx{background:none;border:none;cursor:pointer;color:var(--muted);padding:3px;display:grid;place-items:center;flex-shrink:0;border-radius:6px;margin-left:2px}
+.toast .tx:hover{background:rgba(14,42,62,.08)}
+.toast .tx svg{width:15px;height:15px}
+
+/* skeleton */
+.skel{background:linear-gradient(90deg,#eef3f7 25%,#e3ebf1 50%,#eef3f7 75%);background-size:200% 100%;animation:sk 1.3s infinite;border-radius:8px}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.spin{width:34px;height:34px;border:3px solid var(--brand-soft);border-top-color:var(--brand);border-radius:50%;animation:rot .8s linear infinite;margin:0 auto}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+/* ============================================================
+   RESPONSIVE ENHANCEMENTS  (layout only — colors/fonts/spacing unchanged)
+   Everything here is inside media queries or is overflow-safe,
+   so desktop rendering is untouched.
+   ============================================================ */
+html,body{max-width:100%;overflow-x:hidden}
+img,svg,video{max-width:100%}
+.idcard,.qrbox,.ticket,.bigcard{max-width:100%}
+.tablewrap{-webkit-overflow-scrolling:touch}
+.hero h1{font-size:clamp(28px,7vw,44px)}
+/* Tablet & below: touch-friendly targets + no iOS input zoom */
+@media(max-width:900px){
+  .sidebar nav a,.nav a,.botnav a{min-height:44px}
+  .content{padding:18px 16px 96px}
+  .topbar{padding:12px 16px}
+}
+/* iOS zoom guard only on real phones — keeps auth/login sizing unchanged on laptops */
+@media(max-width:560px){
+  .inp input,.inp select,.inp textarea,.manual input{font-size:16px}
+}
+/* Bottom nav = mobile only (<768). Hide on tablet portrait; add iPhone safe-area */
+@media(min-width:768px) and (max-width:860px){ .botnav{display:none!important} .content{padding-bottom:24px} }
+@media(max-width:767px){ .botnav{padding-bottom:calc(8px + env(safe-area-inset-bottom))!important} .content{padding-bottom:calc(90px + env(safe-area-inset-bottom))} }
+/* Grids stack cleanly at small widths */
+@media(max-width:760px){ .qa-grid{grid-template-columns:1fr 1fr} .grid2{grid-template-columns:1fr} .content-narrow .grid2{grid-template-columns:1fr} }
+@media(max-width:460px){ .qa-grid{grid-template-columns:1fr} .wallet{grid-template-columns:1fr} }
+/* Wizard: stepper scrolls sideways if tight; nav buttons go full-width */
+@media(max-width:600px){
+  .stepper{overflow-x:auto;gap:2px;-webkit-overflow-scrolling:touch}
+  .wiznav{flex-direction:column-reverse;gap:10px}
+  .wiznav .btn{width:100%}
+}
+/* Modals: fit small screens, scroll if tall, larger close target (kept centred) */
+@media(max-width:560px){
+  .overlay{padding:12px}
+  .modal{max-width:100%;width:100%;max-height:90vh;overflow-y:auto}
+  .modal .mx{width:38px;height:38px}
+  .otpboxes input{width:40px;height:48px}
+  .modal-actions .btn{flex:1}
+}
+/* Toasts: full width on phones, clear of the status bar */
+@media(max-width:560px){
+  #toasts{left:10px;right:10px;top:calc(10px + env(safe-area-inset-top))}
+  .toast{min-width:0;width:100%}
+}
+/* Filters + panel headers wrap on phones */
+@media(max-width:560px){
+  .filters{flex-direction:column;align-items:stretch}
+  .filters .fsel{width:100%}
+  .panel .ph{flex-wrap:wrap;gap:8px}
+  .authcard{padding:24px 18px}
+}
+
+/* ============ MAPPLE-STYLE LANDING (ministry blue) ============ */
+.mp{max-width:1200px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.mp .sec{padding:64px 40px;border-bottom:1px solid var(--line)}
+@media(max-width:720px){.mp .sec{padding:44px 20px}}
+.mp .center{text-align:center;max-width:720px;margin:0 auto}
+.mp .kicker{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:700;color:var(--title);margin-bottom:22px}
+.mp .kicker svg{width:17px;height:17px;color:var(--brand)}
+.mp h1.mp-h{font-size:clamp(38px,6.4vw,66px);font-weight:800;line-height:1.05;letter-spacing:-.02em;color:var(--title)}
+.mp h1.mp-h .hl{color:var(--brand)}
+.mp h2.mp-h{font-size:clamp(30px,4.6vw,46px);font-weight:800;letter-spacing:-.015em;color:var(--title)}
+.mp .lead{max-width:600px;font-size:16.5px;color:var(--muted);line-height:1.6;margin:20px auto 0;max-width:560px}
+.mp-hero .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.mp-hero .rate{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:34px;font-size:14px;color:var(--muted);font-weight:600}
+.mp-hero .stars{color:#F5B400;letter-spacing:2px;font-size:15px}
+.mp-hero .rate b{color:var(--brand);font-weight:800}
+/* trusted-by */
+.mp-trust{display:flex;align-items:center;gap:28px;max-width:1120px;margin:0 auto}
+.mp-trust .lab{font-size:16px;color:var(--muted);font-weight:600;white-space:nowrap;flex:none}
+.mp-marquee{flex:1;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.mp-track{display:flex;align-items:center;gap:64px;width:max-content;animation:mpscroll 30s linear infinite}
+.mp-track:hover{animation-play-state:paused}
+.mp-trust .tlogo{height:40px;width:auto;object-fit:contain;filter:grayscale(1);opacity:.5;flex:none}
+@keyframes mpscroll{to{transform:translateX(calc(-50% - 32px))}}
+@media(max-width:640px){.mp-trust{gap:16px}.mp-trust .tlogo{height:30px}}
+/* feature grid */
+.mp-grid{display:grid;grid-template-columns:repeat(3,1fr);margin-top:14px;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+@media(max-width:820px){.mp-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.mp-grid{grid-template-columns:1fr}}
+.mp-feat{padding:34px 30px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.mp-feat .tile{width:52px;height:52px;border-radius:14px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;line-height:0;margin-bottom:20px}
+.mp-feat .tile svg{width:26px;height:26px}
+.mp-feat h3{font-size:19px;font-weight:700;color:var(--title)}
+.mp-feat p{font-size:14px;color:var(--muted);line-height:1.55;margin-top:10px}
+/* gallery */
+.mp-gal{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
+@media(max-width:820px){.mp-gal{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.mp-gal{grid-template-columns:1fr}}
+.mp-shot{aspect-ratio:16/11;border-radius:16px;overflow:hidden;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;color:#fff;box-shadow:0 12px 30px rgba(14,42,62,.10)}
+.mp-shot .gi{position:absolute;top:16px;left:16px;width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.18);display:grid;place-items:center}
+.mp-shot .gi svg{width:20px;height:20px;color:#fff}
+.mp-shot .cap{font-size:15px;font-weight:700;position:relative}
+.mp-shot .sub{font-size:12px;opacity:.85;position:relative;margin-top:2px}
+.mp-shot.g1{background:linear-gradient(140deg,#1B86C4,#0C5C8C)}
+.mp-shot.g2{background:linear-gradient(140deg,#2A9BD8,#127C9E)}
+.mp-shot.g3{background:linear-gradient(140deg,#0E2A3E,#1B86C4)}
+.mp-shot.g4{background:linear-gradient(140deg,#12897E,#0C5C8C)}
+.mp-shot.g5{background:linear-gradient(140deg,#0C5C8C,#2A9BD8)}
+.mp-shot.g6{background:linear-gradient(140deg,#1B86C4,#12897E)}
+/* testimonials */
+.mp-testi{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:820px){.mp-testi{grid-template-columns:1fr}}
+.mp-tlist{border-right:1px solid var(--line)}
+@media(max-width:820px){.mp-tlist{border-right:none}}
+.mp-trow{display:flex;align-items:center;gap:16px;padding:22px 26px;cursor:pointer;border-bottom:1px solid var(--line);transition:background .12s}
+.mp-trow:hover{background:#fbfcfd}
+.mp-trow.on{background:var(--brand-soft)}
+.mp-trow .av{width:52px;height:52px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800;font-size:16px;flex:none}
+.mp-trow .nm{font-size:17px;font-weight:700;color:var(--title)}
+.mp-trow .hd{font-size:13.5px;color:var(--muted)}
+.mp-tdet{padding:30px 40px;display:flex;flex-direction:column;justify-content:center}
+.mp-tdet .stars{color:#F5B400;letter-spacing:3px;font-size:20px}
+.mp-tdet .q{font-size:20px;font-weight:700;font-style:italic;color:var(--title);margin:18px 0 14px}
+.mp-tdet .body{font-size:15px;color:var(--muted);line-height:1.7}
+.mp-tdet .more{display:inline-flex;align-items:center;gap:7px;margin-top:20px;font-size:14px;font-weight:700;color:var(--brand);cursor:pointer}
+.mp-tdet .more svg{width:16px;height:16px}
+/* faq */
+.mp-faqwrap{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:820px){.mp-faqwrap{grid-template-columns:1fr;gap:20px}}
+.mp-faql{padding-right:40px}
+.mp-faql h2{margin-bottom:16px}
+.mp-faql p{font-size:15px;color:var(--muted);line-height:1.7}
+.mp-acc .qi{border-bottom:1px solid var(--line)}
+.mp-acc .qh{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 4px;cursor:pointer;font-size:16px;font-weight:600;color:var(--title)}
+.mp-acc .qh svg{width:20px;height:20px;color:var(--muted);flex:none}
+.mp-acc .qb{max-height:0;overflow:hidden;transition:max-height .25s ease;font-size:14.5px;color:var(--muted);line-height:1.65}
+.mp-acc .qi.open .qb{max-height:240px;padding:0 4px 20px}
+/* cta strip */
+.mp-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.mp-cta h2{max-width:560px}
+/* footer */
+.mp-foot{padding:56px 40px 40px}
+.mp-fgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}
+@media(max-width:720px){.mp-fgrid{grid-template-columns:1fr 1fr}.mp-foot{padding:40px 20px}}
+.mp-fbrand .bl{display:flex;align-items:center;gap:11px;margin-bottom:16px}
+.mp-fbrand .bl img{width:40px;height:40px;border-radius:50%;border:2px solid var(--ring)}
+.mp-fbrand .bl .bt{font-size:17px;font-weight:800;color:var(--title)}
+.mp-fbrand .bl .bs{font-size:11px;color:var(--muted)}
+.mp-fbrand p{font-size:13.5px;color:var(--muted);line-height:1.6;max-width:320px}
+.mp-fcol h4{font-size:15px;font-weight:800;color:var(--title);margin-bottom:16px}
+.mp-fcol a{display:block;font-size:14px;color:var(--muted);text-decoration:none;padding:6px 0;cursor:pointer}
+.mp-fcol a:hover{color:var(--brand)}
+.mp-copy{text-align:center;padding:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+
+
+/* ===== Mapple navbar + announcement + theme ===== */
+.mp-annc{background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;gap:14px;padding:11px 40px;font-size:14px;font-weight:600;position:relative}
+.mp-annc .pill{background:rgba(255,255,255,.20);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:800;letter-spacing:.05em}
+.mp-annc-x{position:absolute;right:18px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:22px;line-height:1;cursor:pointer;opacity:.9}
+.mp-annc-x:hover{opacity:1}
+@media(max-width:640px){.mp-annc{font-size:12.5px;padding:10px 40px 10px 16px}.mp-annc .pill{display:none}}
+.appbar.mp-navbar{display:block;padding:0;background:var(--page);backdrop-filter:none;-webkit-backdrop-filter:none}
+.mp-navin{max-width:1200px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:13px 40px;position:relative}
+.mp-links{display:flex;gap:28px;position:absolute;left:50%;transform:translateX(-50%)}
+.mp-links a{font-size:15px;font-weight:600;color:var(--title);cursor:pointer;text-decoration:none}
+.mp-links a:hover{color:var(--brand)}
+.mp-right{display:flex;align-items:center;gap:12px}
+.mp-moon{width:40px;height:40px;border-radius:10px;border:1px solid var(--card-border);background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--title)}
+.mp-moon:hover{border-color:var(--brand-bd)}
+.mp-moon svg{width:18px;height:18px}
+@media(max-width:860px){.mp-links{display:none}.mp-navin{padding:12px 20px}}
+/* contained dark mode (landing/nav only — dashboard untouched) */
+.mp-dark #preauth{background:#0c1a24}
+.mp-dark #preauth .mp,.mp-dark #preauth .mp-navin,.mp-dark #preauth .mp .sec,.mp-dark #preauth .mp-feat,.mp-dark #preauth .mp-grid,.mp-dark #preauth .mp-trow,.mp-dark #preauth .mp-tlist,.mp-dark #preauth .mp-acc .qi,.mp-dark #preauth .mp-copy,.mp-dark #preauth .appbar.mp-navbar,.mp-dark #preauth .mp-navin{border-color:#1e3444}
+.mp-dark #preauth .appbar.mp-navbar,.mp-dark #preauth .mp-navin{background:#0c1a24}
+.mp-dark #preauth .mp-h,.mp-dark #preauth .mp-links a,.mp-dark #preauth .mp-feat h3,.mp-dark #preauth .mp-trow .nm,.mp-dark #preauth .kicker,.mp-dark #preauth .mp-acc .qh,.mp-dark #preauth .mp-tdet .q,.mp-dark #preauth .mp-fbrand .bl .bt,.mp-dark #preauth .mp-fcol h4,.mp-dark #preauth .brand .bt{color:#eaf2f8}
+.mp-dark #preauth .lead,.mp-dark #preauth .mp-feat p,.mp-dark #preauth .mp-trow .hd,.mp-dark #preauth .mp-tdet .body,.mp-dark #preauth .mp-faql p,.mp-dark #preauth .mp-acc .qb,.mp-dark #preauth .mp-fbrand p,.mp-dark #preauth .mp-fcol a,.mp-dark #preauth .mp-copy,.mp-dark #preauth .mp-trust .logo,.mp-dark #preauth .brand .bs{color:#9fb2c0}
+.mp-dark #preauth .feecard,.mp-dark #preauth .mp-moon{background:#0f2230;border-color:#1e3444}
+.mp-dark #preauth .feecard h3,.mp-dark #preauth .mp-moon{color:#eaf2f8}
+.mp-dark #preauth .mp-trow.on{background:#12293a}
+.mp-dark #preauth .feecard li{color:#9fb2c0;border-color:#1e3444}
+
+
+/* ===== stronger, visible guide-lines (landing + navbar only) ===== */
+:root{--mpline:#d4dde4}
+.appbar.mp-navbar{border-bottom:1px solid var(--mpline)}
+.mp,.mp-navin,.mp .sec,.mp-grid,.mp-feat,.mp-tlist,.mp-trow,.mp-acc .qi,.mp-copy,.mp-testi .mp-tlist{border-color:var(--mpline)}
+
+
+/* force hero heading onto exactly two lines */
+.mp-hero .center{max-width:none}
+.mp-h .ln{display:block;white-space:nowrap}
+@media(max-width:600px){.mp-h .ln{white-space:normal}.mp-h{font-size:clamp(30px,8vw,40px)}}
+
+
+/* hero banner image */
+.mp-heroimg{padding-top:8px}
+.mp-heroimg img{display:block;width:100%;height:auto;border-radius:18px;box-shadow:0 24px 55px rgba(14,42,62,.16)}
+@media(max-width:640px){.mp-heroimg img{border-radius:12px}}
+
+
+/* ===== pricing-style fees (Mapple) ===== */
+.mp-price-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--mpline);border-left:1px solid var(--mpline);margin-top:16px}
+@media(max-width:820px){.mp-price-grid{grid-template-columns:1fr}}
+.mp-price{position:relative;padding:38px 32px;border-right:1px solid var(--mpline);border-bottom:1px solid var(--mpline);display:flex;flex-direction:column}
+.mp-price .pbadge{position:absolute;top:0;right:26px;transform:translateY(-50%);background:linear-gradient(135deg,var(--brand),var(--brand-deep));color:#fff;font-size:11px;font-weight:800;letter-spacing:.05em;padding:6px 13px;border-radius:20px;box-shadow:0 6px 14px rgba(27,134,196,.3)}
+.mp-price .pname{font-size:19px;font-weight:700;color:var(--title)}
+.mp-price .pprice{font-size:44px;font-weight:800;color:var(--title);margin:14px 0 4px;letter-spacing:-.02em;line-height:1}
+.mp-price .punit{font-size:14px;font-weight:600;color:var(--muted);margin-left:7px;letter-spacing:0}
+.mp-price .pdesc{font-size:14px;color:var(--muted);margin-bottom:22px;line-height:1.5}
+.mp-price .pfeat{list-style:none;margin:0;padding:0;flex:1}
+.mp-price .pfeat li{display:flex;align-items:center;gap:12px;font-size:14.5px;color:var(--value);padding:9px 0}
+.mp-price .pchk{width:22px;height:22px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;flex:none}
+.mp-price .pchk svg{width:13px;height:13px}
+.mp-price .pbtn{margin-top:28px;display:block;text-align:center;background:var(--navy);color:#fff;font-weight:700;font-size:15px;padding:15px;border-radius:12px;cursor:pointer;transition:opacity .15s}
+.mp-price .pbtn:hover{opacity:.92}
+.mp-price .pbtn.pop{background:linear-gradient(135deg,var(--brand),var(--brand-deep))}
+
+.mp-feat .tile iconify-icon{font-size:26px;color:#fff;display:block;line-height:1;vertical-align:middle}
+.mp-shot .illo{flex:1;display:grid;place-items:center;min-height:0;margin-bottom:8px}
+.mp-shot .illo svg{width:82%;max-height:100%;height:auto;display:block}
+
+/* ===== interactive "suite" section (ibnuali style) ===== */
+.mp-suite-grid{display:grid;grid-template-columns:0.82fr 1.18fr;gap:48px;align-items:center;margin-top:38px}
+@media(max-width:860px){.mp-suite-grid{grid-template-columns:1fr;gap:26px}}
+.mp-tabs{display:flex;flex-direction:column}
+.mp-tab{padding:18px 0 18px 24px;border-left:3px solid transparent;cursor:pointer}
+.mp-tab .tt{font-size:21px;font-weight:700;color:#aab6c1;transition:color .15s}
+.mp-tab:hover .tt{color:#7d8b98}
+.mp-tab.on{border-left-color:var(--brand)}
+.mp-tab.on .tt{color:var(--title)}
+.mp-tab .tbody{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s ease,opacity .3s}
+.mp-tab.on .tbody{max-height:240px;opacity:1;margin-top:12px}
+.mp-tab .tbody p{font-size:15px;color:var(--muted);line-height:1.6}
+.mp-tab .tbody a{display:inline-flex;align-items:center;gap:6px;margin-top:15px;font-size:14.5px;font-weight:700;color:var(--brand);cursor:pointer}
+.mp-tab .tbody a svg{width:16px;height:16px}
+.mp-stage{position:relative;background:#eef3f7;border-radius:24px;padding:34px;aspect-ratio:1/0.8;display:flex;align-items:center;justify-content:center}
+.mp-mock{width:100%}
+.mp-mock svg{width:100%;height:auto;display:block;filter:drop-shadow(0 12px 26px rgba(14,42,62,.10))}
+.mp-mock svg text{font-family:'Plus Jakarta Sans',Arial,sans-serif}
+.mp-chip{position:absolute;right:24px;bottom:24px;background:#fff;border-radius:13px;box-shadow:0 14px 34px rgba(14,42,62,.18);padding:12px 16px;min-width:150px}
+.mp-chip .ck{font-size:10.5px;font-weight:800;letter-spacing:.07em;color:var(--brand)}
+.mp-chip .cv{font-size:14px;font-weight:600;color:var(--title);margin-top:3px}
+@media(max-width:520px){.mp-chip{right:14px;bottom:14px;padding:10px 13px;min-width:120px}}
+
+
+/* ===== FULL dark mode — every public-portal page ===== */
+html.mp-dark{--page:#0c1a24;--value:#e9f1f7;--title:#f2f7fb;--muted:#9fb2c0;--muted2:#7d8f9c;--icon:#9fb2c0;--line:#1e3444;--card-border:#233a4c;--brand-soft:#12303f;--navy:#0a1620}
+html.mp-dark body{background:#0c1a24;color:var(--value)}
+html.mp-dark .sidebar,html.mp-dark .topbar,html.mp-dark .botnav,html.mp-dark .authcard,html.mp-dark .panel,html.mp-dark .modal,html.mp-dark .inp,html.mp-dark .ubox,html.mp-dark .bell,html.mp-dark .topbar .mburg,html.mp-dark .notifdrop,html.mp-dark .stat,html.mp-dark .qa,html.mp-dark .card,html.mp-dark .evcard,html.mp-dark .ticket,html.mp-dark .notif-item,html.mp-dark .feecard,html.mp-dark .faqi,html.mp-dark .svc,html.mp-dark .qrbox,html.mp-dark .filters .fsel,html.mp-dark .fsel,html.mp-dark .notifdrop *{border-color:#233a4c}
+html.mp-dark .sidebar,html.mp-dark .topbar,html.mp-dark .botnav,html.mp-dark .authcard,html.mp-dark .panel,html.mp-dark .modal,html.mp-dark .inp,html.mp-dark .ubox,html.mp-dark .bell,html.mp-dark .topbar .mburg,html.mp-dark .notifdrop,html.mp-dark .stat,html.mp-dark .qa,html.mp-dark .card,html.mp-dark .evcard,html.mp-dark .ticket,html.mp-dark .notif-item,html.mp-dark .feecard,html.mp-dark .faqi,html.mp-dark .svc,html.mp-dark .qrbox,html.mp-dark .filters .fsel,html.mp-dark .fsel{background:#11232f}
+html.mp-dark .mp-stage{background:#0f202c}
+html.mp-dark .mp-chip{background:#172b39}
+html.mp-dark .inp input,html.mp-dark .inp select,html.mp-dark .fsel,html.mp-dark .fsel select,html.mp-dark textarea,html.mp-dark input,html.mp-dark select{color:var(--value)}
+html.mp-dark .inp input::placeholder,html.mp-dark textarea::placeholder,html.mp-dark input::placeholder{color:#6d7f8c}
+html.mp-dark .abnav .lnk{color:var(--muted)}
+html.mp-dark .mp-links a{color:var(--title)}
+html.mp-dark .mp-tab .tt{color:#6d8090}
+html.mp-dark .mp-tab.on .tt{color:var(--title)}
+
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+</head>
+<body>
+
+<div id="toasts"></div>
+<div id="overlay" class="overlay"><div id="modal" class="modal"></div></div>
+<div id="notifdrop" class="notifdrop hidden"></div>
+
+<!-- ============ PRE-AUTH ============ -->
+<div id="preauth">
+  <div class="mp-annc" id="mpAnnc"><span>New — apply for your digital press card fully online</span><span class="pill">ANNOUNCEMENT</span><button class="mp-annc-x" onclick="document.getElementById('mpAnnc').style.display='none'">&times;</button></div>
+  <div class="appbar mp-navbar">
+    <div class="mp-navin">
+      <div class="brand" onclick="go('landing')" style="cursor:pointer"><img class="logo" src="logo.png" alt="logo"><div><div class="bt">MMAS</div><div class="bs">Public Portal</div></div></div>
+      <nav class="mp-links">
+        <a onclick="go('landing')">Home</a>
+        <a onclick="mpScroll('mpServices')">Services</a>
+        <a onclick="go('pub-events')">Events</a>
+        <a onclick="go('verify-card')">Verify</a>
+        <a onclick="mpScroll('mpFaq')">FAQ</a>
+      </nav>
+      <div class="abnav mp-right">
+        <button class="mp-moon" onclick="mpTheme()" aria-label="Toggle theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+        <a class="lnk" onclick="go('login')">Login</a>
+        <a class="btn pri sm" onclick="go('signup')">Get Started</a>
+      </div>
+    </div>
+  </div>
+  <div id="preMain"></div>
+</div>
+
+<!-- ============ APP (authenticated) ============ -->
+<div id="app" class="hidden">
+  <div id="scrim" class="scrim" onclick="toggleSidebar(false)"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand"><img class="logo" src="logo.png" alt="logo"><div><div class="bt">MMAS</div><div class="bs">Public Portal</div></div></div>
+    <nav id="sbnav"></nav>
+    <div class="sb-foot"><a onclick="confirmLogout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg>Logout</a></div>
+  </aside>
+
+  <div class="mainarea">
+    <div class="topbar">
+      <button class="mburg" onclick="toggleSidebar(true)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      <div class="pt" id="ptTitle">Dashboard<span id="ptSub">Welcome back</span></div>
+      <div class="tr">
+        <button class="bell" onclick="toggleNotif()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="nd" id="bellDot"></span></button>
+        <div class="ubox" onclick="go('profile')"><div class="uav" id="ubAv">SA</div><div class="um"><div class="un" id="ubNm">Sumaya Ahmed</div><div class="ur" id="ubRole">Journalist</div></div></div>
+      </div>
+    </div>
+    <div class="content"><div id="main"></div></div>
+  </div>
+
+  <nav class="botnav" id="botnav"></nav>
+</div>
+
+<script>
+/* ============================ DATA ============================ */
+var ACCOUNTS={
+ individual:{
+   user:{name:'Sumaya Ahmed',first:'Sumaya',phone:'+252 61 555 0142',email:'sumaya@example.so',type:'Individual Journalist',acctType:'individual',outlet:'Radio Muqdisho',av:'SA',nationality:'Somali',blood:'O+',idno:'A0448217'},
+   apps:[
+     {id:'APP-2026-0412',type:'Press Card',date:'10 Jul 2026',status:'Under Review'},
+     {id:'APP-2026-0331',type:'Press Card',date:'18 Jun 2026',status:'Approved'},
+     {id:'APP-2026-0356',type:'Press Card',date:'24 Jun 2026',status:'Rejected',reason:'The passport-size photo did not meet the required standard. Please upload a clear, front-facing photo on a plain background and resubmit.',name:'Sumaya Ahmed',idno:'A0448217',nat:'Somali',outlet:'Radio Muqdisho',reapply:{w_name:'Sumaya Ahmed',w_idno:'A0448217',w_nat:'Somali'}}
+   ],
+   cards:[
+     {id:'PC-2026-1042',type:'Press Card',holder:'Sumaya Ahmed',outlet:'Radio Muqdisho',status:'Active',expiry:'31 Dec 2026',blood:'O+'}
+   ],
+   team:[]
+ },
+ mediaHouse:{
+   user:{name:'Horn Media Network',first:'Horn',phone:'+252 61 999 9999',email:'ops@hornmedia.so',type:'Media House',acctType:'mediaHouse',outlet:'Horn Media Network',owner:'Ahmed Ali',av:'HM',nationality:'—',blood:'—',idno:'HMN-2019'},
+   apps:[
+     {id:'APP-2026-0409',type:'Media License',date:'09 Jul 2026',status:'Under Review'},
+     {id:'APP-2026-0388',type:'Media License',date:'02 Jul 2026',status:'Approved'},
+     {id:'APP-2026-0415',type:'Press Card',date:'11 Jul 2026',status:'Submitted'}
+   ],
+   cards:[
+     {id:'ML-2026-0388',type:'Media License',holder:'Horn Media Network',outlet:'Horn Media Network',status:'Active',expiry:'30 Jun 2027',blood:'—'},
+     {id:'PC-2026-1101',type:'Press Card',holder:'Yusuf Farah',outlet:'Horn Media Network',status:'Active',expiry:'31 Dec 2026',blood:'A+'},
+     {id:'PC-2026-1102',type:'Press Card',holder:'Amina Said',outlet:'Horn Media Network',status:'Active',expiry:'30 Nov 2026',blood:'O+'},
+     {id:'PC-2025-0980',type:'Press Card',holder:'Bashir Omar',outlet:'Horn Media Network',status:'Expired',expiry:'31 Dec 2025',blood:'B+'}
+   ],
+   team:[
+     {name:'Yusuf Farah',card:'PC-2026-1101',status:'Active',expiry:'31 Dec 2026'},
+     {name:'Amina Said',card:'PC-2026-1102',status:'Active',expiry:'30 Nov 2026'},
+     {name:'Bashir Omar',card:'PC-2025-0980',status:'Expired',expiry:'31 Dec 2025'}
+   ]
+ },
+ foreign:{
+   user:{name:'BBC News',first:'BBC',phone:'+44 20 7946 0000',email:'bureau@bbc.co.uk',type:'Foreign Media',acctType:'foreign',outlet:'BBC News',av:'BB',nationality:'British',blood:'—',idno:'FP-2026-0301',permit:'FP-2026-0301'},
+   apps:[
+     {id:'APP-2026-0405',type:'Foreign Permit',date:'08 Jul 2026',status:'Under Review'},
+     {id:'APP-2026-0301',type:'Foreign Permit',date:'08 Jun 2026',status:'Approved'},
+     {id:'APP-2026-0420',type:'Press Card',date:'11 Jul 2026',status:'Submitted'}
+   ],
+   cards:[
+     {id:'FP-2026-0301',type:'Foreign Permit',holder:'BBC News',outlet:'BBC News',status:'Active',expiry:'20 Aug 2026',blood:'—'},
+     {id:'PC-2026-2201',type:'Press Card',holder:'Sarah Jenkins',outlet:'BBC News',status:'Active',expiry:'20 Aug 2026',blood:'O+'},
+     {id:'PC-2026-2202',type:'Press Card',holder:'John Smith',outlet:'BBC News',status:'Active',expiry:'20 Aug 2026',blood:'A+'},
+     {id:'PC-2026-2203',type:'Press Card',holder:'Mary Doe',outlet:'BBC News',status:'Suspended',expiry:'20 Aug 2026',blood:'B+'}
+   ],
+   team:[
+     {name:'Sarah Jenkins',passport:'UK1234567',card:'PC-2026-2201',status:'Active',expiry:'20 Aug 2026'},
+     {name:'John Smith',passport:'UK9876543',card:'PC-2026-2202',status:'Active',expiry:'20 Aug 2026'},
+     {name:'Mary Doe',passport:'UK5555555',card:'PC-2026-2203',status:'Suspended',expiry:'20 Aug 2026'}
+   ]
+ }
+};
+var USER={},APPS=[],CARDS=[],TEAM=[],NOTIFS=[],EVENTS=[],SIGNUP=null,RENEW_CARD=null;
+function _cp(x){return JSON.parse(JSON.stringify(x));}
+function loadAccount(t){
+  var saved=null; try{saved=JSON.parse(localStorage.getItem('mmas_state_'+t)||'null');}catch(e){}
+  if(saved){ USER=saved.user;APPS=saved.apps;CARDS=saved.cards;TEAM=saved.team||[];NOTIFS=saved.notifs||_cp(DEFAULT_NOTIFS);EVENTS=saved.events||_cp(DEFAULT_EVENTS); }
+  else { var a=ACCOUNTS[t]||ACCOUNTS.individual; USER=_cp(a.user);APPS=_cp(a.apps);CARDS=_cp(a.cards);TEAM=_cp(a.team||[]);NOTIFS=_cp(DEFAULT_NOTIFS);EVENTS=_cp(DEFAULT_EVENTS); saveState(); }
+  applyBridge(); mergeAdminEvents();
+}
+function saveState(){ if(!USER||!USER.acctType)return; try{localStorage.setItem('mmas_state_'+USER.acctType,JSON.stringify({user:USER,apps:APPS,cards:CARDS,team:TEAM,notifs:NOTIFS,events:EVENTS}));}catch(e){} }
+
+/* ===== Cross-portal bridge (reads Admin Portal data) ===== */
+function pubBridge(){ try{return JSON.parse(localStorage.getItem('mmas_bridge_status')||'{}');}catch(e){return {};} }
+function applyBridge(){
+  var b=pubBridge();
+  (APPS||[]).forEach(function(a){ var v=b['app:'+a.id]; if(v){ a.status=v.status; if(v.reason)a.reason=v.reason; } });
+  (CARDS||[]).forEach(function(c){ var v=b['card:'+c.id]; if(v){ c.status=v.status; } });
+  try{ var af=JSON.parse(localStorage.getItem('mmas_admin_fees')||'null'); if(af&&af.length){ af.forEach(function(x){ if(/Press Card/i.test(x.service))FEES['Press Card']=x.amount; else if(/Foreign/i.test(x.service))FEES['Foreign Permit']=x.amount; else if(/Radio/i.test(x.service))FEES['Media License']=x.amount; }); } }catch(e){}
+  try{ var _nc=JSON.parse(localStorage.getItem('mmas_bridge_new_cards')||'[]'); _nc.forEach(function(c){ if(c.holder===USER.name && !(CARDS||[]).some(function(x){return x.id===c.id;})){ CARDS.push({id:c.id,type:c.type,holder:USER.name,status:c.status||'Active',expiry:c.expiry||'31 Dec 2027',outlet:USER.outlet}); } }); }catch(e){}
+  try{ var _nn=JSON.parse(localStorage.getItem('mmas_bridge_notifs')||'[]'); _nn.forEach(function(n){ if(n.who===USER.name){ var dup=(NOTIFS||[]).some(function(x){return x.t===n.t && x.link && n.link && x.link.id===n.link.id;}); if(!dup){ NOTIFS.unshift({icon:n.icon||'check',color:n.color||'green',t:n.t,s:n.s,tm:'just now',day:'Today',unread:true,link:n.link}); } } }); }catch(e){}
+}
+function adminEvents(){
+  var out=[]; try{ var ae=JSON.parse(localStorage.getItem('mmas_admin_events')||'[]'); var have={};
+    (EVENTS||[]).forEach(function(e){have[e.id]=1;}); DEFAULT_EVENTS.forEach(function(e){have[e.id]=1;});
+    ae.forEach(function(e){ if(!have[e.id]){ out.push({id:e.id,title:e.name,date:e.date,loc:e.loc,cap:(e.cap||100)+' seats',capNum:(e.cap||100),baseReg:(e.reg||0),g:'linear-gradient(135deg,#0C5C8C,#2A9BD8)',reg:false,fee:0,approval:'auto',audience:'All accredited media'}); have[e.id]=1; } });
+  }catch(e){} return out;
+}
+function mergeAdminEvents(){ var ae=[]; try{ ae=JSON.parse(localStorage.getItem('mmas_admin_events')||'[]'); }catch(e){} var changed=false; ae.forEach(function(a){ var ex=null; for(var i=0;i<EVENTS.length;i++){ if(EVENTS[i].id===a.id){ex=EVENTS[i];break;} } if(ex){ if(ex.capNum!==a.cap||ex.baseReg!==(a.reg||0)){ ex.capNum=a.cap; ex.cap=a.cap+' seats'; ex.baseReg=(a.reg||0); ex.title=a.name; ex.date=a.date; ex.loc=a.loc; changed=true; } } else { EVENTS.push({id:a.id,title:a.name,date:a.date,loc:a.loc,cap:a.cap+' seats',capNum:a.cap,baseReg:(a.reg||0),g:'linear-gradient(135deg,#0C5C8C,#2A9BD8)',reg:false,fee:0,approval:'auto',audience:'All accredited media'}); changed=true; } }); if(changed)saveState(); }
+function admDate(){ var d=new Date(); function p(n){return (n<10?'0':'')+n;} return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
+function bridgeRegsCount(id){ try{return JSON.parse(localStorage.getItem('mmas_bridge_event_regs')||'[]').filter(function(r){return r.eventId===id;}).length;}catch(e){return 0;} }
+function evCapNum(e){ return e.capNum || parseInt(String(e.cap),10) || 0; }
+function evCount(e){ return (e.baseReg||0) + bridgeRegsCount(e.id); }
+function evLeft(e){ var c=evCapNum(e); return c>0?Math.max(0,c-evCount(e)):999; }
+function evFull(e){ var c=evCapNum(e); return c>0 && evCount(e)>=c; }
+function capBar(e){ var c=evCapNum(e),n=evCount(e),pct=c?Math.min(100,Math.round(n/c*100)):0,full=evFull(e),almost=!full&&c&&n>=Math.ceil(c*0.8); var col=full?'var(--red)':almost?'#E6A52B':'linear-gradient(90deg,var(--brand),var(--brand-2))'; return '<div style="margin-top:8px"><div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:4px"><span>'+n+' / '+(c||'&#8734;')+' spots filled</span>'+(full?'<span style="color:var(--red);font-weight:800">FULL</span>':almost?'<span style="color:#E6A52B;font-weight:800">Almost full</span>':'')+'</div><div style="height:7px;background:var(--line);border-radius:5px;overflow:hidden"><i style="display:block;height:100%;width:'+pct+'%;background:'+col+'"></i></div></div>'; }
+
+var DEFAULT_EVENTS=[
+  {id:'EV-01',title:'National Media Forum 2026',date:'20 Aug 2026',loc:'Aden Adde Hall, Mogadishu',cap:'320 seats',capNum:320,baseReg:210,g:'linear-gradient(135deg,#0C5C8C,#2A9BD8)',reg:false,fee:0,approval:'auto',audience:'All accredited media'},
+  {id:'EV-02',title:'Press Freedom Day Briefing',date:'03 Sep 2026',loc:'Ministry HQ, Mogadishu',cap:'120 seats',capNum:120,baseReg:88,g:'linear-gradient(135deg,#0BA65C,#14b56a)',reg:true,fee:0,approval:'auto',audience:'All accredited media',regStatus:'approved',attendeeType:'Journalist',passId:'PASS-EV-02-4471'},
+  {id:'EV-03',title:'Foreign Correspondents Roundtable',date:'15 Sep 2026',loc:'Jazeera Palace Hotel',cap:'80 seats',capNum:80,baseReg:41,g:'linear-gradient(135deg,#7c3aed,#a855f7)',reg:false,fee:25,approval:'manual',audience:'Foreign correspondents'}
+];
+var DEFAULT_NOTIFS=[
+  {icon:'check',color:'green',t:'Application Approved',s:'Your Media License APP-2026-0388 has been approved.',tm:'2h ago',day:'Today',unread:true,link:{type:'app',id:'APP-2026-0388'}},
+  {icon:'clock',color:'amber',t:'Under Review',s:'Press Card APP-2026-0412 is now under review by the Ministry.',tm:'5h ago',day:'Today',unread:true,link:{type:'app',id:'APP-2026-0412'}},
+  {icon:'bell',color:'blue',t:'Event Reminder',s:'Press Freedom Day Briefing is in 3 days. Your pass is ready.',tm:'1d ago',day:'Yesterday',unread:false,link:{type:'event'}},
+  {icon:'x',color:'red',t:'Application Rejected',s:'Foreign Permit APP-2026-0356 was rejected. Tap to view the reason.',tm:'2d ago',day:'Earlier',unread:false,link:{type:'app',id:'APP-2026-0356'}},
+  {icon:'card',color:'blue',t:'Card Expiring Soon',s:'Your Press Card PC-2026-1042 expires on 31 Dec 2026.',tm:'4d ago',day:'Earlier',unread:false,link:{type:'card',id:'PC-2026-1042'}}
+];
+var FEES={'Press Card':30,'Media License':150,'Foreign Permit':200};
+
+/* ============================ ICONS ============================ */
+var I={
+  home:'<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/>',
+  folder:'<path d="M4 5h5l2 2.5h9A1.5 1.5 0 0 1 21.5 9v9A1.5 1.5 0 0 1 20 19.5H4A1.5 1.5 0 0 1 2.5 18V6.5A1.5 1.5 0 0 1 4 5z"/>',
+  wallet:'<rect x="2.5" y="6" width="19" height="13" rx="2.5"/><path d="M17 12h4M2.5 10h19"/>',
+  ticket:'<path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M15 6v12"/>',
+  bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  card:'<rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/>',
+  idcard:'<rect x="2" y="5" width="20" height="14" rx="2.5"/><circle cx="8" cy="11" r="2.2"/><path d="M4.5 16.5a3.5 3.5 0 0 1 7 0M14 9.5h5M14 13h5M14 16h3"/>',
+  file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
+  globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  minus:'<path d="M5 12h14"/>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  back:'<path d="M19 12H5M11 18l-6-6 6-6"/>',
+  upload:'<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/>',
+  camera:'<path d="M4 8a2 2 0 0 1 2-2h1.5l1-2h5l1 2H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="12.5" r="3.2"/>',
+  download:'<path d="M12 4v11M7 10l5 5 5-5"/><path d="M4 20h16"/>',
+  qr:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20v.01M20 20v.01M17 17v.01"/>',
+  pin:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  cal:'<rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/>',
+  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="3.5"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/>',
+  lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
+  phone:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>',
+  shield:'<path d="M12 2 4 5v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V5z"/>',
+  spark:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/>',
+  inbox:'<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13l3.5 7v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/>',
+  eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+  settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.74.99 2 2 0 1 1-4 0 1.65 1.65 0 0 0-2.74-.99l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4 15a1.65 1.65 0 0 0-1.51-1H2a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4 9"/>'
+};
+function ic(n,w){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+(w||1.8)+'" stroke-linecap="round" stroke-linejoin="round">'+(I[n]||'')+'</svg>';}
+function badgeClass(s){return {'Submitted':'sub','Under Review':'rev','Approved':'app','Rejected':'rej','Active':'act','Expired':'exp','Suspended':'susp'}[s]||'sub';}
+
+/* ============================ ROUTER ============================ */
+var AUTHED=false, CURRENT='dashboard';
+var PREPAGES={landing:1,login:1,signup:1,'verify-card':1,'pub-events':1};
+function _savePub(p,a){try{sessionStorage.setItem('mmas_pub_page',JSON.stringify({p:p,a:(a===undefined?'':a)}));}catch(e){}}
+function go(page,arg){
+  closeNotif();
+  if(PREPAGES[page]){
+    document.getElementById('app').classList.add('hidden');
+    document.getElementById('preauth').classList.remove('hidden');
+    document.getElementById('preMain').innerHTML=PRE[page]?PRE[page]():'';
+    if(page==='login'){ var _s=document.getElementById('lg_acct'); fillDemo(_s?_s.value:'individual'); }
+    if(page==='landing'){ try{ selTesti(0); selSuite(0); }catch(e){} }
+    _savePub(page,arg);
+    window.scrollTo(0,0);
+    return;
+  }
+  if(!AUTHED){ go('login'); return; }
+  document.getElementById('preauth').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  CURRENT=page;
+  _savePub(page,arg);
+  var r=PAGES[page]||PAGES.dashboard;
+  var out=r(arg);
+  document.getElementById('main').innerHTML=out.html;
+  document.getElementById('ptTitle').childNodes[0].nodeValue=out.title;
+  document.getElementById('ptSub').textContent=out.sub||'';
+  setActiveNav(out.nav||page);
+  toggleSidebar(false);
+  window.scrollTo(0,0);
+  if(out.after) out.after(arg);
+}
+function login(type){ if(type)loadAccount(type); if(SIGNUP&&SIGNUP.acctType===USER.acctType){USER.name=SIGNUP.name;USER.first=SIGNUP.name.split(' ')[0];USER.email=SIGNUP.email;USER.phone=SIGNUP.phone;USER.av=SIGNUP.av;SIGNUP=null;} AUTHED=true; document.getElementById('ubNm').textContent=USER.name; document.getElementById('ubAv').textContent=USER.av; var _r=document.getElementById('ubRole'); if(_r)_r.textContent=USER.type; saveState(); try{localStorage.setItem('mmas_session',USER.acctType);}catch(e){} buildNav(); var _iv=null; try{_iv=localStorage.getItem('mmas_intent_event');}catch(e){} if(_iv){ try{localStorage.removeItem('mmas_intent_event');}catch(e){} go('events'); (function(id){setTimeout(function(){var ev=EVENTS.filter(function(x){return x.id===id;})[0]; if(ev){ if(ev.reg){go('event-pass',id);} else {registerModal(id);} }},250);})(_iv); } else { go('dashboard'); } toast('Welcome back, '+USER.first+'!'); }
+function logout(){ AUTHED=false; try{localStorage.removeItem('mmas_session');}catch(e){} closeModal(); go('landing'); toast('You have been logged out.'); }
+
+/* nav */
+function buildNav(){
+  var at=USER.acctType;
+  var items=[['dashboard','Dashboard','home'],['applications','My Applications','folder'],['wallet','My Digital Wallet','wallet']];
+  if(at==='mediaHouse')items.push(['team','My Journalists','users']);
+  else if(at==='foreign')items.push(['team','My Crew','users']);
+  items.push(['events','Events & Passes','ticket'],['notifications','Notifications','bell'],['profile','Profile & Settings','user']);
+  var sb=items.map(function(n){var dot=n[0]=='notifications'?'<span class="nbdot">2</span>':'';return '<a data-nav="'+n[0]+'" onclick="go(\''+n[0]+'\')">'+ic(n[2])+n[1]+dot+'</a>';}).join('');
+  document.getElementById('sbnav').innerHTML=sb;
+  var bn=[['dashboard','Home','home'],['applications','Apps','folder'],['wallet','Wallet','card'],['profile','Profile','user']];
+  document.getElementById('botnav').innerHTML=bn.map(function(n){return '<a data-bnav="'+n[0]+'" onclick="go(\''+n[0]+'\')">'+ic(n[2])+n[1]+'</a>';}).join('');
+}
+function setActiveNav(p){
+  document.querySelectorAll('#sbnav a').forEach(function(a){a.classList.toggle('on',a.getAttribute('data-nav')===p);});
+  document.querySelectorAll('#botnav a').forEach(function(a){a.classList.toggle('on',a.getAttribute('data-bnav')===p);});
+}
+function toggleSidebar(open){var s=document.getElementById('sidebar'),c=document.getElementById('scrim');if(open){s.classList.add('open');c.classList.add('on');}else{s.classList.remove('open');c.classList.remove('on');}}
+
+/* ============================ TOAST ============================ */
+function toast(msg,type,opts){
+  opts=opts||{}; if(typeof opts==='string')opts={desc:opts};
+  var kind=type==='err'?'err':type==='info'?'info':(type==='warn'||type==='warning')?'warn':'ok';
+  var t=document.createElement('div'); t.className='toast'+(kind==='ok'?'':' '+kind);
+  var h='<span class="ti">'+toastIcon(kind)+'</span><div class="tc"><span class="tt">'+msg+'</span>'+(opts.desc?'<span class="tsub">'+opts.desc+'</span>':'')+'</div>';
+  if(opts.action&&opts.action.label){h+='<a class="tact" onclick="'+(opts.action.fn||'')+'">'+opts.action.label+'</a>';}
+  h+='<button class="tx" aria-label="Dismiss" onclick="var e=this.parentNode;e.classList.remove(\'show\');setTimeout(function(){e.remove();},300);">'+toastX()+'</button>';
+  t.innerHTML=h; document.getElementById('toasts').appendChild(t);
+  setTimeout(function(){t.classList.add('show');},30);
+  setTimeout(function(){if(t.parentNode){t.classList.remove('show');setTimeout(function(){t.remove();},320);}},3800);
+}
+function toastIcon(k){var a='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">';if(k==='info')return a+'<circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>';if(k==='warn')return a+'<path d="M10.3 3.9 1.7 18a2 2 0 0 0 1.7 3h17.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>';if(k==='err')return a+'<circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>';return a+'<circle cx="12" cy="12" r="9"/><path d="m8.4 12 2.5 2.5 4.7-5.2"/></svg>';}
+function toastX(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>';}
+/* ============================ MODAL ============================ */
+function openModal(html){document.getElementById('modal').innerHTML=html;document.getElementById('overlay').classList.add('on');}
+function closeModal(){document.getElementById('overlay').classList.remove('on');}
+document.getElementById('overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+/* ============================ NOTIF DROPDOWN ============================ */
+function toggleNotif(){var d=document.getElementById('notifdrop');if(d.classList.contains('hidden'))openNotif();else closeNotif();}
+function openNotif(){
+  var d=document.getElementById('notifdrop');
+  var cmap={green:'var(--green-soft);color:var(--green)',amber:'var(--amber-soft);color:var(--amber)',blue:'var(--blue-soft);color:var(--blue)',red:'var(--red-soft);color:var(--red)'};
+  d.innerHTML='<div class="nh"><b>Notifications</b><a onclick="markAllRead()">Mark all read</a></div>'+
+    NOTIFS.slice(0,4).map(function(n){return '<div class="ni"><div class="nic" style="background:'+cmap[n.color]+'">'+ic(n.icon,2)+'</div><div><div class="ntt">'+n.t+'</div><div class="nsub">'+n.s+'</div><div class="ntm">'+n.tm+'</div></div></div>';}).join('')+
+    '<div class="ni" style="justify-content:center"><a onclick="go(\'notifications\')" style="color:var(--brand);font-weight:700;font-size:12.5px;cursor:pointer">View all notifications</a></div>';
+  d.classList.remove('hidden');
+}
+function closeNotif(){document.getElementById('notifdrop').classList.add('hidden');}
+function markAllRead(){NOTIFS.forEach(function(n){n.unread=false;});saveState();var _b=document.getElementById('bellDot');if(_b)_b.style.display='none';closeNotif();toast('All notifications marked as read.');}
+
+/* ============================ PRE-AUTH PAGES ============================ */
+var PRE={};
+PRE.landing=function(){
+  return '<div class="mp">'+
+   '<div class="sec mp-hero"><div class="center">'+
+     '<div class="kicker">'+ic('shield',2)+' Ministry of Information, Culture &amp; Tourism</div>'+
+     '<h1 class="mp-h"><span class="ln">Media services for Somalia,</span><span class="ln">now <span class="hl">fully digital</span></span></h1>'+
+     '<p class="lead">Apply for press cards, media licenses and film permits online —<br>track your status and carry a verifiable digital press card.</p>'+
+     '<div class="btns"><a class="btn pri lg" onclick="go(\'signup\')">Get started '+ic('arrow',2)+'</a><a class="btn ghost lg" onclick="go(\'verify-card\')">Verify a card</a></div>'+
+     '<div class="rate"><span class="stars">★★★★★</span> Trusted digital accreditation · <b>Ministry of Information</b></div>'+
+   '</div></div>'+
+   '<div class="sec mp-heroimg"><img src="HEROIMG.png" alt="MMAS digital press accreditation"></div>'+
+   '<div class="sec"><div class="mp-trust"><span class="lab">Trusted by:</span>'+
+     '<div class="mp-marquee"><div class="mp-track">'+trustLogos()+trustLogos()+'</div></div>'+
+   '</div></div>'+
+   '<div class="sec" id="mpServices"><div class="center"><h2 class="mp-h">What you can do here</h2><p class="lead">Everything a journalist, media house or foreign crew needs — in one secure portal.</p></div>'+
+     '<div class="mp-grid">'+
+       featCard('solar:user-id-linear','Journalist Press Card','Apply and receive a verifiable digital press card with a scannable QR code.')+
+       featCard('solar:document-text-linear','Media License','Register TV, radio, print or online media outlets and manage your team.')+
+       featCard('solar:global-linear','Foreign Media Permit','Film permits for foreign crews and correspondents working in Somalia.')+
+       featCard('solar:calendar-mark-linear','Government Events','Register for media events and get a QR entry pass on your phone.')+
+       featCard('solar:qr-code-linear','Verifiable QR','Every card carries a QR that police and event staff can verify instantly.')+
+       featCard('solar:wallet-money-linear','Online Payments','Pay fees securely with EVC Plus or mobile money and get an instant receipt.')+
+     '</div>'+
+   '</div>'+
+   '<div class="sec"><div class="center"><h2 class="mp-h">Fees &amp; requirements</h2><p class="lead">Transparent, fixed government fees — no hidden charges.</p></div>'+
+     '<div class="mp-price-grid">'+
+       priceCard('Journalist Press Card','$30','Essential accreditation for individual journalists.',['Passport-size photo','National ID card','Employer / editor letter'],false)+
+       priceCard('Media License','$150','Register TV, radio, print or online outlets.',['Company registration','Ownership documents','Office address &amp; contact'],true)+
+       priceCard('Foreign Media Permit','$200','Filming permits for foreign crews &amp; correspondents.',['Passport copy','Assignment / reason letter','Equipment &amp; team list'],false)+
+     '</div>'+
+   '</div>'+
+   '<div class="sec"><div class="center"><h2 class="mp-h">The digital press system</h2><p class="lead">See how MMAS supports accreditation, licensing and event access across Somalia.</p></div>'+
+     '<div class="mp-suite-grid"><div class="mp-tabs" id="mpTabs">'+suiteTabs()+'</div>'+
+     '<div class="mp-stage"><div class="mp-mock" id="mpMock"></div><div class="mp-chip" id="mpChip"></div></div></div>'+
+   '</div>'+
+   '<div class="sec"><div class="center" style="margin-bottom:34px"><h2 class="mp-h">What people say</h2><p class="lead">Journalists and media houses using the digital portal.</p></div>'+
+     '<div class="mp-testi"><div class="mp-tlist" id="mpTlist">'+
+       testiRow(0,'SA','Sumaya Ahmed','Radio Muqdisho',true)+
+       testiRow(1,'YF','Yusuf Farah','Horn Media Network',false)+
+       testiRow(2,'SJ','Sarah Jenkins','BBC News',false)+
+     '</div><div class="mp-tdet" id="mpTdet"></div></div>'+
+   '</div>'+
+   '<div class="sec" id="mpFaq"><div class="mp-faqwrap"><div class="mp-faql"><h2 class="mp-h">Frequently asked questions</h2><p>Everything you need to know about applying, paying and verifying your accreditation. Still stuck? Contact the Ministry any time.</p></div>'+
+     '<div class="mp-acc">'+
+       accItem('Who can apply?','Individual journalists, media houses (TV, radio, print, online) and foreign media crews working in Somalia.',true)+
+       accItem('How long does it take?','Most applications are reviewed within about 2 working days. You are notified by SMS and inside the portal.',false)+
+       accItem('How do I pay the fee?','Securely online with EVC Plus or mobile money. A digital receipt is issued to you instantly.',false)+
+       accItem('How is my card verified?','Every card carries a QR code. Police or event staff scan it to confirm it is genuine and still active.',false)+
+     '</div></div>'+
+   '</div>'+
+   '<div class="sec"><div class="mp-cta"><h2 class="mp-h">Get your digital press card today.</h2><a class="btn pri lg" onclick="go(\'signup\')">Get started '+ic('arrow',2)+'</a></div></div>'+
+   '<div class="mp-foot"><div class="mp-fgrid">'+
+     '<div class="mp-fbrand"><div class="bl"><img src="logo.png" alt="logo"><div><div class="bt">MMAS</div><div class="bs">Public Portal</div></div></div><p>Media Management &amp; Accreditation System — Ministry of Information, Culture &amp; Tourism, Federal Republic of Somalia.</p></div>'+
+     '<div class="mp-fcol"><h4>Services</h4><a onclick="go(\'signup\')">Press Card</a><a onclick="go(\'signup\')">Media License</a><a onclick="go(\'signup\')">Foreign Permit</a><a onclick="go(\'pub-events\')">Events</a></div>'+
+     '<div class="mp-fcol"><h4>Ministry</h4><a href="tel:+252610000000">+252 61 000 0000</a><a href="mailto:info@moict.gov.so">info@moict.gov.so</a><a onclick="go(\'verify-card\')">Verify a card</a><span style="display:block;font-size:14px;color:var(--muted);padding:6px 0">Mogadishu, Somalia</span></div>'+
+   '</div></div>'+
+   '<div class="mp-copy">© 2026 Ministry of Information, Culture &amp; Tourism · Federal Republic of Somalia</div>'+
+  '</div>';
+};
+function featCard(i,t,p){return '<div class="mp-feat"><div class="tile"><iconify-icon icon="'+i+'"></iconify-icon></div><h3>'+t+'</h3><p>'+p+'</p></div>';}
+function trustLogos(){var a=['ONE.png','TWO-removebg-preview%20(2).png','THREE-removebg-preview.png','FOUR.png','images__1_-removebg-preview.png','images-removebg-preview%20(1).png'];return a.map(function(f){return '<img class="tlogo" src="'+f+'" alt="partner">';}).join('');}
+var ILLO={
+press:'<svg viewBox="0 0 200 130" fill="none"><rect x="30" y="28" width="140" height="80" rx="10" fill="rgba(255,255,255,.12)" stroke="#fff" stroke-width="2.5"/><circle cx="62" cy="60" r="15" fill="rgba(255,255,255,.25)" stroke="#fff" stroke-width="2.5"/><path d="M47 90a15 15 0 0 1 30 0" stroke="#fff" stroke-width="2.5"/><rect x="92" y="46" width="54" height="6" rx="3" fill="rgba(255,255,255,.55)"/><rect x="92" y="60" width="40" height="6" rx="3" fill="rgba(255,255,255,.35)"/><rect x="116" y="74" width="30" height="26" rx="4" stroke="#fff" stroke-width="2.5"/><path d="M122 80h5v5h-5zM135 80h5v5h-5zM122 90h5v5h-5zM135 90h5v5h-5z" fill="#fff"/></svg>',
+license:'<svg viewBox="0 0 200 130" fill="none"><rect x="50" y="24" width="72" height="88" rx="9" fill="rgba(255,255,255,.12)" stroke="#fff" stroke-width="2.5"/><rect x="62" y="40" width="48" height="6" rx="3" fill="rgba(255,255,255,.55)"/><rect x="62" y="54" width="34" height="5" rx="2.5" fill="rgba(255,255,255,.35)"/><rect x="62" y="66" width="42" height="5" rx="2.5" fill="rgba(255,255,255,.35)"/><circle cx="86" cy="92" r="11" stroke="#fff" stroke-width="2.5"/><path d="M81 92l4 4 6-7" stroke="#fff" stroke-width="2.5"/><path d="M134 52a26 26 0 0 1 0 40M146 42a40 40 0 0 1 0 60" stroke="#fff" stroke-width="2.5" opacity=".75"/></svg>',
+foreign:'<svg viewBox="0 0 200 130" fill="none"><circle cx="100" cy="68" r="40" fill="rgba(255,255,255,.1)" stroke="#fff" stroke-width="2.5"/><path d="M60 68h80M100 28c15 12 15 68 0 80M100 28c-15 12-15 68 0 80" stroke="#fff" stroke-width="2" opacity=".7"/><path d="M50 40q42 -20 100 10" stroke="#fff" stroke-width="2.5" stroke-dasharray="4 6"/><path d="M150 50l9-5-3 9z" fill="#fff"/></svg>',
+events:'<svg viewBox="0 0 200 130" fill="none"><path d="M100 18v10" stroke="#fff" stroke-width="2.5"/><circle cx="100" cy="16" r="4" fill="#fff"/><rect x="54" y="32" width="92" height="82" rx="11" fill="rgba(255,255,255,.12)" stroke="#fff" stroke-width="2.5"/><rect x="68" y="48" width="30" height="30" rx="4" stroke="#fff" stroke-width="2.5"/><path d="M74 54h5v5h-5zM88 54h5v5h-5zM74 68h5v5h-5zM88 68h5v5h-5z" fill="#fff"/><rect x="108" y="50" width="26" height="5" rx="2.5" fill="rgba(255,255,255,.55)"/><rect x="108" y="62" width="20" height="5" rx="2.5" fill="rgba(255,255,255,.35)"/><rect x="68" y="92" width="64" height="6" rx="3" fill="rgba(255,255,255,.3)"/></svg>',
+secure:'<svg viewBox="0 0 200 130" fill="none"><path d="M100 22l35 13v27c0 25-17 39-35 46-18-7-35-21-35-46V35z" fill="rgba(255,255,255,.12)" stroke="#fff" stroke-width="2.5"/><path d="M83 66l13 13 22-25" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+team:'<svg viewBox="0 0 200 130" fill="none"><circle cx="100" cy="48" r="16" fill="rgba(255,255,255,.22)" stroke="#fff" stroke-width="2.5"/><path d="M74 96a26 26 0 0 1 52 0" fill="rgba(255,255,255,.12)" stroke="#fff" stroke-width="2.5"/><circle cx="56" cy="60" r="12" fill="rgba(255,255,255,.14)" stroke="#fff" stroke-width="2.5"/><path d="M38 100a19 19 0 0 1 26-15" stroke="#fff" stroke-width="2.5"/><circle cx="144" cy="60" r="12" fill="rgba(255,255,255,.14)" stroke="#fff" stroke-width="2.5"/><path d="M162 100a19 19 0 0 0-26-15" stroke="#fff" stroke-width="2.5"/></svg>'
+};
+function shot(g,key,cap,sub){return '<div class="mp-shot '+g+'"><div class="illo">'+(ILLO[key]||'')+'</div><div class="cap">'+cap+'</div><div class="sub">'+sub+'</div></div>';}
+
+var SUITE=[
+ {t:'Digital press cards',d:'Every accredited journalist gets a verifiable digital press card with a scannable QR — issued and revoked by the Ministry.',link:'Apply for a card',ck:'VERIFIED',cv:'Card active',mock:'press'},
+ {t:'Media licensing',d:'Register and manage TV, radio, print and online outlets, with every licence tracked and renewed in one place.',link:'Register an outlet',ck:'LICENSED',cv:'4 outlets active',mock:'license'},
+ {t:'Foreign permits',d:'Foreign crews and correspondents apply for filming permits and track approval from start to finish.',link:'Request a permit',ck:'APPROVED',cv:'Permit ready',mock:'foreign'},
+ {t:'Event passes',d:'Register for media events and receive a QR entry pass that staff scan at the gate — no paperwork needed.',link:'See events',ck:'CHECKED IN',cv:'Gate A · valid',mock:'events'},
+ {t:'Secure & verifiable',d:'Police and event staff verify any card or pass instantly with one scan — genuine, expired or fake in a tap.',link:'Verify a card',ck:'SECURE',cv:'QR verified',mock:'secure'},
+ {t:'Team management',d:'Media houses manage their journalists and crew, linking every member to the outlet’s licence.',link:'Manage team',ck:'TEAM',cv:'12 journalists',mock:'team'}
+];
+var MOCK={
+press:'<svg viewBox="0 0 440 330" fill="none"><text x="46" y="26" fill="#6b7a88" font-size="10.5" font-weight="800" letter-spacing="1.4">THE DIGITAL CREDENTIAL</text><rect x="46" y="38" width="348" height="232" rx="16" fill="#fff" stroke="#e6edf3" stroke-width="1.5"/><path d="M46 54a16 16 0 0 1 16-16h316a16 16 0 0 1 16 16v28H46z" fill="#1B86C4"/><text x="66" y="72" fill="#fff" font-size="13" font-weight="800" letter-spacing="1">PRESS CARD</text><text x="374" y="72" fill="#d3ecfa" font-size="12" font-weight="700" text-anchor="end">MoICT</text><rect x="66" y="100" width="74" height="92" rx="10" fill="#eef3f7"/><circle cx="103" cy="132" r="17" fill="#c6d4df"/><path d="M79 186a24 24 0 0 1 48 0z" fill="#c6d4df"/><text x="158" y="120" fill="#12212e" font-size="18" font-weight="800">Amina Yusuf</text><text x="158" y="141" fill="#7d8b98" font-size="12.5">Journalist</text><rect x="158" y="152" width="82" height="23" rx="11.5" fill="#E4F7EE"/><circle cx="171" cy="163.5" r="4" fill="#0BA65C"/><text x="181" y="167.5" fill="#0BA65C" font-size="11" font-weight="800">ACTIVE</text><rect x="300" y="140" width="72" height="72" rx="8" fill="#fff" stroke="#e0e7ed" stroke-width="1.5"/><g fill="#16202b"><rect x="308" y="148" width="16" height="16" rx="2"/><rect x="313" y="153" width="6" height="6" fill="#fff"/><rect x="348" y="148" width="16" height="16" rx="2"/><rect x="353" y="153" width="6" height="6" fill="#fff"/><rect x="308" y="188" width="16" height="16" rx="2"/><rect x="313" y="193" width="6" height="6" fill="#fff"/><rect x="332" y="150" width="5" height="5"/><rect x="340" y="158" width="5" height="5"/><rect x="332" y="166" width="5" height="5"/><rect x="348" y="172" width="5" height="5"/><rect x="356" y="180" width="5" height="5"/><rect x="340" y="188" width="5" height="5"/><rect x="332" y="196" width="5" height="5"/><rect x="348" y="196" width="5" height="5"/><rect x="356" y="196" width="5" height="5"/><rect x="340" y="172" width="5" height="5"/></g><line x1="66" y1="228" x2="374" y2="228" stroke="#eef3f7" stroke-width="1.5"/><text x="66" y="250" fill="#6b7a88" font-size="12" font-weight="600">ID  MS-10428    ·    Valid to 12 / 2026</text><text x="220" y="292" fill="#9aa7b2" font-size="11" text-anchor="middle">Scan to verify · Lives in a phone wallet</text></svg>',
+license:'<svg viewBox="0 0 440 330" fill="none"><rect x="52" y="40" width="336" height="250" rx="16" fill="#fff" stroke="#e6edf3" stroke-width="1.5"/><text x="72" y="72" fill="#12212e" font-size="16" font-weight="800">Licensed outlets</text><text x="72" y="91" fill="#9aa7b2" font-size="11.5">Register · pay · renew in one place</text><rect x="72" y="106" width="296" height="46" rx="10" fill="#f6f8fb"/><rect x="84" y="119" width="20" height="20" rx="5" fill="#1B86C4"/><text x="116" y="126" fill="#12212e" font-size="13.5" font-weight="700">Somali National TV</text><text x="116" y="142" fill="#9aa7b2" font-size="11">Television · Lic. TV-204</text><rect x="312" y="119" width="46" height="20" rx="10" fill="#E4F7EE"/><text x="335" y="133" fill="#0BA65C" font-size="10.5" font-weight="800" text-anchor="middle">Active</text><rect x="72" y="160" width="296" height="46" rx="10" fill="#f6f8fb"/><rect x="84" y="173" width="20" height="20" rx="5" fill="#12897E"/><text x="116" y="180" fill="#12212e" font-size="13.5" font-weight="700">Radio Muqdisho</text><text x="116" y="196" fill="#9aa7b2" font-size="11">Radio · Lic. RD-118</text><rect x="312" y="173" width="46" height="20" rx="10" fill="#E4F7EE"/><text x="335" y="187" fill="#0BA65C" font-size="10.5" font-weight="800" text-anchor="middle">Active</text><rect x="72" y="214" width="296" height="46" rx="10" fill="#f6f8fb"/><rect x="84" y="227" width="20" height="20" rx="5" fill="#0C5C8C"/><text x="116" y="234" fill="#12212e" font-size="13.5" font-weight="700">The Standard</text><text x="116" y="250" fill="#9aa7b2" font-size="11">Print · Lic. PR-076</text><rect x="308" y="227" width="52" height="20" rx="10" fill="#FCF3E1"/><text x="334" y="241" fill="#E6A52B" font-size="10.5" font-weight="800" text-anchor="middle">Renewing</text></svg>',
+foreign:'<svg viewBox="0 0 440 330" fill="none"><rect x="52" y="40" width="336" height="250" rx="16" fill="#fff" stroke="#e6edf3" stroke-width="1.5"/><text x="72" y="72" fill="#12212e" font-size="16" font-weight="800">Foreign Media Permit</text><text x="72" y="91" fill="#9aa7b2" font-size="11.5">BBC News · Ref FP-2026-0301</text><circle cx="84" cy="120" r="9" fill="#E4F7EE"/><path d="M80 120l3 3 5-6" stroke="#0BA65C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="102" y="125" fill="#40505c" font-size="13">Passport & assignment letter</text><circle cx="84" cy="152" r="9" fill="#E4F7EE"/><path d="M80 152l3 3 5-6" stroke="#0BA65C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="102" y="157" fill="#40505c" font-size="13">Filming plan approved</text><circle cx="84" cy="184" r="9" fill="#E4F7EE"/><path d="M80 184l3 3 5-6" stroke="#0BA65C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="102" y="189" fill="#40505c" font-size="13">Equipment & crew list</text><rect x="72" y="212" width="296" height="52" rx="12" fill="#EAF4FB"/><circle cx="100" cy="238" r="16" fill="#1B86C4"/><path d="M92 238l5 5 10-12" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><text x="126" y="234" fill="#0C5C8C" font-size="13.5" font-weight="800">Permit approved</text><text x="126" y="252" fill="#4a7ea0" font-size="11.5">Valid to 20 Aug 2026 · digital permit issued</text></svg>',
+events:'<svg viewBox="0 0 440 330" fill="none"><rect x="128" y="32" width="184" height="266" rx="18" fill="#fff" stroke="#e6edf3" stroke-width="1.5"/><path d="M128 50a18 18 0 0 1 18-18h148a18 18 0 0 1 18 18v34H128z" fill="#1B86C4"/><text x="150" y="58" fill="#d3ecfa" font-size="9.5" font-weight="800" letter-spacing="1.2">MEDIA EVENT PASS</text><text x="150" y="77" fill="#fff" font-size="14" font-weight="800">Press Freedom Day</text><rect x="162" y="104" width="116" height="116" rx="10" fill="#fff" stroke="#1B86C4" stroke-width="1.5"/><g fill="#16202b"><rect x="172" y="114" width="18" height="18" rx="2"/><rect x="176" y="118" width="6" height="6" fill="#fff"/><rect x="250" y="114" width="18" height="18" rx="2"/><rect x="254" y="118" width="6" height="6" fill="#fff"/><rect x="172" y="192" width="18" height="18" rx="2"/><rect x="176" y="196" width="6" height="6" fill="#fff"/><rect x="200" y="118" width="6" height="6"/><rect x="212" y="128" width="6" height="6"/><rect x="224" y="118" width="6" height="6"/><rect x="200" y="140" width="6" height="6"/><rect x="230" y="150" width="6" height="6"/><rect x="212" y="160" width="6" height="6"/><rect x="246" y="168" width="6" height="6"/><rect x="230" y="188" width="6" height="6"/><rect x="250" y="192" width="6" height="6"/><rect x="212" y="196" width="6" height="6"/></g><text x="220" y="244" fill="#12212e" font-size="13" font-weight="700" text-anchor="middle">Amina Yusuf</text><rect x="172" y="256" width="96" height="22" rx="11" fill="#E4F7EE"/><circle cx="188" cy="267" r="4" fill="#0BA65C"/><text x="200" y="271" fill="#0BA65C" font-size="10.5" font-weight="800">CHECKED IN</text></svg>',
+secure:'<svg viewBox="0 0 440 330" fill="none"><rect x="150" y="28" width="140" height="274" rx="26" fill="#fff" stroke="#e6edf3" stroke-width="1.5"/><rect x="198" y="44" width="44" height="6" rx="3" fill="#e2e9ef"/><circle cx="220" cy="120" r="34" fill="#E4F7EE"/><path d="M206 120l9 9 17-19" stroke="#0BA65C" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><text x="220" y="180" fill="#12212e" font-size="14.5" font-weight="800" text-anchor="middle">Valid press card</text><text x="220" y="201" fill="#7d8b98" font-size="11.5" text-anchor="middle">Amina Yusuf · Journalist</text><rect x="182" y="216" width="76" height="7" rx="3.5" fill="#eef3f7"/><rect x="192" y="232" width="56" height="7" rx="3.5" fill="#eef3f7"/><text x="220" y="268" fill="#9aa7b2" font-size="10.5" text-anchor="middle">Issued by the Ministry</text></svg>',
+team:'<svg viewBox="0 0 440 330" fill="none"><rect x="52" y="40" width="336" height="250" rx="16" fill="#fff" stroke="#e6edf3" stroke-width="1.5"/><text x="72" y="70" fill="#12212e" font-size="16" font-weight="800">Horn Media Network</text><text x="72" y="89" fill="#9aa7b2" font-size="11.5">Team · 12 journalists</text><circle cx="90" cy="122" r="15" fill="#E9F5FC"/><circle cx="90" cy="117" r="6" fill="#1B86C4"/><path d="M80 130a10 10 0 0 1 20 0z" fill="#1B86C4"/><text x="116" y="118" fill="#12212e" font-size="13.5" font-weight="700">Yusuf Farah</text><text x="116" y="134" fill="#9aa7b2" font-size="11">Journalist · PC-1101</text><rect x="312" y="112" width="46" height="20" rx="10" fill="#E4F7EE"/><text x="335" y="126" fill="#0BA65C" font-size="10.5" font-weight="800" text-anchor="middle">Active</text><circle cx="90" cy="174" r="15" fill="#E9F5FC"/><circle cx="90" cy="169" r="6" fill="#1B86C4"/><path d="M80 182a10 10 0 0 1 20 0z" fill="#1B86C4"/><text x="116" y="170" fill="#12212e" font-size="13.5" font-weight="700">Amina Said</text><text x="116" y="186" fill="#9aa7b2" font-size="11">Journalist · PC-1102</text><rect x="312" y="164" width="46" height="20" rx="10" fill="#E4F7EE"/><text x="335" y="178" fill="#0BA65C" font-size="10.5" font-weight="800" text-anchor="middle">Active</text><circle cx="90" cy="226" r="15" fill="#eef3f7"/><circle cx="90" cy="221" r="6" fill="#93a2ae"/><path d="M80 234a10 10 0 0 1 20 0z" fill="#93a2ae"/><text x="116" y="222" fill="#12212e" font-size="13.5" font-weight="700">Bashir Omar</text><text x="116" y="238" fill="#9aa7b2" font-size="11">Photographer · PC-0980</text><rect x="310" y="216" width="50" height="20" rx="10" fill="#FDEAEA"/><text x="335" y="230" fill="#E5484D" font-size="10.5" font-weight="800" text-anchor="middle">Expired</text></svg>'
+};
+function suiteTabs(){return SUITE.map(function(x,i){return '<div class="mp-tab'+(i===0?' on':'')+'" onclick="selSuite('+i+')"><div class="tt">'+x.t+'</div><div class="tbody"><p>'+x.d+'</p><a onclick="go(\'signup\')">'+x.link+' '+ic('arrow',2)+'</a></div></div>';}).join('');}
+function selSuite(i){var x=SUITE[i];if(!x)return;var tabs=document.querySelectorAll('#mpTabs .mp-tab');for(var k=0;k<tabs.length;k++)tabs[k].classList.toggle('on',k===i);var m=document.getElementById('mpMock');if(m)m.innerHTML=MOCK[x.mock]||'';var c=document.getElementById('mpChip');if(c)c.innerHTML='<div class="ck">'+x.ck+'</div><div class="cv">'+x.cv+'</div>';}
+
+function testiRow(idx,av,nm,hd,on){return '<div class="mp-trow'+(on?' on':'')+'" onclick="selTesti('+idx+')"><div class="av">'+av+'</div><div><div class="nm">'+nm+'</div><div class="hd">'+hd+'</div></div></div>';}
+var TESTI=[
+ {q:'My press card arrived in two days.',body:'I applied from my phone, paid with EVC Plus, and had a verifiable digital press card within two days. The QR check at events is instant.'},
+ {q:'One place for our whole newsroom.',body:'Managing our newsroom’s accreditation used to take weeks of paperwork. Now every journalist’s card and licence is in one place.'},
+ {q:'Foreign permits made simple.',body:'As a foreign correspondent, the filming permit was always the hard part. The portal walked our crew through every step and tracked our status.'}
+];
+function mpScroll(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function mpTheme(){document.documentElement.classList.toggle('mp-dark');}
+function selTesti(idx){var t=TESTI[idx];if(!t)return;var d=document.getElementById('mpTdet');if(d)d.innerHTML='<div class="stars">★★★★★</div><div class="q">“'+t.q+'”</div><div class="body">'+t.body+'</div><span class="more" onclick="go(\'signup\')">Read more '+ic('arrow',2)+'</span>';var rows=document.querySelectorAll('#mpTlist .mp-trow');for(var i=0;i<rows.length;i++)rows[i].classList.toggle('on',i===idx);}
+var _PM_PLUS=ic('plus',2), _PM_MINUS=ic('minus',2);
+function accItem(q,a,open){return '<div class="qi'+(open?' open':'')+'"><div class="qh" onclick="toggleAcc(this)">'+q+'<span class="pm">'+(open?_PM_MINUS:_PM_PLUS)+'</span></div><div class="qb">'+a+'</div></div>';}
+function toggleAcc(h){var qi=h.parentNode;var isOpen=qi.classList.toggle('open');var pm=h.querySelector('.pm');if(pm)pm.innerHTML=isOpen?_PM_MINUS:_PM_PLUS;}
+
+function svcCard(i,t,p){return '<div class="svc" onclick="go(\'signup\')"><div class="ic">'+ic(i)+'</div><h3>'+t+'</h3><p>'+p+'</p></div>';}
+function feeCard(t,amt,docs){return '<div class="feecard"><div class="ft"><h3>'+t+'</h3><span class="amt">'+amt+'</span></div><ul>'+docs.map(function(d){return '<li>'+d+'</li>';}).join('')+'</ul></div>';}
+function priceCard(name,price,desc,feats,pop){var chk='<span class="pchk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>';return '<div class="mp-price'+(pop?' pop':'')+'">'+(pop?'<span class="pbadge">MOST COMMON</span>':'')+'<div class="pname">'+name+'</div>'+'<div class="pprice">'+price+'<span class="punit">one-time</span></div>'+'<div class="pdesc">'+desc+'</div>'+'<ul class="pfeat">'+feats.map(function(f){return '<li>'+chk+f+'</li>';}).join('')+'</ul>'+'<a class="pbtn'+(pop?' pop':'')+'" onclick="go(\'signup\')">Apply now</a>'+'</div>';}
+function faqItem(q,a){return '<div class="faqi"><h4>'+q+'</h4><p>'+a+'</p></div>';}
+function setLang(el){el.parentNode.querySelectorAll('span').forEach(function(s){s.classList.remove('on');});el.classList.add('on');toast('Language set to '+el.textContent);}
+
+PRE.signup=function(){
+  return '<div class="authpage"><div class="authcard">'+
+    '<div class="ah"><img class="logo" src="logo.png"><h2>Create your account</h2><p>Join to apply for cards, licenses and permits.</p></div>'+
+    '<div class="sec-h">Account type</div>'+
+    '<div class="radios" id="acctType">'+
+    typeRadio('Individual Journalist',true)+typeRadio('Media House',false)+typeRadio('Foreign Media',false)+
+    '</div>'+
+    '<div class="grid2">'+
+    fieldHTML('su_name','Full name','user','text','e.g. Sumaya Ahmed')+
+    fieldHTML('su_phone','Phone number','phone','text','+252 6x xxx xxxx')+
+    '</div>'+
+    fieldHTML('su_email','Email','mail','email','you@example.so')+
+    '<div class="grid2">'+
+    fieldHTML('su_pass','Password','lock','password','••••••••')+
+    fieldHTML('su_pass2','Confirm password','lock','password','••••••••')+
+    '</div>'+
+    '<button class="btn pri block lg" style="margin-top:6px" onclick="doSignup()">Send OTP '+ic('arrow',2)+'</button>'+
+    '<div class="linkrow">Already have an account? <a onclick="go(\'login\')">Back to Login</a></div>'+
+    '</div></div>';
+};
+function typeRadio(t,sel){return '<label class="radio'+(sel?' sel':'')+'" onclick="pickType(this)"><span class="rd"></span><span class="rt">'+t+'</span></label>';}
+function pickType(el){el.parentNode.querySelectorAll('.radio').forEach(function(r){r.classList.remove('sel');});el.classList.add('sel');}
+function fieldHTML(id,label,icon,type,ph){
+  return '<div class="field" id="f_'+id+'"><label>'+label+'</label><div class="inp">'+ic(icon)+'<input id="'+id+'" type="'+type+'" placeholder="'+ph+'"></div><div class="err-msg">This field is required</div></div>';
+}
+function validate(ids){var ok=true;ids.forEach(function(id){var f=document.getElementById('f_'+id),inp=document.getElementById(id);if(inp&&!inp.value.trim()){f.classList.add('showerr');f.querySelector('.inp').classList.add('bad');ok=false;}else if(f){f.classList.remove('showerr');f.querySelector('.inp').classList.remove('bad');}});return ok;}
+function fieldError(id,msg){var f=document.getElementById('f_'+id);if(!f)return;var m=f.querySelector('.err-msg');if(m)m.textContent=msg;f.classList.add('showerr');f.querySelector('.inp').classList.add('bad');}
+function isEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+function isPhone(v){return /^\+?[0-9][0-9\s]{6,}$/.test(v);}
+function doSignup(){
+  if(!validate(['su_name','su_phone','su_email','su_pass','su_pass2'])){toast('Please fill all required fields.','err');return;}
+  if(!isPhone(document.getElementById('su_phone').value.trim())){fieldError('su_phone','Enter a valid phone number');toast('Enter a valid phone number.','err');return;}
+  if(!isEmail(document.getElementById('su_email').value.trim())){fieldError('su_email','Enter a valid email address');toast('Enter a valid email address.','err');return;}
+  var p1=document.getElementById('su_pass').value,p2=document.getElementById('su_pass2').value;
+  if(p1!==p2){toast('Passwords do not match.','err');return;}
+  var _nm=document.getElementById('su_name').value;
+  var _sel=document.querySelector('#acctType .radio.sel .rt');var _lab=_sel?_sel.textContent.trim():'Individual Journalist';
+  var _at=_lab==='Media House'?'mediaHouse':_lab==='Foreign Media'?'foreign':'individual';
+  SIGNUP={name:_nm,email:document.getElementById('su_email').value,phone:document.getElementById('su_phone').value,av:_nm.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase(),acctType:_at};
+  try{ var _bu=JSON.parse(localStorage.getItem('mmas_bridge_users')||'[]'); var _t=_at==='mediaHouse'?'Outlet':'Journalist'; _bu.push({name:_nm,type:_t,outlet:_t==='Outlet'?_nm:'-',id:'NEW-'+Math.floor(100000+Math.random()*899999),cards:0,apps:0}); localStorage.setItem('mmas_bridge_users',JSON.stringify(_bu)); }catch(e){}
+  otpModal(function(){ accountCreatedModal(); });
+}
+function otpModal(onOk){
+  openModal('<div class="mh"><h3>Verify your phone</h3><button class="mx" onclick="closeModal()">'+ic('x',2)+'</button></div>'+
+    '<p class="msub">We sent a 6-digit code to your phone. Enter it below to continue.</p>'+
+    '<div class="otpboxes">'+[0,1,2,3,4,5].map(function(i){return '<input maxlength="1" inputmode="numeric" oninput="otpHop(this,'+i+')" id="otp'+i+'">';}).join('')+'</div>'+
+    '<div class="resend">Resend code in <b id="rsT">0:30</b></div>'+
+    '<button class="btn pri block lg" id="otpBtn">Verify &amp; Continue</button>');
+  var t=30;var iv=setInterval(function(){t--;var m=document.getElementById('rsT');if(!m){clearInterval(iv);return;}if(t<=0){m.parentNode.innerHTML='Didn\'t get it? <b style="cursor:pointer" onclick="toast(\'New code sent.\')">Resend code</b>';clearInterval(iv);}else{m.textContent='0:'+(t<10?'0':'')+t;}},1000);
+  document.getElementById('otp0').focus();
+  document.getElementById('otpBtn').onclick=function(){clearInterval(iv);onOk();};
+}
+function otpHop(el,i){if(el.value&&i<5)document.getElementById('otp'+(i+1)).focus();}
+function accountCreatedModal(){
+  var fn=SIGNUP?SIGNUP.name.split(' ')[0]:USER.first; var at=SIGNUP?SIGNUP.acctType:'individual';
+  openModal('<div class="micon" style="background:var(--green-soft);color:var(--green)">'+ic('check',2.6)+'</div>'+
+    '<h3 style="text-align:center">Account created!</h3>'+
+    '<p class="msub" style="text-align:center">Welcome, '+fn+'. Redirecting you to your dashboard…</p>'+
+    '<button class="btn green block lg" onclick="closeModal();login(\''+at+'\');">Go to Dashboard</button>');
+  setTimeout(function(){if(document.getElementById('overlay').classList.contains('on')){closeModal();login(at);}},2200);
+}
+
+PRE.login=function(){
+  return '<div class="authpage"><div class="authcard">'+
+    '<div class="ah"><img class="logo" src="logo.png"><h2>Sign in</h2><p>Welcome back to the Public Portal.</p></div>'+
+    '<div class="field" id="f_lg_acct"><label>Choose account</label><div class="inp">'+ic('user')+'<select id="lg_acct" onchange="lgSel(this.value)" style="border:none;background:transparent;flex:1;font:inherit;color:inherit;outline:none;cursor:pointer"><option value="individual">Individual Journalist</option><option value="mediaHouse">Media House</option><option value="foreign">Foreign Media</option><option value="p:admin">Admin Portal</option><option value="p:verify">Verification Portal</option></select></div></div>'+
+    fieldHTML('lg_id','Phone or email','user','text','you@example.so')+
+    fieldHTML('lg_pass','Password','lock','password','••••••••')+
+    '<div class="frow"><span class="rem" onclick="this.querySelector(\'.box\').classList.toggle(\'on\')"><span class="box"></span>Remember me</span><a onclick="forgotModal()">Forgot Password?</a></div>'+
+    '<button class="btn pri block lg" onclick="doLogin()">Login '+ic('arrow',2)+'</button>'+
+    '<div class="linkrow">New here? <a onclick="go(\'signup\')">Create an account</a></div>'+
+    '</div></div>';
+};
+function doLogin(){ if(!validate(['lg_id','lg_pass'])){toast('Enter your login details.','err');return;} var _t=document.getElementById('lg_acct')?document.getElementById('lg_acct').value:'individual'; if(_t.indexOf('p:')===0){ var pk=_t.slice(2); if(pk==='public'){ login('individual'); return; } var f={admin:'admin-portal.html',verify:'verify-portal.html'}[pk]; if(f){ window.location.href=f; return; } _t='individual'; } login(_t); }
+var LGCREDS={individual:{id:'sumaya@example.so',pw:'demo1234'},mediaHouse:{id:'ops@hornmedia.so',pw:'demo1234'},foreign:{id:'bureau@bbc.co.uk',pw:'demo1234'},'p:public':{id:'sumaya@example.so',pw:'demo1234'},'p:admin':{id:'admin@ministry.gov.so',pw:'admin123'},'p:verify':{id:'officer@moict.gov.so',pw:'verify123'}};
+function fillDemo(t){ var c=LGCREDS[t]; if(!c)return; var id=document.getElementById('lg_id'), pw=document.getElementById('lg_pass'); if(id)id.value=c.id; if(pw)pw.value=c.pw; }
+function lgSel(v){ fillDemo(v); }
+function forgotModal(){
+  openModal('<div class="mh"><h3>Reset password</h3><button class="mx" onclick="closeModal()">'+ic('x',2)+'</button></div>'+
+    '<p class="msub">Enter your email and we will send an OTP to reset your password.</p>'+
+    '<div class="field" id="f_fp_email"><label>Email</label><div class="inp">'+ic('mail')+'<input id="fp_email" placeholder="you@example.so"></div><div class="err-msg">Required</div></div>'+
+    '<button class="btn pri block lg" onclick="forgotStep2()">Send OTP</button>');
+}
+function forgotStep2(){ if(!validate(['fp_email'])){return;} otpModal(function(){forgotStep3();}); }
+function forgotStep3(){
+  openModal('<div class="mh"><h3>New password</h3><button class="mx" onclick="closeModal()">'+ic('x',2)+'</button></div>'+
+    '<p class="msub">Choose a new password for your account.</p>'+
+    '<div class="field" id="f_np1"><label>New password</label><div class="inp">'+ic('lock')+'<input id="np1" type="password" placeholder="••••••••"></div><div class="err-msg">Required</div></div>'+
+    '<div class="field" id="f_np2"><label>Confirm password</label><div class="inp">'+ic('lock')+'<input id="np2" type="password" placeholder="••••••••"></div><div class="err-msg">Required</div></div>'+
+    '<button class="btn pri block lg" onclick="if(validate([\'np1\',\'np2\'])){closeModal();toast(\'Password updated. Please sign in.\');}">Update Password</button>');
+}
+
+PRE['pub-events']=function(){
+  return '<div class="wrap"><div class="block-h" style="margin-top:34px"><div class="k">Government events</div><h2>Upcoming media events</h2></div>'+
+    '<p style="text-align:center;color:var(--muted);max-width:580px;margin:6px auto 26px;font-size:14px;line-height:1.6">See upcoming Ministry of Information events. Log in to register and get your QR entry pass.</p>'+
+    '<div class="evgrid" style="margin-bottom:44px">'+DEFAULT_EVENTS.concat(adminEvents()).map(pubEventCard).join('')+'</div></div>';
+};
+function pubEventCard(e){
+  var fee=e.fee>0?'$'+e.fee:'Free';
+  var btn=evFull(e)?'<a class="btn block sm" style="background:var(--card-border);color:var(--muted);cursor:not-allowed">Event Full</a>':'<a class="btn pri block sm" onclick="eventIntent(\''+e.id+'\')">Register</a>';
+  return '<div class="evcard"><div class="evimg" style="background:'+e.g+'">'+ic('cal',1.6)+'</div><div class="evb"><h3>'+e.title+'</h3>'+
+    '<div class="evmeta">'+ic('cal',2)+e.date+'</div><div class="evmeta">'+ic('pin',2)+e.loc+'</div>'+
+    '<div class="evmeta" style="gap:6px"><span class="badge '+(e.fee>0?'sub':'app')+'">'+fee+'</span>'+(e.approval==='manual'?'<span class="badge rev">Needs approval</span>':'')+'</div>'+capBar(e)+
+    '<div style="margin-top:14px">'+btn+'</div></div></div>';
+}
+function eventIntent(id){ try{localStorage.setItem('mmas_intent_event',id);}catch(e){} toast('Log in or sign up to register for this event.','info'); go('login'); }
+PRE['verify-card']=function(){
+  return '<div class="authpage"><div class="authcard" style="max-width:420px;text-align:center">'+
+    '<div class="ah"><img class="logo" src="logo.png"><h2>Verify a press card</h2><p>Scan or enter a card number to check if it is genuine.</p></div>'+
+    '<div class="qrbox" style="margin-top:0">'+qrSVG(150)+'<div style="font-size:12.5px;color:var(--muted);margin-top:12px">Point your camera at the card\'s QR code</div></div>'+
+    '<div class="field" style="margin-top:16px"><label style="text-align:left">Or enter card number</label><div class="inp">'+ic('idcard')+'<input id="vc_no" placeholder="PC-2026-1042"></div></div>'+
+    '<button class="btn pri block lg" onclick="verifyResult()">Verify</button>'+
+    '<div class="linkrow"><a onclick="go(\'landing\')">Back to home</a></div>'+
+    '</div></div>';
+};
+function verifyResult(){
+  openModal('<div class="micon" style="background:var(--green-soft);color:var(--green)">'+ic('check',2.6)+'</div>'+
+    '<h3 style="text-align:center">Valid card</h3>'+
+    '<p class="msub" style="text-align:center">Issued by the Ministry of Information, Culture &amp; Tourism.</p>'+
+    '<div class="summary"><div class="sr"><span>Holder</span><b>Sumaya Ahmed</b></div><div class="sr"><span>Outlet</span><b>Radio Muqdisho</b></div><div class="sr"><span>Status</span><span class="badge act">Active</span></div><div class="sr"><span>Expiry</span><b>31 Dec 2026</b></div></div>'+
+    '<button class="btn pri block" onclick="closeModal()">Done</button>');
+}
+
+/* ============================ APP PAGES ============================ */
+var PAGES={};
+PAGES.dashboard=function(){
+  var active=CARDS.filter(function(c){return c.status==='Active';}).length;
+  var pending=APPS.filter(function(a){return a.status==='Under Review'||a.status==='Submitted';}).length;
+  var html='<div class="welcome"><div><h1>Hello, '+USER.first+' 👋</h1><p>Here is what is happening with your media services.</p></div><a class="btn pri" onclick="go(\'apply-press\')">'+ic('plus',2)+' New Application</a></div>'+
+    '<div class="stats3">'+
+    statCard('act','var(--green-soft);color:var(--green)',active,'Active Cards','wallet')+
+    statCard('rev','var(--amber-soft);color:var(--amber)',pending,'Pending Applications','clock')+
+    statCard('exp','var(--red-soft);color:var(--red)',1,'Expiring Soon','bell')+
+    '</div>'+
+    '<div class="sec-h">Quick actions</div>'+
+    '<div class="qa-grid">'+qaFor(USER.acctType)+'</div>'+
+    '<div class="panel"><div class="ph"><h3>Recent activity</h3><a class="btn soft sm" onclick="go(\'applications\')">View all</a></div>'+
+    '<div class="tablewrap" id="recentWrap"></div></div>';
+  return {title:'Dashboard',sub:'Welcome back',html:html,after:function(){skeletonTable('recentWrap',function(){
+    document.getElementById('recentWrap').innerHTML=appTable(APPS.slice(0,4));
+  });}};
+};
+function statCard(cls,style,val,label,icon){return '<div class="stat" onclick="go(\'applications\')"><div class="si" style="background:'+style+'">'+ic(icon)+'</div><div><div class="sv">'+val+'</div><div class="sl">'+label+'</div></div></div>';}
+function qaCard(i,t,s,pg){return '<button class="qa" onclick="go(\''+pg+'\')"><div class="qi">'+ic(i)+'</div><div class="qt">'+t+'</div><div class="qs">'+s+'</div></button>';}
+function qaFor(at){
+  var press=qaCard('idcard','Press Card','Apply for accreditation','apply-press');
+  var events=qaCard('ticket','Events','Register for events','events');
+  var license=qaCard('file','Media License','Register an outlet','apply-license');
+  var permit=qaCard('globe','Foreign Permit','Film permit for crews','apply-permit');
+  if(at==='mediaHouse') return license+press+events;
+  if(at==='foreign') return permit+press+events;
+  return press+events; /* individual journalist */
+}
+
+function appTable(rows){
+  if(!rows.length)return emptyState();
+  return '<table><thead><tr><th>App ID</th><th>Type</th><th>Date</th><th>Status</th><th></th></tr></thead><tbody>'+
+    rows.map(function(a){return '<tr><td class="tid">'+a.id+'</td><td>'+a.type+'</td><td>'+a.date+'</td><td><span class="badge '+badgeClass(a.status)+'">'+a.status+'</span></td><td><a class="btn soft sm" onclick="go(\'app-detail\',\''+a.id+'\')">View</a></td></tr>';}).join('')+
+    '</tbody></table>';
+}
+function emptyState(){return '<div class="empty"><div class="ei">'+ic('folder')+'</div><h3>No applications yet</h3><p>Start your first application to get accredited.</p><a class="btn pri" onclick="go(\'apply-press\')">Apply now</a></div>';}
+
+PAGES.applications=function(){
+  var html='<div class="filters">'+
+    '<div class="fsel">Type: <select id="fType" onchange="filterApps()"><option>All</option><option>Press Card</option><option>Media License</option><option>Foreign Permit</option></select></div>'+
+    '<div class="fsel">Status: <select id="fStatus" onchange="filterApps()"><option>All</option><option>Submitted</option><option>Under Review</option><option>Approved</option><option>Rejected</option></select></div>'+
+    '</div><div class="panel"><div class="ph"><h3>My Applications</h3><a class="btn pri sm" onclick="go(\'apply-press\')">'+ic('plus',2)+' New</a></div><div class="tablewrap" id="appsWrap"></div></div>';
+  return {title:'My Applications',sub:APPS.length+' total',html:html,after:function(){skeletonTable('appsWrap',function(){document.getElementById('appsWrap').innerHTML=appTable(APPS);});}};
+};
+function filterApps(){
+  var t=document.getElementById('fType').value,s=document.getElementById('fStatus').value;
+  var r=APPS.filter(function(a){return (t==='All'||a.type===t)&&(s==='All'||a.status===s);});
+  document.getElementById('appsWrap').innerHTML=appTable(r);
+}
+
+PAGES['app-detail']=function(id){
+  var a=APPS.filter(function(x){return x.id===id;})[0]||APPS[0];
+  var steps=['Submitted','Under Review','Approved'];
+  var order={'Submitted':0,'Under Review':1,'Approved':2,'Rejected':1};
+  var cur=order[a.status];
+  var tl=steps.map(function(s,i){
+    var st=i<cur?'ok':(i===cur?(a.status==='Rejected'?'wait':'cur'):'wait');
+    var dates=['10 Jul 2026, 9:12 AM','10 Jul 2026, 2:40 PM',a.status==='Approved'?'11 Jul 2026, 10:05 AM':'Pending'];
+    return '<div class="tlitem '+st+'"><div class="tld">'+ic(i<cur?'check':(i===cur&&a.status!=='Rejected'?'clock':'clock'),2)+'</div><div><div class="tlt">'+s+'</div><div class="tls">'+dates[i]+'</div></div></div>';
+  }).join('');
+  if(a.status==='Rejected'){ tl='<div class="tlitem ok"><div class="tld">'+ic('check',2)+'</div><div><div class="tlt">Submitted</div><div class="tls">24 Jun 2026</div></div></div>'+
+    '<div class="tlitem" style="--x:0"><div class="tld" style="background:var(--red);color:#fff">'+ic('x',2)+'</div><div><div class="tlt">Rejected</div><div class="tls">26 Jun 2026</div></div></div>'; }
+  var actionBtn=a.status==='Approved'?'<a class="btn green" onclick="go(\'card-detail\',\''+(a.cardId||CARDS[0].id)+'\')">'+ic('download',2)+' Download Card</a>':
+    (a.status==='Rejected'?'<a class="btn pri" onclick="reApply(\''+a.id+'\')">'+ic('arrow',2)+' Re-apply</a>':'<a class="btn soft" onclick="simulateApproval(\''+a.id+'\')">'+ic('check',2)+' Simulate approval (demo)</a>');
+  var rejBtn=a.status==='Rejected'?'<a class="btn danger" onclick="rejectionModal(\''+a.id+'\')">View rejection reason</a>':'';
+  var html='<a class="btn soft sm" onclick="go(\'applications\')" style="margin-bottom:16px">'+ic('back',2)+' Back</a>'+
+    '<div class="content-narrow"><div class="tile" style="margin-bottom:16px"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><div style="font-size:12px;color:var(--muted);font-weight:700">'+a.type+'</div><h2 style="font-size:22px;font-weight:800;margin-top:3px">'+a.id+'</h2></div><span class="badge '+badgeClass(a.status)+'" style="font-size:13px;padding:6px 14px">'+a.status+'</span></div>'+
+    ((actionBtn||rejBtn)?'<div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">'+actionBtn+rejBtn+'</div>':'')+'</div>'+
+    '<div class="grid2" style="gap:16px;align-items:start"><div class="tile"><div class="sec-h">Status timeline</div><div class="timeline">'+tl+'</div></div>'+
+    '<div class="tile"><div class="sec-h">Applicant details</div>'+
+    detRow('Full name',a.name||USER.name)+detRow('ID / Passport',a.idno||USER.idno)+detRow('Nationality',a.nat||USER.nationality)+detRow('Outlet',a.outlet||USER.outlet)+
+    '<div class="sec-h" style="margin-top:18px">Documents</div>'+
+    docRow('Passport photo.jpg')+docRow('National ID.pdf')+docRow('Employer letter.pdf')+
+    '</div></div></div>';
+  return {title:'Application Detail',sub:a.id,nav:'applications',html:html};
+};
+function detRow(l,v){return '<div class="detrow"><span class="dl">'+l+'</span><span class="dv">'+v+'</span></div>';}
+function docRow(n){return '<div class="upfile" style="margin-top:8px"><div class="uth">'+ic('file')+'</div><div class="ufn">'+n+'</div><a class="btn soft sm" onclick="toast(\'Opening '+n+'…\')">'+ic('eye',2)+'</a><a class="btn soft sm" onclick="toast(\'Downloading '+n+'…\')">'+ic('download',2)+'</a></div>';}
+function rejectionModal(id){
+  var a=APPS.filter(function(x){return x.id===id;})[0];
+  openModal('<div class="mh"><h3>Rejection reason</h3><button class="mx" onclick="closeModal()">'+ic('x',2)+'</button></div>'+
+    '<div style="background:var(--red-soft);border-radius:12px;padding:14px 16px;font-size:13.5px;color:#b91c1c;line-height:1.6;margin-bottom:16px">'+a.reason+'</div>'+
+    '<button class="btn pri block" onclick="closeModal();reApply(\''+id+'\')">Re-apply now</button>');
+}
+function reApply(id){
+  var a=APPS.filter(function(x){return x.id===id;})[0];if(!a)return;
+  var kind=a.type==='Press Card'?'press':a.type==='Media License'?'license':'permit';
+  REAPPLY={kind:kind,data:a.reapply||{}};
+  go('apply-'+kind);
+}
+
+/* ---------------- WALLET ---------------- */
+PAGES.wallet=function(){
+  var html='<div class="sec-h">Your cards &amp; licenses</div><div class="wallet" id="walletWrap"></div>';
+  return {title:'My Digital Wallet',sub:CARDS.length+' items',html:html,after:function(){skeletonCards('walletWrap',function(){
+    document.getElementById('walletWrap').innerHTML=CARDS.map(walletCard).join('');
+  });}};
+};
+function walletCard(c){
+  var exp=c.status==='Expired';
+  var renew=(c.status==='Expired')?'<a class="btn pri sm" onclick="renewModal(\''+c.id+'\')">Renew</a>':'';
+  return '<div><div class="idcard'+(exp?' expcard':'')+'" onclick="go(\'card-detail\',\''+c.id+'\')"><span class="icr"></span>'+
+    '<div class="ictop"><span class="ictype">'+c.type+'</span><span class="icbadge">'+c.status+'</span></div>'+
+    '<div class="icname">'+c.holder+'</div><div class="icout">'+c.outlet+'</div>'+
+    '<div class="icbot"><span class="icid">'+c.id+'</span><span class="icexp">Valid until<b>'+c.expiry+'</b></span></div></div>'+
+    '<div class="wcard-actions"><a class="btn soft sm" onclick="go(\'card-detail\',\''+c.id+'\')">'+ic('eye',2)+' View details</a>'+renew+'</div></div>';
+}
+function renewModal(id){
+  var c=CARDS.filter(function(x){return x.id===id;})[0];var fee=c.type==='Press Card'?30:150;
+  openModal('<div class="mh"><h3>Renew '+c.type+'</h3><button class="mx" onclick="closeModal()">'+ic('x',2)+'</button></div>'+
+    '<p class="msub">Renew '+c.id+' for another year. Your new card will be issued after payment.</p>'+
+    '<div class="summary"><div class="sr"><span>'+c.type+' renewal</span><span>$'+fee+'.00</span></div><div class="sr"><span>Processing</span><span>$0.00</span></div><div class="sr tot"><span>Total</span><span>$'+fee+'.00</span></div></div>'+
+    '<div class="modal-actions"><button class="btn ghost block" onclick="closeModal()">Cancel</button><button class="btn pri block" onclick="closeModal();RENEW_CARD=\''+c.id+'\';startPayment(\''+c.type+' Renewal\','+fee+',\'wallet\')">Pay Now</button></div>');
+}
+
+PAGES.team=function(){
+  var at=USER.acctType;
+  if(at!=='mediaHouse'&&at!=='foreign'){ return PAGES.dashboard(); }
+  var isCrew=at==='foreign';
+  var title=isCrew?'My Crew':'My Journalists';
+  var addLabel=isCrew?'Add New Crew Member':'Add New Journalist';
+  var cols=isCrew?['Name','Passport No.','Press Card','Status','Expiry','Actions']:['Name','Press Card','Status','Expiry','Actions'];
+  var head='<tr>'+cols.map(function(c){return '<th>'+c+'</th>';}).join('')+'</tr>';
+  var rows=TEAM.map(function(m,i){
+    var actions='<a class="btn soft sm" onclick="go(\''+'card-detail'+'\',\''+m.card+'\')">View</a> <a class="btn soft sm" onclick="renewModal(\''+m.card+'\')">Renew</a> '+(isCrew?'<a class="btn danger sm" onclick="teamAction('+i+',\'Remove\')">Remove</a>':'<a class="btn danger sm" onclick="teamAction('+i+',\'Suspend\')">Suspend</a>');
+    var cells=isCrew?['<span class="tid">'+m.name+'</span>',m.passport,m.card,'<span class="badge '+badgeClass(m.status)+'">'+m.status+'</span>',m.expiry,actions]:['<span class="tid">'+m.name+'</span>',m.card,'<span class="badge '+badgeClass(m.status)+'">'+m.status+'</span>',m.expiry,actions];
+    return '<tr>'+cells.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';
+  }).join('');
+  var body=TEAM.length?rows:'<tr><td colspan="'+cols.length+'"><div class="empty" style="padding:34px">No '+(isCrew?'crew members':'journalists')+' yet.</div></td></tr>';
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px"><div class="sec-h" style="margin:0">'+title+' · '+USER.name+'</div><a class="btn pri" onclick="addTeamMember()">'+ic('plus',2)+' '+addLabel+'</a></div>'+
+    '<div class="panel"><div class="tablewrap"><table><thead>'+head+'</thead><tbody>'+body+'</tbody></table></div></div>';
+  return {title:title,sub:TEAM.length+(isCrew?' crew members':' journalists'),nav:'team',html:html};
+};
+function addTeamMember(){ var isCrew=USER.acctType==='foreign'; toast('New '+(isCrew?'crew':'journalist')+' press card will be linked to '+USER.name+'.','info'); go('apply-press'); }
+function teamAction(i,action){
+  var m=TEAM[i];if(!m)return;var isCrew=USER.acctType==='foreign';
+  openModal('<div class="mh"><h3>'+action+' '+(isCrew?'crew member':'journalist')+'</h3><button class="mx" onclick="closeModal()">'+ic('x',2)+'</button></div><p class="msub">'+action+' <b>'+m.name+'</b> ('+m.card+')?'+(action==='Remove'?' This removes them from your crew.':' Their press card will be suspended.')+'</p><div class="modal-actions"><button class="btn ghost block" onclick="closeModal()">Cancel</button><button class="btn danger block" onclick="doTeamAction('+i+',\''+action+'\')">Confirm '+action+'</button></div>');
+}
+function doTeamAction(i,action){
+  var m=TEAM[i];if(!m)return;var nm=m.name;
+  if(action==='Remove'){TEAM.splice(i,1);} else {m.status='Suspended'; var c=CARDS.filter(function(x){return x.id===m.card;})[0]; if(c)c.status='Suspended';}
+  saveState();closeModal();go('team');toast(nm+' '+(action==='Remove'?'removed':'suspended')+'.');
+}
+PAGES['card-detail']=function(id){
+  var c=CARDS.filter(function(x){return x.id===id;})[0]||CARDS[0];
+  var html='<a class="btn soft sm" onclick="go(\'wallet\')" style="margin-bottom:16px">'+ic('back',2)+' Back to Wallet</a>'+
+    '<div class="bigcard"><div class="idcard'+(c.status==='Expired'?' expcard':'')+'"><span class="icr"></span>'+
+    '<div class="ictop"><span class="ictype">'+c.type+'</span><span class="icbadge">'+c.status+'</span></div>'+
+    '<div style="display:flex;gap:14px;align-items:center;margin:8px 0"><div style="width:60px;height:60px;border-radius:12px;background:rgba(255,255,255,.2);display:grid;place-items:center">'+ic('user',1.6)+'</div><div><div class="icname">'+c.holder+'</div><div class="icout">'+c.outlet+'</div></div></div>'+
+    '<div class="icbot"><span class="icid">'+c.id+'</span><span class="icexp">Valid until<b>'+c.expiry+'</b></span></div></div>'+
+    '<div class="qrbox">'+qrSVG(160)+'<div style="font-size:12px;color:var(--muted);margin-top:10px">Scan to verify this card</div></div>'+
+    '<div class="tile" style="margin-top:16px">'+
+    detRow('Full name',c.holder)+detRow('Card number',c.id)+detRow('Outlet',c.outlet)+detRow('Blood group',c.blood)+detRow('Expiry',c.expiry)+detRow('Status','<span class="badge '+badgeClass(c.status)+'">'+c.status+'</span>')+
+    '</div>'+
+    '<div style="display:flex;gap:10px;margin-top:16px"><button class="btn pri block" onclick="toast(\'Downloading PDF…\')">'+ic('download',2)+' Download PDF</button><button class="btn ghost block" onclick="toast(\'Added to phone wallet.\')">'+ic('wallet',2)+' Save to Phone</button></div>'+
+    '</div>';
+  return {title:'Card Detail',sub:c.id,nav:'wallet',html:html};
+};
+
+/* ---------------- EVENTS ---------------- */
+PAGES.events=function(){
+  var html='<div class="sec-h">Upcoming events</div><div class="evgrid">'+EVENTS.map(eventCard).join('')+'</div>';
+  return {title:'Events & Passes',sub:EVENTS.length+' upcoming',html:html};
+};
+function eventCard(e){
+  var fee=e.fee>0?'$'+e.fee:'Free';
+  var badge='<span class="badge '+(e.fee>0?'sub':'app')+'">'+fee+'</span>'+(e.approval==='manual'?' <span class="badge rev">Needs approval</span>':'');
+  var btn;
+  if(e.reg){ btn=(e.regStatus==='pending')?'<a class="btn soft block sm" onclick="go(\'event-pass\',\''+e.id+'\')">'+ic('clock',2)+' Pending — View</a>':'<a class="btn green block sm" onclick="go(\'event-pass\',\''+e.id+'\')">'+ic('ticket',2)+' View Pass</a>'; }
+  else if(evFull(e)){ btn='<a class="btn block sm" style="background:var(--card-border);color:var(--muted);cursor:not-allowed" onclick="toast(\'Event is full — no more registrations.\',\'err\')">Event Full</a>'; }
+  else { var lf=evLeft(e),cc=evCapNum(e); var lbl=cc?('Register ('+lf+' spot'+(lf===1?'':'s')+' left)'):'Register'; btn='<a class="btn pri block sm" onclick="registerModal(\''+e.id+'\')">'+lbl+'</a>'; }
+  return '<div class="evcard"><div class="evimg" style="background:'+e.g+'">'+ic('cal',1.6)+'</div><div class="evb"><h3>'+e.title+'</h3>'+
+    '<div class="evmeta">'+ic('cal',2)+e.date+'</div><div class="evmeta">'+ic('pin',2)+e.loc+'</div>'+
+    '<div class="evmeta" style="gap:6px">'+badge+'</div>'+capBar(e)+
+    '<div style="margin-top:14px">'+btn+'</div></div></div>';
+}
+var EVENT_REG=null;
+function registerModal(id){
+  var e=EVENTS.filter(function(x){return x.id===id;})[0];if(!e)return;
+  var fee=e.fee||0;
+  var opts=['Journalist','Media House','Photographer','Guest'];
+  var sel=opts.map(function(o){return '<option'+(o===(USER.type||'')?' selected':'')+'>'+o+'</option>';}).join('');
+  var payBtn=fee>0?'<button class="btn green block" onclick="regSubmit(\''+e.id+'\',true)">Proceed to Pay · $'+fee+'</button>':'<button class="btn pri block" onclick="regSubmit(\''+e.id+'\',false)">Confirm Registration</button>';
+  openModal('<div class="mh"><h3>Register for event</h3><button class="mx" onclick="closeModal()">'+ic('x',2)+'</button></div>'+
+    '<div class="summary"><div class="sr"><span>Event</span><b>'+e.title+'</b></div><div class="sr"><span>Date</span><b>'+e.date+'</b></div><div class="sr"><span>Fee</span><b>'+(fee>0?'$'+fee:'Free')+'</b></div>'+(e.approval==='manual'?'<div class="sr"><span>Approval</span><b>Ministry review</b></div>':'')+'</div>'+
+    '<div class="field"><label>Register as</label><div class="inp">'+ic('user')+'<select id="regType">'+sel+'</select></div></div>'+
+    '<p class="msub">'+(e.approval==='manual'?'Your registration will be reviewed by the Ministry before your pass is issued.':'You will receive a QR entry pass right away.')+'</p>'+
+    '<div class="modal-actions"><button class="btn ghost block" onclick="closeModal()">Cancel</button>'+payBtn+'</div>');
+}
+function regSubmit(id,paid){
+  var type=document.getElementById('regType')?document.getElementById('regType').value:USER.type;
+  if(paid){ var e=EVENTS.filter(function(x){return x.id===id;})[0]; EVENT_REG={id:id,type:type}; closeModal(); startPayment('Event: '+e.title,e.fee,'event'); return; }
+  e_reg(id,type);
+}
+function e_reg(id,type){
+  var e=EVENTS.filter(function(x){return x.id===id;})[0];if(!e)return;
+  if(!e.reg && evFull(e)){ toast('Event is full — no more registrations.','err'); closeModal(); return; }
+  e.reg=true; e.attendeeType=type||USER.type; e.passId='PASS-'+e.id+'-'+Math.floor(1000+Math.random()*8999);
+  e.regStatus=(e.approval==='manual')?'pending':'approved';
+  if(e.regStatus==='pending'){ NOTIFS.unshift({icon:'clock',color:'amber',t:'Registration received',s:'Your registration for '+e.title+' is pending Ministry approval.',tm:'just now',day:'Today',unread:true,link:{type:'event'}}); }
+  else { NOTIFS.unshift({icon:'ticket',color:'green',t:'Event pass ready',s:'Your QR pass for '+e.title+' is ready.',tm:'just now',day:'Today',unread:true,link:{type:'event'}}); }
+  try{ var _br=JSON.parse(localStorage.getItem('mmas_bridge_event_regs')||'[]'); _br.push({eventId:id,pass:e.passId,name:USER.name,card:(CARDS[0]?CARDS[0].id:'-'),outlet:USER.outlet||'-',regTime:'just now'}); localStorage.setItem('mmas_bridge_event_regs',JSON.stringify(_br)); }catch(_e){}
+  saveState(); closeModal();
+  toast(e.regStatus==='pending'?'Registration submitted for approval.':'Registered! Your pass is ready.');
+  go('event-pass',id);
+}
+
+PAGES['event-pass']=function(id){
+  var e=EVENTS.filter(function(x){return x.id===id;})[0]||EVENTS[0];
+  var pending=e.regStatus==='pending';
+  var qrBlock=pending
+    ? '<div style="height:170px;display:grid;place-items:center;color:var(--amber)">'+ic('clock',1.4)+'</div><div style="font-size:13.5px;color:var(--amber);font-weight:800">Pending Ministry approval</div><div style="font-size:12px;color:var(--muted);margin-top:4px;max-width:260px">Your QR pass will appear here once the Ministry approves your registration.</div><button class="btn soft sm" style="margin-top:12px" onclick="approveEventReg(\''+e.id+'\')">'+ic('check',2)+' Simulate approval (demo)</button>'
+    : qrSVG(170)+'<div style="font-size:12.5px;color:var(--muted);margin-top:12px">Show this QR at the entrance</div>';
+  var html='<a class="btn soft sm" onclick="go(\'events\')" style="margin-bottom:16px">'+ic('back',2)+' Back to Events</a>'+
+    '<div class="ticket"><div class="tkt-top" style="background:'+e.g+'"><div style="font-size:11px;font-weight:700;opacity:.85;letter-spacing:.05em;text-transform:uppercase">Entry Pass</div><h3>'+e.title+'</h3><div style="font-size:12.5px;opacity:.9;margin-top:6px">'+e.date+' · '+e.loc+'</div></div>'+
+    '<div class="perf"></div>'+
+    '<div class="tkt-body">'+qrBlock+
+    '<div class="summary" style="margin-top:16px;text-align:left"><div class="sr"><span>Attendee</span><b>'+USER.name+'</b></div><div class="sr"><span>Type</span><b>'+(e.attendeeType||USER.type)+'</b></div><div class="sr"><span>Pass ID</span><b>'+(e.passId||('PASS-'+e.id+'-4471'))+'</b></div><div class="sr"><span>Status</span><span class="badge '+(pending?'rev':'app')+'">'+(pending?'Pending':'Approved')+'</span></div><div class="sr"><span>Check-in</span><span class="badge sub">Not checked in</span></div></div>'+
+    (pending?'':'<div style="display:flex;gap:10px;margin-top:8px"><button class="btn pri block" onclick="toast(\'Downloading pass…\')">'+ic('download',2)+' Download</button><button class="btn ghost block" onclick="toast(\'Added to calendar.\')">'+ic('cal',2)+' Add to Calendar</button></div>')+
+    '</div></div>';
+  return {title:'My Event Pass',sub:e.title,nav:'events',html:html};
+};
+function approveEventReg(id){var e=EVENTS.filter(function(x){return x.id===id;})[0];if(!e)return;e.regStatus='approved';NOTIFS.unshift({icon:'ticket',color:'green',t:'Event pass approved',s:'Your pass for '+e.title+' is now active.',tm:'just now',day:'Today',unread:true,link:{type:'event'}});saveState();toast('Approved! Your QR pass is active.');go('event-pass',id);}
+
+/* ---------------- NOTIFICATIONS ---------------- */
+PAGES.notifications=function(){
+  var days=['Today','Yesterday','Earlier'];
+  var cmap={green:'var(--green-soft);color:var(--green)',amber:'var(--amber-soft);color:var(--amber)',blue:'var(--blue-soft);color:var(--blue)',red:'var(--red-soft);color:var(--red)'};
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div class="sec-h" style="margin:0">Your notifications</div><a class="btn soft sm" onclick="markAllRead();go(\'notifications\')">Mark all as read</a></div>';
+  days.forEach(function(d){
+    var any=false;
+    NOTIFS.forEach(function(n,gi){
+      if(n.day!==d)return;
+      if(!any){html+='<div class="notif-day">'+d+'</div>';any=true;}
+      html+='<div class="notif-item'+(n.unread?' unread':'')+'" style="cursor:pointer" onclick="openNotifLink('+gi+')"><div class="nc" style="background:'+cmap[n.color]+'">'+ic(n.icon,2)+'</div><div style="flex:1"><div class="nt">'+n.t+'</div><div class="ns">'+n.s+'</div><div class="ntm">'+n.tm+'</div></div><span class="ndel" onclick="event.stopPropagation();delNotif('+gi+')">'+ic('x',2)+'</span></div>';
+    });
+  });
+  return {title:'Notifications',sub:'',html:html};
+};
+
+/* ---------------- PROFILE ---------------- */
+PAGES.profile=function(){
+  var html='<div class="tabs"><button class="on" onclick="profTab(this,\'p1\')">Personal Info</button><button onclick="profTab(this,\'p2\')">Security</button><button onclick="profTab(this,\'p3\')">Preferences</button></div>'+
+    '<div class="content-narrow">'+
+    '<div id="p1" class="tile"><div style="display:flex;align-items:center;gap:16px;margin-bottom:20px"><div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--brand-2),var(--brand-deep));color:#fff;display:grid;place-items:center;font-size:22px;font-weight:800">'+USER.av+'</div><div><div style="font-size:18px;font-weight:800">'+USER.name+'</div><div style="font-size:13px;color:var(--muted)">'+USER.type+' · '+USER.outlet+'</div></div></div>'+
+    '<div class="grid2">'+profField('Full name',USER.name,false,'pf_name')+profField('Phone',USER.phone,false,'pf_phone')+profField('Email',USER.email,false,'pf_email')+profField('Nationality',USER.nationality,false,'pf_nat')+'</div>'+
+    '<button class="btn pri" style="margin-top:8px" onclick="saveProfile()">Save Changes</button></div>'+
+    '<div id="p2" class="tile hidden"><div class="sec-h">Change password</div><div class="grid2">'+profField('Current password','',true)+profField('New password','',true)+'</div>'+profField('Confirm new password','',true)+'<button class="btn pri" style="margin-top:8px" onclick="toast(\'Password updated.\')">Update Password</button></div>'+
+    '<div id="p3" class="tile hidden"><div class="sec-h">Preferences</div>'+
+    '<div class="detrow"><span class="dl">Language</span><span class="lang" style="display:inline-flex;gap:6px"><span class="btn soft sm" onclick="toast(\'Language: English\')">English</span><span class="btn ghost sm" onclick="toast(\'Luuqad: Soomaali\')">Soomaali</span></span></div>'+
+    '<div class="detrow"><span class="dl">Email notifications</span><b style="color:var(--green)">On</b></div>'+
+    '<div class="detrow"><span class="dl">SMS reminders</span><b style="color:var(--green)">On</b></div>'+
+    '<button class="btn danger" style="margin-top:16px" onclick="confirmLogout()">'+ic('arrow',2)+' Log Out</button></div>'+
+    '</div>';
+  return {title:'Profile & Settings',sub:USER.email,html:html};
+};
+function profField(l,v,pw,id){return '<div class="field"><label>'+l+'</label><div class="inp">'+ic(pw?'lock':'user')+'<input '+(id?'id="'+id+'" ':'')+'type="'+(pw?'password':'text')+'" value="'+(v||'')+'" placeholder="'+(pw?'••••••••':'')+'"></div></div>';}
+function profTab(el,id){el.parentNode.querySelectorAll('button').forEach(function(b){b.classList.remove('on');});el.classList.add('on');['p1','p2','p3'].forEach(function(p){document.getElementById(p).classList.toggle('hidden',p!==id);});}
+function confirmLogout(){
+  openModal('<div class="micon" style="background:var(--red-soft);color:var(--red)">'+ic('arrow',2.4)+'</div><h3 style="text-align:center">Log out?</h3><p class="msub" style="text-align:center">Are you sure you want to log out of your account?</p><div class="modal-actions"><button class="btn ghost block" onclick="closeModal()">No, stay</button><button class="btn danger block" onclick="logout()">Yes, log out</button></div>');
+}
+
+/* ============================ WIZARDS ============================ */
+var WIZ={};
+var REAPPLY=null, PENDING_APP=null;
+function applyWizard(cfg){
+  WIZ={cfg:cfg,step:0,files:{},dyn:{equipment:[{}],team:[{}]},data:{}};
+  if(REAPPLY&&REAPPLY.kind===cfg.kind){ WIZ.data=Object.assign({},REAPPLY.data||{}); REAPPLY=null; setTimeout(function(){toast('Your previous details were loaded. Update and resubmit.','info');},300); }
+  else { try{ var d=JSON.parse(localStorage.getItem('mmas_draft_'+cfg.kind)||'null'); if(d){ WIZ.data=d.data||{}; if(d.dyn)WIZ.dyn=d.dyn; if(d.files)WIZ.files=d.files; setTimeout(function(){toast('Draft restored.','info');},300); } }catch(e){} }
+  return {title:cfg.title,sub:'New application',nav:'applications',html:'<a class="btn soft sm" onclick="go(\'dashboard\')" style="margin-bottom:16px">'+ic('back',2)+' Cancel</a><div class="content-narrow"><div id="wizBody"></div></div>',after:renderWiz};
+}
+function canApply(kind){var a=USER.acctType;if(kind==='press')return true;if(kind==='license')return a==='mediaHouse';if(kind==='permit')return a==='foreign';return true;}
+function guardApply(kind,cfg){ if(!canApply(kind)){ toast('Your account type cannot apply for this service.','err'); return PAGES.dashboard(); } return applyWizard(cfg); }
+PAGES['apply-press']=function(){return guardApply('press',{title:'Apply — Press Card',type:'Press Card',steps:['Details','Uploads','Fee'],kind:'press'});};
+PAGES['apply-license']=function(){return guardApply('license',{title:'Apply — Media License',type:'Media License',steps:['Details','Uploads','Fee'],kind:'license'});};
+PAGES['apply-permit']=function(){return guardApply('permit',{title:'Apply — Foreign Permit',type:'Foreign Permit',steps:['Details','Lists & Uploads','Fee'],kind:'permit'});};
+
+function renderWiz(){
+  var c=WIZ.cfg,s=WIZ.step;
+  var stepper='<div class="stepper">'+c.steps.map(function(st,i){
+    var cls=i<s?'done':(i===s?'on':'');
+    var bar=i<c.steps.length-1?'<div class="bar'+(i<s?' fill':'')+'"></div>':'';
+    return '<div class="st '+cls+'"><div class="sn">'+(i<s?'✓':(i+1))+'</div><div class="sl">'+st+'</div></div>'+bar;
+  }).join('')+'</div>';
+  var body='';
+  if(s===0) body=wizStep1(c.kind);
+  else if(s===1) body=wizStep2(c.kind);
+  else body=wizStep3(c);
+  var nav='<div class="wiznav">'+
+    (s>0?'<button class="btn ghost" onclick="wizBack()">'+ic('back',2)+' Back</button>':'<button class="btn ghost" onclick="wizSaveDraft()">Save Draft</button>')+
+    (s<c.steps.length-1?'<button class="btn pri" onclick="wizNext()">Next '+ic('arrow',2)+'</button>':'<button class="btn green" onclick="wizSubmit()">Submit &amp; Pay '+ic('arrow',2)+'</button>')+
+    '</div>';
+  document.getElementById('wizBody').innerHTML=stepper+'<div class="tile">'+body+'</div>'+nav;
+  restoreFiles();
+}
+function wizStep1(kind){
+  var d=WIZ.data||{};
+  function selOpts(opts,cur){return opts.map(function(o){return '<option'+(o===cur?' selected':'')+'>'+o+'</option>';}).join('');}
+  if(kind==='press')return '<div class="sec-h">Personal details</div><div class="grid2">'+
+    wf('w_name','Full name','user','text','e.g. Sumaya Ahmed',d.w_name!=null?d.w_name:USER.name)+wf('w_idno','ID / Passport No.','idcard','text','A0448217',d.w_idno||'')+'</div>'+
+    '<div class="field" id="f_w_nat"><label>Nationality</label><div class="inp">'+ic('globe')+'<select id="w_nat">'+selOpts(['Somali','Kenyan','Ethiopian','Other'],d.w_nat||'Somali')+'</select></div></div>';
+  if(kind==='license')return '<div class="sec-h">Outlet details</div>'+
+    '<div class="field" id="f_w_ltype"><label>License type</label><div class="inp">'+ic('file')+'<select id="w_ltype">'+selOpts(['Television','Radio','Print','Online'],d.w_ltype||'Television')+'</select></div></div>'+
+    '<div class="grid2">'+wf('w_oname','Outlet name','file','text','e.g. Radio Muqdisho',d.w_oname||'')+wf('w_owner','Owner','user','text','Owner full name',d.w_owner||'')+'</div>'+
+    '<div class="grid2">'+wf('w_addr','Address','pin','text','District, City',d.w_addr||'')+wf('w_contact','Contact','phone','text','+252 6x xxx xxxx',d.w_contact||'')+'</div>';
+  return '<div class="sec-h">Filming details</div><div class="grid2">'+wf('w_crew','Crew / Company','users','text','e.g. BBC Africa',d.w_crew||'')+wf('w_country','Country of origin','globe','text','e.g. United Kingdom',d.w_country||'')+'</div>'+
+    '<div class="field" id="f_w_reason"><label>Reason for filming</label><div class="inp" style="align-items:flex-start">'+ic('file')+'<textarea id="w_reason" rows="2" style="flex:1;border:none;outline:none;font-family:inherit;font-size:14px;padding:12px 0;background:transparent;resize:vertical" placeholder="Describe the purpose of filming">'+(d.w_reason||'')+'</textarea></div><div class="err-msg">Required</div></div>'+
+    '<div class="field" id="f_w_loc"><label>Filming locations</label><div class="inp" style="align-items:flex-start">'+ic('pin')+'<textarea id="w_loc" rows="2" style="flex:1;border:none;outline:none;font-family:inherit;font-size:14px;padding:12px 0;background:transparent;resize:vertical" placeholder="List the locations">'+(d.w_loc||'')+'</textarea></div><div class="err-msg">Required</div></div>';
+}
+function wf(id,label,icon,type,ph,val){return '<div class="field" id="f_'+id+'"><label>'+label+'</label><div class="inp">'+ic(icon)+'<input id="'+id+'" type="'+type+'" placeholder="'+ph+'" value="'+(val||'')+'"></div><div class="err-msg">Required</div></div>';}
+
+function wizStep2(kind){
+  if(kind==='press')return '<div class="sec-h">Upload documents</div>'+
+    uploadSlot('photo','Passport-size photo','camera',true)+uploadSlot('id','National ID / Passport','idcard')+uploadSlot('letter','Employer letter','file');
+  if(kind==='license')return '<div class="sec-h">Upload documents</div>'+
+    uploadSlot('reg','Registration documents','file')+uploadSlot('ownerid','Owner ID','idcard');
+  // permit — dynamic lists + uploads
+  return '<div class="sec-h">Equipment list</div><div id="eqList"></div><button class="btn soft sm" onclick="addRow(\'equipment\')" style="margin-bottom:20px">'+ic('plus',2)+' Add Row</button>'+
+    '<div class="sec-h">Team members</div><div id="tmList"></div><button class="btn soft sm" onclick="addRow(\'team\')" style="margin-bottom:20px">'+ic('plus',2)+' Add Row</button>'+
+    '<div class="sec-h">Upload documents</div>'+uploadSlot('passport','Passport copy','idcard')+uploadSlot('schedule','Filming schedule','file');
+}
+function uploadSlot(id,label,icon,crop){
+  return '<div style="margin-bottom:12px"><div style="font-size:12.5px;font-weight:600;color:#40505c;margin-bottom:7px">'+label+'</div><div id="up_'+id+'"><div class="upload" onclick="simUpload(\''+id+'\','+(crop?'true':'false')+')"><div class="ui">'+ic(icon)+'</div><div class="ut">Click to upload</div><div class="us">PNG, JPG or PDF · up to 5MB</div></div></div></div>';
+}
+function simUpload(id,crop){
+  if(crop){ openCropper(id); return; }
+  doUploadAnim(id,fakeName(id));
+}
+function fakeName(id){return {photo:'passport-photo.jpg',id:'national-id.pdf',letter:'employer-letter.pdf',reg:'registration.pdf',ownerid:'owner-id.pdf',passport:'passport.pdf',schedule:'filming-schedule.pdf'}[id]||'document.pdf';}
+function doUploadAnim(id,name){
+  var box=document.getElementById('up_'+id);
+  box.innerHTML='<div class="upfile"><div class="uth">'+ic('file')+'</div><div style="flex:1"><div class="ufn">'+name+'</div><div class="progress"><span id="pg_'+id+'"></span></div></div></div>';
+  var p=0;var iv=setInterval(function(){p+=Math.random()*30;if(p>=100){p=100;clearInterval(iv);setTimeout(function(){uploadDone(id,name);},250);}var bar=document.getElementById('pg_'+id);if(bar)bar.style.width=p+'%';},180);
+}
+function uploadDone(id,name){
+  WIZ.files[id]=name;
+  var box=document.getElementById('up_'+id);
+  if(box)box.innerHTML='<div class="upfile"><div class="uth" style="background:var(--green-soft);color:var(--green)">'+ic('check',2.4)+'</div><div style="flex:1"><div class="ufn">'+name+'</div><div class="ufs">Uploaded · 1.2 MB</div></div><div class="ux" onclick="removeFile(\''+id+'\')">'+ic('x',2)+'</div></div>';
+  toast('File uploaded.');
+}
+function removeFile(id){delete WIZ.files[id];var box=document.getElementById('up_'+id);var labels={photo:['Passport-size photo','camera',true],id:['National ID / Passport','idcard'],letter:['Employer letter','file'],reg:['Registration documents','file'],ownerid:['Owner ID','idcard'],passport:['Passport copy','idcard'],schedule:['Filming schedule','file']};var l=labels[id];box.innerHTML='<div class="upload" onclick="simUpload(\''+id+'\','+(l[2]?'true':'false')+')"><div class="ui">'+ic(l[1])+'</div><div class="ut">Click to upload</div><div class="us">PNG, JPG or PDF · up to 5MB</div></div>';}
+function restoreFiles(){Object.keys(WIZ.files||{}).forEach(function(id){if(document.getElementById('up_'+id))uploadDone(id,WIZ.files[id]);});}
+function openCropper(id){
+  openModal('<div class="mh"><h3>Crop photo</h3><button class="mx" onclick="closeModal()">'+ic('x',2)+'</button></div>'+
+    '<div class="cropper"><div class="cc">'+ic('camera',1.6)+'</div></div>'+
+    '<p class="msub">Adjust your photo to fit the circle, then save.</p>'+
+    '<div class="modal-actions"><button class="btn ghost block" onclick="closeModal()">Cancel</button><button class="btn pri block" onclick="closeModal();doUploadAnim(\''+id+'\',\'passport-photo.jpg\')">Crop &amp; Save</button></div>');
+}
+/* dynamic rows */
+function renderDyn(){
+  var eq=document.getElementById('eqList'),tm=document.getElementById('tmList');
+  if(eq)eq.innerHTML=WIZ.dyn.equipment.map(function(r,i){return '<div class="dynrow eq"><div class="inp">'+ic('file')+'<input placeholder="Item name" value="'+((r&&r.name)||'')+'"></div><div class="inp"><input placeholder="Qty" inputmode="numeric" value="'+((r&&r.qty)||'')+'"></div><button class="rmrow" onclick="rmRow(\'equipment\','+i+')">'+ic('minus',2.2)+'</button></div>';}).join('');
+  if(tm)tm.innerHTML=WIZ.dyn.team.map(function(r,i){return '<div class="dynrow tm"><div class="inp">'+ic('user')+'<input placeholder="Name" value="'+((r&&r.name)||'')+'"></div><div class="inp">'+ic('idcard')+'<input placeholder="Passport No." value="'+((r&&r.passport)||'')+'"></div><div class="inp">'+ic('users')+'<input placeholder="Role" value="'+((r&&r.role)||'')+'"></div><button class="rmrow" onclick="rmRow(\'team\','+i+')">'+ic('minus',2.2)+'</button></div>';}).join('');
+}
+function collectDyn(){
+  var eq=document.getElementById('eqList'),tm=document.getElementById('tmList');
+  if(eq)WIZ.dyn.equipment=[].slice.call(eq.querySelectorAll('.dynrow')).map(function(r){var i=r.querySelectorAll('input');return {name:i[0].value,qty:i[1].value};});
+  if(tm)WIZ.dyn.team=[].slice.call(tm.querySelectorAll('.dynrow')).map(function(r){var i=r.querySelectorAll('input');return {name:i[0].value,passport:i[1].value,role:i[2].value};});
+}
+function addRow(k){collectDyn();WIZ.dyn[k].push({});renderDyn();}
+function rmRow(k,i){collectDyn();if(WIZ.dyn[k].length>1){WIZ.dyn[k].splice(i,1);renderDyn();}else{toast('At least one row is required.','err');}}
+
+function wizStep3(c){
+  var fee=FEES[c.type];
+  return '<div class="sec-h">Review &amp; fee</div>'+
+    '<div class="summary"><div class="sr"><span>Application type</span><b>'+c.type+'</b></div><div class="sr"><span>Applicant</span><b>'+(WIZ.data.w_name||WIZ.data.w_oname||WIZ.data.w_crew||USER.name)+'</b></div><div class="sr"><span>Processing fee</span><span>$'+fee+'.00</span></div><div class="sr tot"><span>Total due</span><span>$'+fee+'.00</span></div></div>'+
+    '<p class="msub">Review your details above. Click Submit &amp; Pay to complete your application and proceed to payment.</p>';
+}
+function collectWiz(){
+  ['w_name','w_idno','w_nat','w_ltype','w_oname','w_owner','w_addr','w_contact','w_crew','w_country','w_reason','w_loc'].forEach(function(id){var el=document.getElementById(id);if(el)WIZ.data[id]=el.value;});
+  if(document.getElementById('eqList')||document.getElementById('tmList'))collectDyn();
+}
+function wizNext(){
+  var c=WIZ.cfg;
+  if(WIZ.step===0){
+    var req=c.kind==='press'?['w_name','w_idno']:c.kind==='license'?['w_oname','w_owner','w_addr','w_contact']:['w_crew','w_country','w_reason','w_loc'];
+    if(!validate(req)){toast('Please complete all required fields.','err');return;}
+  }
+  if(WIZ.step===1){
+    var need=c.kind==='press'?['photo','id','letter']:c.kind==='license'?['reg','ownerid']:['passport','schedule'];
+    var miss=need.filter(function(f){return !WIZ.files[f];});
+    if(miss.length){miss.forEach(function(f){var el=document.getElementById('up_'+f);if(el){var u=el.querySelector('.upload');if(u)u.classList.add('upreq');}});toast('Please upload all required documents.','err');return;}
+  }
+  collectWiz();
+  WIZ.step++;renderWiz();if(c.kind==='permit'&&WIZ.step===1)renderDyn();
+}
+function wizBack(){collectWiz();WIZ.step--;renderWiz();if(WIZ.cfg.kind==='permit'&&WIZ.step===1)renderDyn();}
+function wizSaveDraft(){collectWiz();try{localStorage.setItem('mmas_draft_'+WIZ.cfg.kind,JSON.stringify({step:WIZ.step,data:WIZ.data,dyn:WIZ.dyn,files:WIZ.files}));}catch(e){}toast('Draft saved. You can finish it later.');}
+function wizSubmit(){
+  collectWiz();
+  var c=WIZ.cfg,d=WIZ.data,detail;
+  if(c.kind==='press') detail={name:d.w_name||USER.name,idno:d.w_idno||'—',nat:d.w_nat||'Somali',outlet:USER.outlet};
+  else if(c.kind==='license') detail={name:d.w_owner||d.w_oname||'—',idno:d.w_oname||'—',nat:'—',outlet:d.w_oname||'—'};
+  else detail={name:d.w_crew||'—',idno:d.w_country||'—',nat:d.w_country||'—',outlet:d.w_crew||'—'};
+  PENDING_APP={kind:c.kind,detail:detail,reapply:Object.assign({},d),dyn:JSON.parse(JSON.stringify(WIZ.dyn||{})),acctType:USER.type};
+  confirmSubmitModal(c.type,FEES[c.type]);
+}
+function confirmSubmitModal(type,fee){
+  openModal('<div class="mh"><h3>Confirm submission</h3><button class="mx" onclick="closeModal()">'+ic('x',2)+'</button></div>'+
+    '<p class="msub">You are about to submit your '+type+' application and pay the fee.</p>'+
+    '<div class="summary"><div class="sr"><span>'+type+'</span><span>$'+fee+'.00</span></div><div class="sr tot"><span>Total</span><span>$'+fee+'.00</span></div></div>'+
+    '<div class="modal-actions"><button class="btn ghost block" onclick="closeModal()">Cancel</button><button class="btn green block" onclick="closeModal();startPayment(\''+type+'\','+fee+',\'app\')">Proceed to Pay</button></div>');
+}
+
+/* ============================ PAYMENT ============================ */
+var PAYCTX={};
+function startPayment(item,fee,back){ PAYCTX={item:item,fee:fee,back:back}; go('payment'); }
+PAGES.payment=function(){
+  var p=PAYCTX.item?PAYCTX:{item:'Press Card',fee:30,back:'dashboard'};
+  var html='<a class="btn soft sm" onclick="go(\''+(p.back==='wallet'?'wallet':'dashboard')+'\')" style="margin-bottom:16px">'+ic('back',2)+' Cancel</a>'+
+    '<div class="content-narrow"><div class="grid2" style="align-items:start;gap:16px">'+
+    '<div class="tile"><div class="sec-h">Order summary</div>'+
+    '<div class="summary" style="background:var(--brand-soft)"><div class="sr"><span>'+p.item+'</span><span>$'+p.fee+'.00</span></div><div class="sr"><span>Service fee</span><span>$0.00</span></div><div class="sr tot"><span>Total</span><span>$'+p.fee+'.00</span></div></div>'+
+    '<div style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5">Payments are processed securely. You will receive a receipt once payment is confirmed.</div></div>'+
+    '<div class="tile"><div class="sec-h">Payment method</div>'+
+    '<div class="paymethod" id="payMethods">'+
+    payRadio('EVC Plus',true)+payRadio('Mobile Money',false)+
+    '</div>'+
+    '<div class="field" id="f_pay_phone"><label>Phone number</label><div class="inp">'+ic('phone')+'<input id="pay_phone" value="'+USER.phone+'"></div></div>'+
+    '<button class="btn green block lg" id="payBtn" onclick="doPay('+p.fee+')">Confirm Payment · $'+p.fee+'.00</button>'+
+    '</div></div></div>';
+  return {title:'Payment',sub:p.item,nav:'applications',html:html};
+};
+function payRadio(t,sel){return '<label class="radio'+(sel?' sel':'')+'" onclick="pickType(this)"><span class="rd"></span><span class="rt">'+t+'</span></label>';}
+function doPay(fee){
+  var btn=document.getElementById('payBtn');
+  btn.innerHTML='<span class="spin" style="width:20px;height:20px;border-width:2px"></span> Processing…';btn.disabled=true;
+  setTimeout(function(){ paymentSuccess(fee); },1900);
+}
+function paymentSuccess(fee){
+  var rcp='RCP-2026-'+Math.floor(100000+Math.random()*899999);
+  var evc='EVC-'+Math.floor(1000000000+Math.random()*8999999999);
+  try{ var _pb=JSON.parse(localStorage.getItem('mmas_bridge_payments')||'[]'); _pb.push({rcp:rcp,payer:USER.name,amount:fee,date:admDate(),method:'EVC Plus',txn:evc}); localStorage.setItem('mmas_bridge_payments',JSON.stringify(_pb)); }catch(e){}
+  // reflect: if from an application submit, add a new submitted app
+  if(PAYCTX.back==='app'){
+    var newId='APP-2026-0'+Math.floor(420+Math.random()*80);
+    var rec={id:newId,type:PAYCTX.item,date:'12 Jul 2026',status:'Submitted'};
+    if(PENDING_APP&&PENDING_APP.detail){rec.name=PENDING_APP.detail.name;rec.idno=PENDING_APP.detail.idno;rec.nat=PENDING_APP.detail.nat;rec.outlet=PENDING_APP.detail.outlet;rec.reapply=PENDING_APP.reapply;try{localStorage.removeItem('mmas_draft_'+PENDING_APP.kind);}catch(e){}}
+    APPS.unshift(rec);
+    try{ var _ab=JSON.parse(localStorage.getItem('mmas_bridge_new_apps')||'[]'); _ab.push({id:newId,name:rec.name||USER.name,type:PAYCTX.item,date:admDate(),status:'Submitted',outlet:rec.outlet||USER.outlet||'-',nat:rec.nat||USER.nationality||'-',idno:rec.idno||USER.idno||'-',acctType:(PENDING_APP&&PENDING_APP.acctType)||USER.type,equipment:(PENDING_APP&&PENDING_APP.dyn&&PENDING_APP.dyn.equipment)||[],team:(PENDING_APP&&PENDING_APP.dyn&&PENDING_APP.dyn.team)||[]}); localStorage.setItem('mmas_bridge_new_apps',JSON.stringify(_ab)); }catch(e){}
+    PAYCTX.newAppId=newId;PENDING_APP=null;
+  }
+  if(PAYCTX.back==='wallet'&&RENEW_CARD){var _rc=CARDS.filter(function(x){return x.id===RENEW_CARD;})[0];if(_rc){_rc.status='Active';_rc.expiry='31 Dec 2027';}RENEW_CARD=null;}
+  saveState();
+  openModal('<div class="micon" style="background:var(--green-soft);color:var(--green)">'+ic('check',2.6)+'</div>'+
+    '<h3 style="text-align:center">Payment successful</h3>'+
+    '<p class="msub" style="text-align:center">Your payment of $'+fee+'.00 was received.</p>'+
+    '<div class="summary"><div class="sr"><span>Receipt ID</span><b>'+rcp+'</b></div><div class="sr"><span>Transaction</span><b>'+evc+'</b></div><div class="sr"><span>Method</span><b>EVC Plus</b></div><div class="sr tot"><span>Paid</span><span>$'+fee+'.00</span></div></div>'+
+    '<div class="modal-actions"><button class="btn ghost block" onclick="toast(\'Downloading receipt…\')">Download Receipt</button><button class="btn pri block" onclick="afterPay()">View Application</button></div>');
+}
+function afterPay(){closeModal();if(PAYCTX.back==='wallet'){toast('Renewal complete!');go('wallet');}else if(PAYCTX.back==='event'&&EVENT_REG){var er=EVENT_REG;EVENT_REG=null;e_reg(er.id,er.type);}else{toast('Application submitted!');go('app-detail',PAYCTX.newAppId||APPS[0].id);}}
+
+function saveProfile(){
+  var nm=document.getElementById('pf_name'); if(nm){nm=nm.value.trim();}
+  if(nm){USER.name=nm;USER.first=nm.split(' ')[0];USER.av=nm.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();}
+  var ph=document.getElementById('pf_phone'),em=document.getElementById('pf_email'),na=document.getElementById('pf_nat');
+  if(ph)USER.phone=ph.value; if(em)USER.email=em.value; if(na)USER.nationality=na.value;
+  document.getElementById('ubNm').textContent=USER.name; document.getElementById('ubAv').textContent=USER.av;
+  saveState(); toast('Profile saved.'); go('profile');
+}
+function openNotifLink(i){var n=NOTIFS[i]; if(!n)return; n.unread=false; saveState(); var l=n.link||{}; if(l.type==='app')go('app-detail',l.id); else if(l.type==='card')go('card-detail',l.id); else if(l.type==='event')go('events'); else go('notifications'); }
+function delNotif(i){ NOTIFS.splice(i,1); saveState(); go('notifications'); toast('Notification deleted.'); }
+function simulateApproval(id){
+  var a=APPS.filter(function(x){return x.id===id;})[0]; if(!a)return;
+  a.status='Approved';
+  var pref=a.type==='Media License'?'ML':a.type==='Foreign Permit'?'FP':'PC';
+  var cid=pref+'-2026-'+Math.floor(1000+Math.random()*8999);
+  var exp=a.type==='Foreign Permit'?'20 Aug 2026':'31 Dec 2027';
+  CARDS.unshift({id:cid,type:a.type,holder:a.name||USER.name,outlet:a.outlet||USER.outlet,status:'Active',expiry:exp,blood:USER.blood||'O+'});
+  a.cardId=cid;
+  NOTIFS.unshift({icon:'check',color:'green',t:'Application Approved',s:a.type+' '+a.id+' has been approved. Your card is ready.',tm:'just now',day:'Today',unread:true,link:{type:'card',id:cid}});
+  saveState(); toast('Approved! Card issued.'); go('app-detail',id);
+}
+/* ============================ HELPERS ============================ */
+function qrSVG(size){
+  var n=21,cell=size/n,rects='';
+  var seed=7;function rnd(){seed=(seed*9301+49297)%233280;return seed/233280;}
+  for(var y=0;y<n;y++)for(var x=0;x<n;x++){
+    var finder=(x<7&&y<7)||(x>=n-7&&y<7)||(x<7&&y>=n-7);
+    if(finder)continue;
+    if(rnd()>0.55)rects+='<rect x="'+(x*cell)+'" y="'+(y*cell)+'" width="'+cell+'" height="'+cell+'" rx="'+(cell*0.2)+'"/>';
+  }
+  function fnd(px,py){return '<rect x="'+px+'" y="'+py+'" width="'+(cell*7)+'" height="'+(cell*7)+'" rx="'+(cell)+'" fill="none" stroke="#0E2A3E" stroke-width="'+(cell*1.1)+'"/><rect x="'+(px+cell*2)+'" y="'+(py+cell*2)+'" width="'+(cell*3)+'" height="'+(cell*3)+'" rx="'+(cell*0.6)+'" fill="#0E2A3E"/>';}
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" fill="#0E2A3E">'+rects+fnd(0,0)+fnd(size-cell*7,0)+fnd(0,size-cell*7)+'</svg>';
+}
+function skeletonTable(elId,cb){
+  var el=document.getElementById(elId);if(!el)return;
+  el.innerHTML='<div style="padding:16px">'+[0,1,2,3].map(function(){return '<div style="display:flex;gap:12px;align-items:center;padding:10px 0"><div class="skel" style="width:80px;height:14px"></div><div class="skel" style="width:110px;height:14px"></div><div class="skel" style="width:70px;height:14px"></div><div class="skel" style="width:80px;height:22px;border-radius:20px;margin-left:auto"></div></div>';}).join('')+'</div>';
+  setTimeout(function(){ if(document.getElementById(elId)) cb(); },650);
+}
+function skeletonCards(elId,cb){
+  var el=document.getElementById(elId);if(!el)return;
+  el.innerHTML=[0,1].map(function(){return '<div class="skel" style="height:170px;border-radius:18px"></div>';}).join('');
+  setTimeout(function(){ if(document.getElementById(elId)) cb(); },650);
+}
+
+/* ============================ INIT ============================ */
+(function(){
+  var sess=null; try{sess=localStorage.getItem('mmas_session');}catch(e){}
+  var _saved=null; try{_saved=JSON.parse(sessionStorage.getItem('mmas_pub_page')||'null');}catch(e){}
+  if(sess&&ACCOUNTS[sess]){ loadAccount(sess); AUTHED=true; document.getElementById('ubNm').textContent=USER.name; document.getElementById('ubAv').textContent=USER.av; var _r=document.getElementById('ubRole'); if(_r)_r.textContent=USER.type; buildNav(); var _p=(_saved&&_saved.p)?_saved.p:'dashboard'; try{ go(_p,_saved&&_saved.a); }catch(e){ go('dashboard'); } }
+  else { loadAccount('individual'); buildNav(); var _p2=(_saved&&_saved.p&&PREPAGES[_saved.p])?_saved.p:'landing'; try{ go(_p2); }catch(e){ go('landing'); } }
+})();
+</script>
+<script src="mmas-i18n.js"></script>
+</body>
+</html>

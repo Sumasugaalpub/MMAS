@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MMAS — Verify a Press Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#1B86C4;--brand-2:#2A9BD8;--brand-deep:#0C5C8C;--brand-soft:#E9F5FC;--ring:#8CC6E8;
+  --navy:#0E2A3E;--page:#F4F8FB;--card-border:#e6edf2;--line:#eef3f7;
+  --value:#12212e;--muted:#7d8b98;--muted2:#a7b3bd;
+  --green:#0BA65C;--green-d:#0a8f4f;--amber:#E6A52B;--amber-d:#c98d1e;--red:#E5484D;--red-d:#cf3439;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;-webkit-font-smoothing:antialiased;color:var(--value);background:#0b1a26}
+svg{display:block}button{font-family:inherit;cursor:pointer}
+.hidden{display:none!important}
+img.logo{object-fit:cover;border-radius:50%}
+
+/* phone frame — mobile-first, centered on desktop */
+.app{max-width:460px;margin:0 auto;min-height:100vh;background:var(--page);display:flex;flex-direction:column;position:relative;overflow:hidden;box-shadow:0 0 60px rgba(0,0,0,.4)}
+/* top navbar */
+.nav{display:flex;align-items:center;gap:11px;padding:14px 18px;background:#fff;border-bottom:1px solid var(--line);z-index:5}
+.nav img{width:34px;height:34px;border:2px solid var(--ring)}
+.nav .t{font-size:15px;font-weight:800;line-height:1.1}
+.nav .s{font-size:10.5px;color:var(--muted)}
+.nav .home{margin-left:auto;width:38px;height:38px;border-radius:50%;border:1px solid var(--card-border);background:#fff;display:grid;place-items:center;color:var(--muted)}
+.nav .home svg{width:18px;height:18px}
+.body{flex:1;display:flex;flex-direction:column;min-height:0}
+
+/* ===== SCAN VIEW ===== */
+.scan-head{text-align:center;padding:22px 24px 8px}
+.scan-head h1{font-size:23px;font-weight:800}
+.scan-head p{font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.5}
+.viewfinder{margin:16px 22px;border-radius:22px;overflow:hidden;position:relative;background:#0b1a26;aspect-ratio:1/1;display:grid;place-items:center;cursor:pointer}
+.viewfinder video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vf-placeholder{position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.5);text-align:center;background:radial-gradient(circle at 50% 40%,#16344a,#0b1a26)}
+.vf-placeholder svg{width:56px;height:56px;margin:0 auto 12px}
+.vf-placeholder .pt{font-size:13px;font-weight:600}
+.vf-frame{position:absolute;inset:14%;z-index:2;pointer-events:none}
+.vf-corner{position:absolute;width:42px;height:42px;border:4px solid #fff;border-radius:6px}
+.vf-corner.tl{top:0;left:0;border-right:none;border-bottom:none}
+.vf-corner.tr{top:0;right:0;border-left:none;border-bottom:none}
+.vf-corner.bl{bottom:0;left:0;border-right:none;border-top:none}
+.vf-corner.br{bottom:0;right:0;border-left:none;border-top:none}
+.vf-scanline{position:absolute;left:16%;right:16%;height:3px;background:linear-gradient(90deg,transparent,#2fd27d,transparent);box-shadow:0 0 12px #2fd27d;z-index:3;animation:scan 2.4s ease-in-out infinite}
+@keyframes scan{0%{top:16%}50%{top:82%}100%{top:16%}}
+.vf-hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:rgba(255,255,255,.85);font-size:12px;font-weight:600;z-index:3}
+.scan-actions{padding:6px 22px 24px;display:flex;flex-direction:column;gap:11px}
+.btn{display:flex;align-items:center;justify-content:center;gap:9px;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:800;transition:transform .12s}
+.btn:active{transform:scale(.98)}
+.btn svg{width:19px;height:19px}
+.btn.pri{background:linear-gradient(135deg,var(--brand),var(--brand-deep));color:#fff;box-shadow:0 8px 20px rgba(27,134,196,.3)}
+.btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--card-border)}
+.btn.big{padding:18px;font-size:16px}
+.manual{padding:0 22px 22px}
+.manual .field{display:flex;gap:10px}
+.manual input{flex:1;border:1.5px solid var(--card-border);border-radius:13px;padding:15px 16px;font-family:inherit;font-size:15px;font-weight:600;outline:none;background:#fff;text-transform:uppercase}
+.manual input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(27,134,196,.12)}
+.manual .go{border:none;border-radius:13px;padding:0 20px;background:var(--brand);color:#fff;font-weight:800;font-size:15px}
+.manual .hint{font-size:11.5px;color:var(--muted2);margin-top:8px;text-align:center}
+
+/* ===== RESULT VIEWS ===== */
+.result{flex:1;display:flex;flex-direction:column;min-height:0}
+.res-banner{padding:44px 24px 30px;text-align:center;color:#fff;position:relative;overflow:hidden}
+.res-banner .ricon{width:92px;height:92px;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;margin:0 auto 18px;animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
+.res-banner .ricon svg{width:52px;height:52px;color:#fff}
+.res-banner h1{font-size:34px;font-weight:800;letter-spacing:-.01em}
+.res-banner .sub{font-size:14.5px;opacity:.95;margin-top:8px;font-weight:500}
+.res-banner.valid{background:linear-gradient(160deg,var(--green),var(--green-d))}
+.res-banner.expired{background:linear-gradient(160deg,var(--amber),var(--amber-d))}
+.res-banner.suspended{background:linear-gradient(160deg,var(--red),var(--red-d))}
+.res-banner.notfound{background:linear-gradient(160deg,var(--red),#a02329)}
+.res-body{flex:1;padding:22px;display:flex;flex-direction:column;background:var(--page)}
+.holder{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--card-border);border-radius:18px;padding:18px;margin-bottom:16px}
+.holder .photo{width:76px;height:90px;border-radius:12px;background:linear-gradient(135deg,#cbd5e1,#94a3b8);display:grid;place-items:center;color:#fff;flex-shrink:0}
+.holder .photo svg{width:40px;height:40px}
+.holder .hn{font-size:20px;font-weight:800}
+.holder .ho{font-size:13.5px;color:var(--muted);margin-top:3px}
+.holder .htag{display:inline-block;margin-top:8px;font-size:11px;font-weight:700;border-radius:20px;padding:3px 11px}
+.detbox{background:#fff;border:1px solid var(--card-border);border-radius:18px;padding:6px 18px;margin-bottom:16px}
+.detrow{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line);font-size:14px}
+.detrow:last-child{border-bottom:none}
+.detrow .dl{color:var(--muted);font-weight:600}.detrow .dv{font-weight:800}
+.ministry{display:flex;align-items:center;gap:12px;background:var(--brand-soft);border:1px solid #cfe6f6;border-radius:16px;padding:14px 16px;margin-bottom:16px}
+.ministry img{width:38px;height:38px;border-radius:50%;border:2px solid var(--ring);flex-shrink:0}
+.ministry .mt{font-size:12.5px;font-weight:700;color:var(--brand-deep)}
+.ministry .ms{font-size:11px;color:var(--muted);margin-top:1px}
+.ministry .mcheck{margin-left:auto;color:var(--green)}
+.ministry .mcheck svg{width:22px;height:22px}
+.warnbox{background:#fff;border:1px solid var(--card-border);border-left:4px solid var(--red);border-radius:14px;padding:15px 16px;font-size:13.5px;color:#3b424d;line-height:1.55;margin-bottom:16px}
+.warnbox.amber{border-left-color:var(--amber)}
+.warnbox b{color:var(--value)}
+.res-actions{margin-top:auto;display:flex;flex-direction:column;gap:11px;padding-top:6px}
+.report{text-align:center;font-size:12.5px;color:var(--muted);margin-top:10px}
+.report a{color:var(--red);font-weight:700;text-decoration:underline;cursor:pointer}
+
+/* toast */
+#toasts{position:fixed;top:16px;left:0;right:0;z-index:100;display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none}
+
+.modetog{display:flex;gap:6px;margin:16px 22px 0;background:#eaf0f5;border-radius:13px;padding:4px}
+.modetog button{flex:1;border:none;background:none;padding:11px;border-radius:10px;font-family:inherit;font-weight:800;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:7px}
+.modetog button svg{width:16px;height:16px}
+.modetog button.on{background:#fff;color:var(--brand-deep);box-shadow:0 2px 7px rgba(14,42,62,.12)}
+.vf-torch{position:absolute;top:12px;right:12px;z-index:4;width:42px;height:42px;border-radius:50%;border:none;background:rgba(0,0,0,.42);color:#fff;display:grid;place-items:center}
+.vf-torch.on{background:#f5c518;color:#3a2f00}
+.vf-torch svg{width:20px;height:20px}
+.res-banner.dup{background:linear-gradient(160deg,var(--amber),var(--amber-d))}
+#toasts{position:fixed;top:16px;left:0;right:0;z-index:100;display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none}
+.toast{background:#fff;color:var(--value);border:1px solid var(--card-border);border-radius:12px;padding:11px 15px;font-size:13px;font-weight:700;box-shadow:0 12px 30px rgba(14,42,62,.18);display:flex;align-items:center;gap:9px;transform:translateY(-24px);opacity:0;transition:.3s;max-width:88%}
+.toast.show{transform:translateY(0);opacity:1}
+.toast .ti{display:grid;place-items:center;color:var(--brand);flex-shrink:0}
+.toast .ti svg{width:16px;height:16px}
+
+.ov{position:fixed;inset:0;background:rgba(8,20,30,.55);display:none;align-items:flex-end;justify-content:center;z-index:200}
+.ov.on{display:flex}
+.md{background:#fff;width:100%;max-width:460px;border-radius:22px 22px 0 0;padding:20px 20px calc(22px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto;animation:mdup .28s ease}
+@keyframes mdup{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.md h3{font-size:18px;font-weight:800;margin-bottom:3px}
+.md .sub{font-size:12.5px;color:var(--muted);margin-bottom:15px}
+.rf{margin-bottom:12px}
+.rf label{display:block;font-size:12px;font-weight:700;color:#40505c;margin-bottom:6px}
+.rf input,.rf textarea{width:100%;border:1.5px solid var(--card-border);border-radius:11px;padding:12px 13px;font-family:inherit;font-size:14px;outline:none}
+.rf input:focus,.rf textarea:focus{border-color:var(--brand)}
+.rf .seg{display:flex;gap:8px}
+.rf .seg button{flex:1;border:1.5px solid var(--card-border);background:#fff;border-radius:11px;padding:11px;font-family:inherit;font-weight:700;font-size:13px;color:var(--muted)}
+.rf .seg button.on{border-color:var(--brand);background:var(--brand-soft);color:var(--brand-deep)}
+.photo-pick{display:block;border:2px dashed var(--card-border);border-radius:14px;padding:16px;text-align:center;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer}
+.photo-pick img{max-width:100%;border-radius:10px;margin-top:10px}
+.md-actions{display:flex;gap:10px;margin-top:6px}
+.md-actions .btn{flex:1}
+
+.doorbar{display:flex;align-items:center;gap:10px;margin:12px 22px 0;background:#eef3f7;border:1px solid var(--card-border);border-radius:12px;padding:10px 12px;font-size:11.5px;font-weight:700;color:var(--muted)}
+.doorbar.on{background:#E4F7EE;border-color:#BFEAD5;color:#0d6b45}
+.doorbar span{flex:1;line-height:1.35}
+.doorbar button{border:none;background:var(--brand);color:#fff;font-family:inherit;font-weight:800;font-size:12px;padding:8px 12px;border-radius:9px;flex-shrink:0}
+.doorbar.on button{background:#0BA65C}
+
+.evsel{margin:10px 22px 0;background:#fff;border:1px solid var(--card-border);border-radius:12px;padding:10px 12px}
+.evsel label{display:block;font-size:11px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.evsel select{width:100%;border:1.5px solid var(--card-border);border-radius:10px;padding:11px 12px;font-family:inherit;font-size:14px;font-weight:600;outline:none;background:#fff}
+</style>
+</head>
+<body>
+<div id="toasts"></div>
+<div class="ov" id="ov"><div class="md" id="md"></div></div>
+<div class="app">
+  <div class="nav">
+    <img class="logo" src="logo.png" alt="logo">
+    <div><div class="t">Verify Card</div><div class="s">Ministry of Information</div></div>
+    <button class="home" onclick="showScan()" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></button>
+  </div>
+  <div class="body" id="body"></div>
+</div>
+
+<script>
+
+/* ===== helpers ===== */
+function lsGet(k){try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}}
+function up(x){return String(x||'').trim().toUpperCase();}
+
+/* ===== built-in demo (fallback so classic codes always work) ===== */
+var DB={
+  '1234':{holder:'Sumaya Ahmed',outlet:'Radio Muqdisho',type:'Press Card',status:'Active',issue:'02 Jan 2026',expiry:'31 Dec 2026',blood:'O+',nat:'Somali'},
+  '2345':{holder:'Mohamed Nur',outlet:'SBC',type:'Press Card',status:'Expired',issue:'01 Jan 2025',expiry:'31 Dec 2025',blood:'B+',nat:'Somali'},
+  '3456':{holder:'Khadija Ali',outlet:'Jowhar Post',type:'Press Card',status:'Suspended',issue:'01 Mar 2026',expiry:'28 Feb 2027',blood:'A+',nat:'Somali'},
+  'PC-2026-1042':{holder:'Sumaya Ahmed',outlet:'Radio Muqdisho',type:'Press Card',status:'Active',issue:'02 Jan 2026',expiry:'31 Dec 2026',blood:'O+',nat:'Somali'},
+  'ML-2026-0388':{holder:'Radio Muqdisho',outlet:'Radio Muqdisho',type:'Media License',status:'Active',issue:'01 Jul 2026',expiry:'30 Jun 2027',blood:'-',nat:'-'},
+  'PC-2026-0931':{holder:'Khadija Ali',outlet:'Jowhar Post',type:'Press Card',status:'Active',issue:'16 Nov 2025',expiry:'15 Nov 2026',blood:'A+',nat:'Somali'},
+  'PC-2024-0771':{holder:'Sumaya Ahmed',outlet:'Radio Muqdisho',type:'Press Card',status:'Expired',issue:'01 Jan 2025',expiry:'31 Dec 2025',blood:'O+',nat:'Somali'},
+  'PC-2025-0620':{holder:'Mohamed Nur',outlet:'SBC',type:'Press Card',status:'Suspended',issue:'01 Oct 2025',expiry:'30 Sep 2026',blood:'B+',nat:'Somali'}
+};
+var EVENT_DB={
+  'EVT-2026-001':{eventId:'EV-01',event:'National Media Summit 2026',name:'Sumaya Ahmed',card:'PC-2026-1042'},
+  'EVT-2026-002':{eventId:'EV-01',event:'National Media Summit 2026',name:'Abdi Hassan',card:'PC-2026-1043'},
+  'EVT-2026-003':{eventId:'EV-01',event:'National Media Summit 2026',name:'Sarah Jenkins',card:'PC-2026-1044'},
+  'EVT-2026-101':{eventId:'EV-02',event:'Press Freedom Day Briefing',name:'Mohamed Nur',card:'PC-2026-1101'}
+};
+var ICON={
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  ban:'<circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/>',
+  x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  scan:'<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/>',
+  camera:'<path d="M4 8a2 2 0 0 1 2-2h1.5l1-2h5l1 2H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="12.5" r="3.2"/>',
+  keyboard:'<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h12"/>',
+  shield:'<path d="M12 2 4 5v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V5z"/>',
+  bolt:'<path d="M13 2 3 14h7l-1 8 10-12h-7z"/>',
+  ticket:'<path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 2 2 0 0 0 0 4 2 2 0 0 1-2 2H5a2 2 0 0 1-2-2 2 2 0 0 0 0-4z"/><path d="M15 6v12"/>',
+  idcard:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="11" r="2"/><path d="M13 9h5M13 13h5M5 15.5a3.5 3.5 0 0 1 7 0"/>'
+};
+function ic(n,w){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+(w||2)+'" stroke-linecap="round" stroke-linejoin="round">'+(ICON[n]||'')+'</svg>';}
+function toast(m){var t=document.createElement('div');t.className='toast';t.innerHTML='<span class="ti">'+ic('shield',2)+'</span>'+m;document.getElementById('toasts').appendChild(t);setTimeout(function(){t.classList.add('show');},20);setTimeout(function(){t.classList.remove('show');setTimeout(function(){t.remove();},320);},2400);}
+function nowStr(){var d=new Date();function p(n){return (n<10?'0':'')+n;}return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());}
+function reportCard(code,kind){try{var r=JSON.parse(localStorage.getItem('mmas_reports')||'[]');r.unshift({id:'RPT-'+Date.now(),code:code||'-',kind:kind||'suspicious',ts:nowStr(),status:'Open'});localStorage.setItem('mmas_reports',JSON.stringify(r));}catch(e){}toast('Report sent to the Ministry.');}
+var RP={code:'',kind:'',reporter:'Police',photo:'',loc:null};
+function openReport(code,kind){
+  RP={code:code||'-',kind:kind||'suspicious',reporter:'Police',photo:'',loc:null};
+  var _ev=(RP.kind.indexOf('event')===0);
+  RP.evName=(_ev&&CUR_EVENT)?CUR_EVENT.name:'';
+  document.getElementById('md').innerHTML=
+    '<h3>Report suspicious '+(_ev?'pass':'card')+'</h3><div class="sub">'+(_ev?'Event pass':'Card')+' <b>'+RP.code+'</b> — add the person\'s details so the Ministry can investigate.</div>'+
+    '<div class="rf"><label>Reported by (optional)</label><input id="rpBy" placeholder="Your name or officer / badge no."></div>'+
+    '<div class="rf"><label>Photo of the person holding the card</label><label class="photo-pick" for="rpPhoto"><span id="rpPhotoTxt">Tap to take a photo</span><input id="rpPhoto" type="file" accept="image/*" capture="environment" style="display:none" onchange="rpPhoto(this)"><div id="rpPrev"></div></label></div>'+
+    '<div class="rf"><label>Their phone number</label><input id="rpPhone" inputmode="tel" placeholder="+252 6x xxx xxxx"></div>'+
+    '<div class="rf"><label>Their ID / NIRA number</label><input id="rpId" placeholder="National ID or NIRA number"></div>'+
+    '<div class="rf"><label>Note (optional)</label><textarea id="rpNote" rows="2" placeholder="What happened?"></textarea></div>'+
+    '<div class="rf"><button class="btn ghost" style="width:100%;padding:13px" onclick="rpLoc()"><span id="rpLocTxt">Attach my location</span></button></div>'+
+    '<div class="md-actions"><button class="btn ghost" onclick="closeReport()">Cancel</button><button class="btn pri" onclick="submitReport()">Send report</button></div>';
+  document.getElementById('ov').classList.add('on');
+}
+function closeReport(){document.getElementById('ov').classList.remove('on');}
+function rpSet(w){RP.reporter=w;var s=document.getElementById('rpWho');[].slice.call(s.children).forEach(function(b){b.classList.toggle('on',b.textContent.indexOf(w)>=0);});document.getElementById('rf_badge').style.display=(w==='Police')?'block':'none';}
+function rpPhoto(inp){var f=inp.files&&inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(e){var img=new Image();img.onload=function(){var c=document.createElement('canvas');var sc=Math.min(1,520/img.width);c.width=img.width*sc;c.height=img.height*sc;c.getContext('2d').drawImage(img,0,0,c.width,c.height);try{RP.photo=c.toDataURL('image/jpeg',0.7);}catch(er){RP.photo='';}var pv=document.getElementById('rpPrev');if(pv&&RP.photo)pv.innerHTML='<img src="'+RP.photo+'">';var t=document.getElementById('rpPhotoTxt');if(t)t.textContent='Photo attached - tap to retake';};img.src=e.target.result;};r.readAsDataURL(f);}
+function rpLoc(){var t=document.getElementById('rpLocTxt');if(!navigator.geolocation){if(t)t.textContent='Location not available';return;}if(t)t.textContent='Getting location...';navigator.geolocation.getCurrentPosition(function(p){RP.loc={lat:p.coords.latitude,lng:p.coords.longitude};if(t)t.textContent='Location attached';},function(){if(t)t.textContent='Location permission denied';});}
+function submitReport(){
+  var rep={id:'RPT-'+Date.now(),code:RP.code,kind:RP.kind,event:(RP.evName||''),ts:nowStr(),status:'Open',reporter:((document.getElementById('rpBy')||{}).value||''),badge:'',suspectPhone:((document.getElementById('rpPhone')||{}).value||''),suspectId:((document.getElementById('rpId')||{}).value||''),note:((document.getElementById('rpNote')||{}).value||''),photo:RP.photo||'',loc:RP.loc||null};
+  try{var r=JSON.parse(localStorage.getItem('mmas_reports')||'[]');r.unshift(rep);localStorage.setItem('mmas_reports',JSON.stringify(r));}catch(e){}
+  closeReport();toast('Report sent to the Ministry.');
+}
+
+/* ===== camera + flashlight ===== */
+var stream=null,TORCH=false;
+function stopCamera(){ if(stream){try{stream.getTracks().forEach(function(t){t.stop();});}catch(e){}stream=null;} TORCH=false; }
+function startCamera(){
+  var v=document.getElementById('cam'),p=document.getElementById('vfp');
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ if(p){p.querySelector('.pt').textContent='Camera preview'; } return; }
+  navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(function(sm){
+    stream=sm; if(v){v.srcObject=sm;} if(p){p.classList.add('hidden');}
+  }).catch(function(){ if(p){p.querySelector('.pt').textContent='Camera unavailable - tap to simulate a scan'; } });
+}
+function toggleTorch(){
+  if(!stream){toast('Turn on the camera first');return;}
+  var tr=stream.getVideoTracks()[0];
+  try{ TORCH=!TORCH; tr.applyConstraints({advanced:[{torch:TORCH}]}); var b=document.getElementById('torchBtn'); if(b)b.classList.toggle('on',TORCH); toast(TORCH?'Flashlight on':'Flashlight off'); }
+  catch(e){ toast('Flashlight not supported on this device'); }
+}
+
+/* ===== live data ===== */
+function liveCards(){
+  var out={};
+  Object.keys(DB).forEach(function(k){out[up(k)]=Object.assign({},DB[k]);});
+  var ac=lsGet('mmas_admin_cards')||[];
+  ac.forEach(function(c){ var k=up(c.id); if(!k)return; out[k]=Object.assign(out[k]||{blood:'-',nat:'-'},{holder:c.holder,outlet:out[k]&&out[k].outlet?out[k].outlet:c.holder,type:c.type,status:c.status,expiry:c.expiry,issue:(out[k]&&out[k].issue)||c.issue||'-'}); });
+  ['individual','mediaHouse','foreign'].forEach(function(t){
+    var stt=lsGet('mmas_state_'+t); if(stt&&stt.cards){ stt.cards.forEach(function(c){ var k=up(c.id); if(!k)return; var o=out[k]||{}; o.holder=c.holder||o.holder||(stt.user&&stt.user.name); o.outlet=c.outlet||o.outlet||(stt.user&&stt.user.outlet); o.type=c.type||o.type; o.expiry=c.expiry||o.expiry; if(!o.status)o.status=c.status; o.nat=(stt.user&&stt.user.nationality)||o.nat||'-'; o.blood=(stt.user&&stt.user.blood)||o.blood||'-'; o.issue=o.issue||'-'; out[k]=o; }); }
+  });
+  var b=lsGet('mmas_bridge_status')||{};
+  Object.keys(b).forEach(function(key){ if(key.indexOf('card:')===0){ var id=up(key.slice(5)); if(out[id])out[id].status=b[key].status; } });
+  return out;
+}
+function eventName(id){ var ae=lsGet('mmas_admin_events')||[]; for(var i=0;i<ae.length;i++){ if(ae[i].id===id)return ae[i].name; } for(var k in EVENT_DB){ if(EVENT_DB[k].eventId===id)return EVENT_DB[k].event; } return 'the event'; }
+function liveEventReg(pass){
+  if(EVENT_DB[pass]) return EVENT_DB[pass];
+  var br=lsGet('mmas_bridge_event_regs')||[];
+  for(var i=0;i<br.length;i++){ if(up(br[i].pass)===pass){ return {eventId:br[i].eventId,event:eventName(br[i].eventId),name:br[i].name,card:br[i].card||'-'}; } }
+  return null;
+}
+function checkinTime(eventId,pass){ var ck=lsGet('mma_event_checkins_'+eventId)||[]; for(var i=0;i<ck.length;i++){ if(up(ck[i].pass)===pass)return ck[i].time; } return null; }
+
+/* ===== mode ===== */
+function reportFromScan(){var el=document.getElementById('cardNo');openReport((el&&el.value)||'-','suspicious');}
+var STAFF=false;try{STAFF=(localStorage.getItem('mmas_verify_staff')==='1');}catch(e){}
+var CUR_EVENT=null;try{CUR_EVENT=JSON.parse(localStorage.getItem('mmas_verify_event')||'null');}catch(e){}
+var MODE='card'; try{var _vm=sessionStorage.getItem('mmas_ver_mode'); if(_vm==='card'||_vm==='event')MODE=_vm;}catch(e){}
+function setMode(m){ MODE=m; try{sessionStorage.setItem('mmas_ver_mode',m);}catch(e){} showScan(); }
+function hmNow(){var d=new Date();function p(n){return (n<10?'0':'')+n;}return p(d.getHours())+':'+p(d.getMinutes());}
+function autoAlert(code,kind,event){
+  try{var r=JSON.parse(localStorage.getItem('mmas_reports')||'[]');
+    if(r.some(function(x){return x.auto&&x.status==='Open'&&x.code===code&&x.kind===kind;}))return;
+    r.unshift({id:'RPT-'+Date.now(),code:code||'-',kind:kind,event:event||'',ts:nowStr(),status:'Open',auto:true,reporter:'System (auto scan)',badge:'',suspectPhone:'',suspectId:'',note:'Auto-detected at scan'+(event?' - '+event:''),photo:'',loc:null});
+    localStorage.setItem('mmas_reports',JSON.stringify(r));}catch(e){}
+}
+function doCheckin(reg,pass){
+  var key='mma_event_checkins_'+reg.eventId;var ck=lsGet(key)||[];
+  for(var i=0;i<ck.length;i++){if(up(ck[i].pass)===up(pass))return false;}
+  ck.push({pass:pass,name:reg.name,card:reg.card||'-',outlet:'',time:hmNow(),by:'Door scan'});
+  try{localStorage.setItem(key,JSON.stringify(ck));}catch(e){}
+  return true;
+}
+function staffToggle(){
+  if(STAFF){STAFF=false;try{localStorage.removeItem('mmas_verify_staff');}catch(e){}toast('Door check-in locked');showScan();return;}
+  var pin=window.prompt&&window.prompt('Enter staff PIN to enable door check-in');
+  if(pin===null||pin===undefined)return;
+  if(String(pin)==='2026'){STAFF=true;try{localStorage.setItem('mmas_verify_staff','1');}catch(e){}toast('Door check-in enabled');showScan();}
+  else toast('Wrong PIN');
+}
+function eventMode(id){try{var ae=JSON.parse(localStorage.getItem('mmas_admin_events')||'[]');for(var i=0;i<ae.length;i++){if(ae[i].id===id)return ae[i].mode||'both';}}catch(e){}return 'both';}
+function verifyEventsList(){var out=[];try{var ae=JSON.parse(localStorage.getItem('mmas_admin_events')||'[]');ae.forEach(function(e){out.push({id:e.id,name:e.name});});}catch(e){}if(!out.length){out=[{id:'EV-01',name:'National Media Summit 2026'},{id:'EV-02',name:'Press Freedom Day Briefing'},{id:'EV-03',name:'Foreign Correspondents Roundtable'}];}return out;}
+function setCurEvent(id){var e=verifyEventsList().filter(function(x){return x.id===id;})[0];CUR_EVENT=e?{id:e.id,name:e.name}:null;try{localStorage.setItem('mmas_verify_event',JSON.stringify(CUR_EVENT));}catch(er){}}
+
+/* ===== SCAN VIEW ===== */
+function showScan(){
+  stopCamera();
+  var card=MODE==='card';
+  document.getElementById('body').innerHTML=
+    '<div class="modetog"><button class="'+(card?'on':'')+'" onclick="setMode(\'card\')">'+ic('idcard',2)+' Press card</button><button class="'+(card?'':'on')+'" onclick="setMode(\'event\')">'+ic('ticket',2)+' Event pass</button></div>'+
+    '<div class="scan-head"><h1>'+(card?'Scan a press card':'Scan an event pass')+'</h1><p>Point the camera at the QR code'+(card?' on the card':' on the pass')+', or enter the number by hand.</p></div>'+
+    '<div class="viewfinder" id="vf" onclick="simScan()">'+
+      '<video id="cam" autoplay playsinline muted></video>'+
+      '<button class="vf-torch" id="torchBtn" onclick="event.stopPropagation();toggleTorch()" title="Flashlight">'+ic('bolt',2)+'</button>'+
+      '<div class="vf-placeholder" id="vfp">'+ic('camera',1.5)+'<div class="pt">Starting camera...</div></div>'+
+      '<div class="vf-frame"><span class="vf-corner tl"></span><span class="vf-corner tr"></span><span class="vf-corner bl"></span><span class="vf-corner br"></span></div>'+
+      '<div class="vf-scanline"></div>'+
+      '<div class="vf-hint">Align the QR code inside the frame</div>'+
+    '</div>'+
+    '<div class="scan-actions"><button class="btn pri big" onclick="simScan()">'+ic('scan')+' Scan '+(card?'card':'pass')+'</button></div>'+
+    '<div class="manual"><div class="field"><input id="cardNo" placeholder="'+(card?'e.g. PC-2026-1042':'e.g. EVT-2026-001')+'" maxlength="18" onkeydown="if(event.key===\'Enter\')manualVerify()"><button class="go" onclick="manualVerify()">Verify</button></div><div class="hint">'+(card?'Try: 1234 (valid) · 2345 (expired) · 3456 (suspended) · 5678 (fake)':'Try: EVT-2026-001 (valid) · EVT-2026-999 (not registered) · FAKE-1 (fake)')+'</div></div>'+'<div class="report" style="padding:2px 22px 24px">Spotted a fake or suspicious card? <a onclick="reportFromScan()">Report it to the Ministry</a></div>';
+  startCamera();
+}
+function simScan(){ toast('Reading QR code...'); setTimeout(function(){ if(MODE==='card')verify('PC-2026-1042'); else verifyEvent('EVT-2026-001'); },650); }
+function manualVerify(){ var v=up((document.getElementById('cardNo')||{}).value); if(!v){toast('Enter a number');return;} if(MODE==='card')verify(v); else verifyEvent(v); }
+
+/* ===== CARD VERIFY ===== */
+function verify(no){
+  stopCamera(); no=up(no);
+  var d=liveCards()[no];
+  if(!d){autoAlert(no,'fake','');return renderNotFound(no);}
+  var st=d.status||'Active';
+  if(st==='Suspended') return renderResult(no,d,'suspended');
+  if(st==='Cancelled'||st==='Revoked') return renderResult(no,d,'revoked');
+  if(st==='Expired') return renderResult(no,d,'expired');
+  return renderValid(no,d);
+}
+function renderValid(no,d){
+  document.getElementById('body').innerHTML='<div class="result">'+
+    '<div class="res-banner valid"><div class="ricon">'+ic('check',2.6)+'</div><h1>Valid</h1><div class="sub">This card is genuine and active</div></div>'+
+    '<div class="res-body">'+
+      '<div class="holder"><div class="photo">'+ic('user',1.5)+'</div><div><div class="hn">'+d.holder+'</div><div class="ho">'+(d.outlet||'-')+'</div><span class="htag" style="background:#E4F7EE;color:#15803d">'+(d.type||'Card')+'</span></div></div>'+
+      '<div class="detbox">'+row('Card number',no)+row('Type',d.type||'-')+row('Outlet',d.outlet||'-')+row('Nationality',d.nat||'-')+row('Blood group',d.blood||'-')+row('Issue date',d.issue||'-')+row('Expiry date',d.expiry||'-')+row('Status','<span style="color:var(--green)">Active</span>')+'</div>'+
+      '<div class="ministry"><img class="logo" src="logo.png" alt="logo"><div><div class="mt">Issued by the Ministry</div><div class="ms">Information, Culture &amp; Tourism · Somalia</div></div><span class="mcheck">'+ic('shield',2)+'</span></div>'+
+      '<div class="res-actions"><button class="btn pri big" onclick="showScan()">'+ic('scan')+' Scan another</button><button class="btn ghost" onclick="showScan()">Home</button></div>'+
+    '</div></div>';
+}
+function renderResult(no,d,kind){
+  var isExp=kind==='expired';
+  var label=isExp?'Expired':(kind==='revoked'?'Revoked':'Suspended');
+  var sub=isExp?'This card is no longer valid':(kind==='revoked'?'This card has been cancelled by the Ministry':'This card has been suspended by the Ministry');
+  var warn=isExp?('<b>This card expired on '+(d.expiry||'-')+'.</b> It is no longer valid for accreditation. The holder must renew it before it can be used again.'):(kind==='revoked'?'<b>This card has been permanently cancelled.</b> It is not valid. Do not accept it as proof of accreditation.':'<b>This card has been suspended.</b> It is not currently valid. Please do not accept it. Contact the Ministry for details.');
+  var banner=isExp?'expired':'suspended';
+  document.getElementById('body').innerHTML='<div class="result">'+
+    '<div class="res-banner '+banner+'"><div class="ricon">'+ic(isExp?'clock':'ban',2.4)+'</div><h1>'+label+'</h1><div class="sub">'+sub+'</div></div>'+
+    '<div class="res-body">'+
+      '<div class="holder"><div class="photo">'+ic('user',1.5)+'</div><div><div class="hn">'+(d.holder||'-')+'</div><div class="ho">'+(d.outlet||'-')+'</div><span class="htag" style="background:'+(isExp?'#eef1f4;color:#5b6773':'#FDEAEA;color:#b91c1c')+'">'+label+'</span></div></div>'+
+      '<div class="warnbox'+(isExp?' amber':'')+'">'+warn+'</div>'+
+      '<div class="detbox">'+row('Card number',no)+row('Holder',d.holder||'-')+row('Outlet',d.outlet||'-')+row(isExp?'Expired on':'Status',isExp?(d.expiry||'-'):'<span style="color:var(--red)">'+label+'</span>')+'</div>'+(isExp?'':'<div class="report">Someone still using this card? <a onclick="openReport(\''+no+'\',\'suspended\')">Report to the Ministry</a></div>')+
+      '<div class="res-actions"><button class="btn pri big" onclick="showScan()">'+ic('scan')+' Scan another</button><button class="btn ghost" onclick="showScan()">Home</button></div>'+
+    '</div></div>';
+}
+function renderNotFound(no){
+  document.getElementById('body').innerHTML='<div class="result">'+
+    '<div class="res-banner notfound"><div class="ricon">'+ic('x',2.6)+'</div><h1>Not recognized</h1><div class="sub">No card matches this code</div></div>'+
+    '<div class="res-body">'+
+      '<div class="warnbox"><b>This card could not be verified.</b> The code <b>'+(no||'-')+'</b> does not exist in the Ministry system. It may be fake, mistyped, or revoked. Do not accept it as valid accreditation.</div>'+
+      '<div class="res-actions"><button class="btn pri big" onclick="showScan()">'+ic('scan')+' Try again</button><button class="btn ghost" onclick="showScan()">Home</button></div>'+
+      '<div class="report">Believe this is a forged card? <a onclick="openReport(\''+no+'\',\'fake\')">Report suspicious card</a></div>'+
+    '</div></div>';
+}
+
+/* ===== EVENT PASS VERIFY ===== */
+function verifyEvent(pass){
+  stopCamera(); pass=up(pass);
+  var reg=liveEventReg(pass);
+  if(!reg){ if(/^(EVT|PASS)-/i.test(pass)){autoAlert(pass,'event-notreg',CUR_EVENT?CUR_EVENT.name:'');return renderEvent('notreg',{pass:pass});} autoAlert(pass,'event-fake',CUR_EVENT?CUR_EVENT.name:'');return renderEvent('fake',{pass:pass}); }
+  var t=checkinTime(reg.eventId,pass);
+  if(t) return renderEvent('dup',{reg:reg,pass:pass,time:t});
+  var _mode=eventMode(reg.eventId);
+  if(_mode==='staff'){ return renderEvent('valid',{reg:reg,pass:pass,staffOnly:true}); }
+  doCheckin(reg,pass); return renderEvent('checked',{reg:reg,pass:pass});
+}
+function renderEvent(kind,data){
+  var reg=data.reg||{},pass=data.pass||'-';
+  var html;
+  if(kind==='checked'){
+    html='<div class="res-banner valid"><div class="ricon">'+ic('check',2.6)+'</div><h1>Checked in</h1><div class="sub">Welcome to '+reg.event+'</div></div>'+
+      '<div class="res-body"><div class="holder"><div class="photo" style="background:linear-gradient(135deg,#22c55e,#16a34a)">'+ic('ticket',1.4)+'</div><div><div class="hn">'+reg.name+'</div><div class="ho">'+reg.event+'</div><span class="htag" style="background:#E4F7EE;color:#15803d">Checked in ✓</span></div></div>'+
+      '<div class="detbox">'+row('Pass number',pass)+row('Event',reg.event)+row('Attendee',reg.name)+row('Status','<span style="color:var(--green)">Checked in just now</span>')+'</div>'+
+      '<div class="ministry"><img class="logo" src="logo.png" alt="logo"><div><div class="mt">Entry granted</div><div class="ms">Marked present on the attendee list</div></div><span class="mcheck">'+ic('shield',2)+'</span></div>';
+  }
+  else if(kind==='valid'){
+    html='<div class="res-banner valid"><div class="ricon">'+ic('check',2.6)+'</div><h1>Valid pass</h1><div class="sub">Welcome to '+reg.event+'</div></div>'+
+      '<div class="res-body"><div class="holder"><div class="photo" style="background:linear-gradient(135deg,#22c55e,#16a34a)">'+ic('ticket',1.4)+'</div><div><div class="hn">'+reg.name+'</div><div class="ho">'+reg.event+'</div><span class="htag" style="background:#E4F7EE;color:#15803d">Registered</span></div></div>'+
+      (data.staffOnly?'<div class="warnbox amber">Registered — check-in for this event is handled by event staff.</div>':'')+'<div class="detbox">'+row('Pass number',pass)+row('Event',reg.event)+row('Attendee',reg.name)+row('Linked card',reg.card||'-')+row('Status','<span style="color:var(--green)">Registered ✓</span>')+'</div>'+
+      '<div class="ministry"><img class="logo" src="logo.png" alt="logo"><div><div class="mt">Valid entry pass</div><div class="ms">Allow entry to the event</div></div><span class="mcheck">'+ic('shield',2)+'</span></div>';
+  } else if(kind==='dup'){
+    html='<div class="res-banner dup"><div class="ricon">'+ic('clock',2.4)+'</div><h1>Already checked in</h1><div class="sub">This pass has already entered</div></div>'+
+      '<div class="res-body"><div class="holder"><div class="photo" style="background:linear-gradient(135deg,#f0b429,#c98d1e)">'+ic('ticket',1.4)+'</div><div><div class="hn">'+reg.name+'</div><div class="ho">'+reg.event+'</div><span class="htag" style="background:#FCF3E1;color:#92610a">Checked in</span></div></div>'+
+      '<div class="warnbox amber"><b>This person already entered at '+data.time+'.</b> To prevent pass-sharing, do not allow a second entry with the same pass.</div>'+
+      '<div class="detbox">'+row('Pass number',pass)+row('Event',reg.event)+row('Entered at',data.time)+'</div>';
+  } else if(kind==='notreg'){
+    html='<div class="res-banner suspended"><div class="ricon">'+ic('ban',2.4)+'</div><h1>Not registered</h1><div class="sub">Not on the guest list</div></div>'+
+      '<div class="res-body"><div class="warnbox"><b>Pass '+pass+' is not registered for any event.</b> This person is not on the guest list. Do not allow entry.</div>';
+  } else {
+    html='<div class="res-banner notfound"><div class="ricon">'+ic('x',2.6)+'</div><h1>Invalid pass</h1><div class="sub">This pass is not recognized</div></div>'+
+      '<div class="res-body"><div class="warnbox"><b>The pass '+pass+' is not recognized.</b> It may be a fake or forged pass. Do not allow entry.</div>';
+  }
+  html+=((kind==='notreg'||kind==='fake')?'<div class="report">Catch the person using it? <a onclick="openReport(\''+pass+'\',\''+(kind==='fake'?'event-fake':'event-notreg')+'\')">Report this person to the Ministry</a></div>':'')+'<div class="res-actions"><button class="btn pri big" onclick="showScan()">'+ic('scan')+' Scan another</button><button class="btn ghost" onclick="showScan()">Home</button></div></div>';
+  document.getElementById('body').innerHTML='<div class="result">'+html+'</div>';
+}
+
+function row(l,v){return '<div class="detrow"><span class="dl">'+l+'</span><span class="dv">'+v+'</span></div>';}
+
+/* init */
+showScan();
+
+</script>
+<script src="mmas-i18n.js"></script>
+</body>
+</html>
